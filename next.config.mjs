@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // Handle environment variables
   env: {
     DATABASE_URL: process.env.DATABASE_URL || "file:./prisma/dev.db",
   },
