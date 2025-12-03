@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server"
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazily initialize Resend and handle missing API key gracefully so builds don't fail
+const resendApiKey = process.env.RESEND_API_KEY
+const resend = resendApiKey ? new Resend(resendApiKey) : null
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +17,18 @@ export async function POST(request: Request) {
       message,
       timestamp: new Date().toISOString(),
     })
+
+    if (!resend) {
+      console.error("[v0] RESEND_API_KEY is not configured. Skipping email send.")
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Email service is temporarily unavailable. Please try again later or email us directly at fragrancealsa@gmail.com.",
+        },
+        { status: 500 },
+      )
+    }
 
     const { data, error } = await resend.emails.send({
       from: "Alsa Fragrance Contact Form <onboarding@resend.dev>",
