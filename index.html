@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlsaFragrance - Luxury Perfumes & Attars</title>
+    <meta name="description" content="Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Great+Vibes&family=Sacramento&family=Parisienne&family=Marck+Script&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header id="navigation" class="nav-header">
+        <div class="container">
+            <div class="nav-wrapper">
+                <!-- Top row with logo and icons -->
+                <div class="nav-top">
+                    <!-- Logo -->
+                    <a href="index.html" class="logo" style="
+                        text-decoration: none;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="/alsa-logo.png" alt="Alsa Fragrance" style="
+                            height: 128px;
+                            width: 400px;
+                            display: block;
+                            object-fit: contain;
+                        " />
+                    </a>
+
+                    <!-- Search Bar -->
+                    <div class="search-container">
+                        <div class="search-bar">
+                            <i data-lucide="search" class="search-icon"></i>
+                            <input type="text" placeholder="Search fragrances..." class="search-input" id="searchInput">
+                            <button class="search-clear" id="searchClear" style="display: none;">
+                                <i data-lucide="x"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Side Icons -->
+                    <div class="nav-icons">
+                        <button class="nav-icon user-btn">
+                            <i data-lucide="user"></i>
+                        </button>
+                        <button class="nav-icon cart-btn" id="cartBtn">
+                            <i data-lucide="shopping-cart"></i>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </button>
+                        <button class="nav-icon mobile-menu-btn" id="mobileMenuBtn">
+                            <i data-lucide="menu"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="desktop-nav">
+                    <!-- Tagline -->
+                    <div class="tagline" style="
+                        text-align: center;
+                        margin-bottom: 15px;
+                        font-family: 'Brush Script MT', 'Lucida Handwriting', 'Comic Sans MS', cursive;
+                        font-size: 1.2rem;
+                        font-weight: normal;
+                        font-style: italic;
+                        background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        background-clip: text;
+                        letter-spacing: 0.05em;
+                    ">
+                        "Crafted Scents of Royal Sophistication"
+                    </div>
+                    
+                    <!-- Main navigation items -->
+                    <nav class="main-nav">
+                        <a href="index.html" class="nav-link active">Home</a>
+                        <a href="about.html" class="nav-link">About</a>
+                        <a href="shop.html" class="nav-link">Shop</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </nav>
+
+                    <!-- Category navigation items -->
+                    <nav class="category-nav">
+                        <a href="women.html" class="category-link">Women</a>
+                        <a href="men.html" class="category-link">Men</a>
+                        <a href="attars.html" class="category-link">Attars</a>
+                        <a href="testers.html" class="category-link">Testers</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu">
+        <div class="mobile-menu-content">
+            <div class="mobile-search">
+                <div class="search-input-wrapper">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Search..." id="mobileSearchInput">
+                </div>
+            </div>
+            <nav class="mobile-nav">
+                <a href="index.html" class="mobile-nav-link active">Home</a>
+                <a href="about.html" class="mobile-nav-link">About</a>
+                <a href="shop.html" class="mobile-nav-link">Shop</a>
+                <a href="contact.html" class="mobile-nav-link">Contact</a>
+                <a href="women.html" class="mobile-nav-link category">Women</a>
+                <a href="men.html" class="mobile-nav-link category">Men</a>
+                <a href="attars.html" class="mobile-nav-link category">Attars</a>
+                <a href="testers.html" class="mobile-nav-link category">Testers</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <h2>Search Products</h2>
+                <button class="close-btn" id="closeSearchBtn">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form class="search-form" id="searchForm">
+                <div class="search-input-wrapper">
+                    <i data-lucide="search"></i>
+                    <input type="text" placeholder="Search for fragrances..." id="searchInput">
+                    <button type="button" class="clear-btn" id="clearSearchBtn">
+                        <i data-lucide="x"></i>
+                    </button>
+                </div>
+            </form>
+            <div id="searchResults" class="search-results"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-background">
+                <img src="alsa-signature-collection-hero.jpg" alt="Alsa Fragrance Collection" class="hero-image">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content">
+                <div class="container">
+                    <div class="hero-text">
+                        <h1 class="hero-title">Discover Your Signature Scent</h1>
+                        <p class="hero-subtitle">Experience luxury fragrances crafted with the finest ingredients from around the world</p>
+                        <div class="hero-buttons">
+                            <a href="shop.html" class="btn btn-primary">Shop Now</a>
+                            <a href="about.html" class="btn btn-secondary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Showcase -->
+        <section class="category-showcase">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Explore Our Collections</h2>
+                    <p class="section-subtitle">Discover fragrances tailored for every personality and occasion</p>
+                </div>
+                <div class="category-grid">
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="elegant-womens-perfume-bottles.jpg" alt="Women's Fragrances">
+                            <div class="category-overlay">
+                                <h3>Women</h3>
+                                <p>Elegant & Sophisticated</p>
+                                <a href="women.html" class="btn btn-outline">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="masculine-cologne-bottles-dark-background.jpg" alt="Men's Fragrances">
+                            <div class="category-overlay">
+                                <h3>Men</h3>
+                                <p>Bold & Confident</p>
+                                <a href="men.html" class="btn btn-outline">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="traditional-attar-bottles-ornate-design.jpg" alt="Attars">
+                            <div class="category-overlay">
+                                <h3>Attars</h3>
+                                <p>Traditional & Pure</p>
+                                <a href="attars.html" class="btn btn-outline">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="perfume-tester-bottles-sample-collection.jpg" alt="Testers">
+                            <div class="category-overlay">
+                                <h3>Testers</h3>
+                                <p>Try Before You Buy</p>
+                                <a href="testers.html" class="btn btn-outline">Explore</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="featured-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Featured Products</h2>
+                    <p class="section-subtitle">Handpicked selections from our premium collection</p>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-signature-oud-bottle.jpg" alt="Signature Oud">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="1">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Signature Oud</h3>
+                            <p class="product-description">Rich and luxurious oud fragrance</p>
+                            <p class="product-price">€299</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-rose-garden-perfume-bottle.jpg" alt="Rose Garden">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="2">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Rose Garden</h3>
+                            <p class="product-description">Delicate floral bouquet</p>
+                            <p class="product-price">€199</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-midnight-mystery-cologne-bottle.jpg" alt="Midnight Mystery">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="3">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Midnight Mystery</h3>
+                            <p class="product-description">Mysterious and captivating</p>
+                            <p class="product-price">€249</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-ocean-breeze-perfume-bottle.jpg" alt="Ocean Breeze">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="4">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Ocean Breeze</h3>
+                            <p class="product-description">Fresh and invigorating</p>
+                            <p class="product-price">€179</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Banner -->
+        <section class="promotional-banner new-arrivals-banner">
+            <div class="banner-background">
+                <img src="alsa-attar-bottles-carry-bags-collection.jpg" alt="New Arrivals">
+                <div class="banner-overlay"></div>
+            </div>
+            <div class="banner-content">
+                <div class="container">
+                    <h2 class="banner-title">New Arrivals</h2>
+                    <p class="banner-subtitle">Discover our latest fragrance creations</p>
+                    <a href="shop.html?filter=new" class="btn btn-primary">Shop New Arrivals</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Arrivals Products -->
+        <section class="new-arrivals">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">New Arrivals</h2>
+                    <p class="section-subtitle">Fresh fragrances for every occasion</p>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-aurora-dreams-perfume-bottle.jpg" alt="Aurora Dreams">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="5">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Aurora Dreams</h3>
+                            <p class="product-description">Ethereal women's fragrance</p>
+                            <p class="product-price">€229</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-velvet-nights-cologne-bottle.jpg" alt="Velvet Nights">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="6">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Velvet Nights</h3>
+                            <p class="product-description">Sophisticated men's cologne</p>
+                            <p class="product-price">€259</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-golden-sands-attar-bottle.jpg" alt="Golden Sands">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="7">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Golden Sands</h3>
+                            <p class="product-description">Premium attar blend</p>
+                            <p class="product-price">€189</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-crystal-waters-perfume-bottle.jpg" alt="Crystal Waters">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="8">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Crystal Waters</h3>
+                            <p class="product-description">Refreshing tester set</p>
+                            <p class="product-price">€149</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limited Edition Banner -->
+        <section class="promotional-banner limited-edition-banner">
+            <div class="banner-background">
+                <img src="alsa-limited-edition-bottles-collection.jpg" alt="Limited Edition">
+                <div class="banner-overlay"></div>
+            </div>
+            <div class="banner-content">
+                <div class="container">
+                    <h2 class="banner-title">Limited Edition</h2>
+                    <p class="banner-subtitle">Exclusive fragrances in limited quantities</p>
+                    <a href="shop.html?filter=limited" class="btn btn-primary">Shop Limited Edition</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Limited Edition Products -->
+        <section class="limited-edition">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Limited Edition</h2>
+                    <p class="section-subtitle">Exclusive fragrances crafted in limited quantities</p>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-diamond-essence-limited-bottle.jpg" alt="Diamond Essence">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="9">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Diamond Essence</h3>
+                            <p class="product-description">Ultra-premium crystalline bottle</p>
+                            <p class="product-price">€599</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-midnight-royalty-limited-bottle.jpg" alt="Midnight Royalty">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="10">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Midnight Royalty</h3>
+                            <p class="product-description">Obsidian luxury edition</p>
+                            <p class="product-price">€699</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-golden-phoenix-limited-bottle.jpg" alt="Golden Phoenix">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="11">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Golden Phoenix</h3>
+                            <p class="product-description">24k gold-plated design</p>
+                            <p class="product-price">€799</p>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="alsa-celestial-dreams-limited-bottle.jpg" alt="Celestial Dreams">
+                            <div class="product-overlay">
+                                <button class="btn btn-primary add-to-cart" data-product-id="12">Add to Cart</button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Celestial Dreams</h3>
+                            <p class="product-description">Star-shaped crystal bottle</p>
+                            <p class="product-price">€649</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">What Our Customers Say</h2>
+                    <p class="section-subtitle">Discover why thousands choose AlsaFragrance</p>
+                </div>
+                <div class="testimonials-slider" id="testimonialsSlider">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"The quality of AlsaFragrance perfumes is exceptional. I've been using their products for years and always receive compliments."</p>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Sarah Johnson">
+                                <div>
+                                    <h4>Sarah Johnson</h4>
+                                    <p>Fashion Designer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"Their attar collection is absolutely divine. The traditional scents are authentic and long-lasting."</p>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Ahmed Al-Rashid">
+                                <div>
+                                    <h4>Ahmed Al-Rashid</h4>
+                                    <p>Perfume Collector</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"Fast shipping and excellent customer service. The packaging is luxurious and makes for perfect gifts."</p>
+                            <div class="testimonial-author">
+                                <img src="/placeholder.svg?height=60&width=60" alt="Maria Rodriguez">
+                                <div>
+                                    <h4>Maria Rodriguez</h4>
+                                    <p>Business Executive</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i data-lucide="sparkles"></i>
+                        <span>AlsaFragrance</span>
+                    </div>
+                    <p>Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i data-lucide="facebook"></i></a>
+                        <a href="#" class="social-link"><i data-lucide="instagram"></i></a>
+                        <a href="#" class="social-link"><i data-lucide="twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="women.html">Women</a></li>
+                        <li><a href="men.html">Men</a></li>
+                        <li><a href="attars.html">Attars</a></li>
+                        <li><a href="testers.html">Testers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul>
+                        <li><i data-lucide="mail"></i> fragrancealsa@gmail.com</li>
+                        <li><i data-lucide="phone"></i> +1 (555) 123-4567</li>
+                        <li><i data-lucide="map-pin"></i> 123 Fragrance St, Luxury City</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AlsaFragrance. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-drawer-content">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button class="close-btn" id="closeCartBtn">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Your cart is empty</p>
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total: $<span id="cartTotal">0</span></span>
+                </div>
+                <button class="btn btn-primary checkout-btn">Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Widget -->
+    <div class="whatsapp-widget">
+        <a href="https://wa.me/1234567890" target="_blank" class="whatsapp-btn">
+            <i data-lucide="message-circle"></i>
+        </a>
+    </div>
+
+    <!-- Scroll to Top -->
+    <button id="scrollToTop" class="scroll-to-top">
+        <i data-lucide="arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
