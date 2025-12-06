@@ -106,6 +106,7 @@ const ProductSchema = new Schema<IProduct>(
   },
   {
     timestamps: true,
+    suppressReservedKeysWarning: true, // Suppress warning for 'isNew' field
   }
 )
 

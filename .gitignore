@@ -26,3 +26,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /lib/generated/prisma
+
+# test output files
+test-*.txt
+test-*.log
+test-results*.txt
+test-output*.txt
+test-run-output.txt
