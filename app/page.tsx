@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Navigation } from "@/components/navigation"
 import { HeroSection } from "@/components/hero-section"
 import { CategoryShowcase } from "@/components/category-showcase"
@@ -10,7 +11,7 @@ import { Footer } from "@/components/footer"
 import { NewArrivals } from "@/components/new-arrivals"
 import { LimitedEdition } from "@/components/limited-edition"
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "AlsaFragrance - Luxury Perfumes & Attars",
   description: "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
 }
