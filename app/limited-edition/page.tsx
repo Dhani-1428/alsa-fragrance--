@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Navigation } from "@/components/navigation"
 import { ProductCard } from "@/components/product-card"
 import { Footer } from "@/components/footer"
@@ -16,15 +16,29 @@ import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Search, Grid, List } from "lucide-react"
-import { getLimitedEditionProducts } from "@/lib/products-main"
+import { getLimitedEditionProducts, type Product } from "@/lib/products-api"
 import { motion } from "framer-motion"
 
 export default function LimitedEditionPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [limitedEditionProducts, setLimitedEditionProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const limitedEditionProducts = getLimitedEditionProducts()
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const products = await getLimitedEditionProducts()
+        setLimitedEditionProducts(products)
+      } catch (error) {
+        console.error("Error loading products:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadProducts()
+  }, [])
 
   const filteredAndSortedProducts = useMemo(() => {
     const filtered = limitedEditionProducts.filter((product) => {
@@ -158,11 +172,15 @@ export default function LimitedEditionPage() {
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
-              Showing {filteredAndSortedProducts.length} of {limitedEditionProducts.length} limited edition products
+              {loading ? "Loading..." : `Showing ${filteredAndSortedProducts.length} of ${limitedEditionProducts.length} limited edition products`}
             </p>
           </FadeInUp>
 
-          {filteredAndSortedProducts.length === 0 ? (
+          {loading ? (
+            <FadeInUp delay={0.4} className="text-center py-12">
+              <p className="text-muted-foreground text-lg">Loading products...</p>
+            </FadeInUp>
+          ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
               <p className="text-muted-foreground text-lg mb-4">No products found</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">

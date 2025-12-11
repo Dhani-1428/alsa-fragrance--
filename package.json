@@ -12,7 +12,8 @@
     "test:backend": "tsx scripts/test-backend.ts",
     "test:simple": "tsx scripts/test-backend-simple.ts",
     "test:all": "tsx scripts/test-all-backend.ts",
-    "test:mongodb": "tsx scripts/test-mongodb-only.ts"
+    "test:mongodb": "tsx scripts/test-mongodb-only.ts",
+    "db:add-products": "tsx scripts/add-10-products-per-category.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

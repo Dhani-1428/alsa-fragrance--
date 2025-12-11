@@ -23,8 +23,10 @@ export async function GET(
       id: product._id.toString(),
       name: product.name,
       category: product.category,
-      price: product.isSale && product.salePrice ? product.salePrice : product.price,
+      price: product.price,
       originalPrice: product.originalPrice || product.price,
+      salePrice: product.salePrice || undefined,
+      salePercent: product.salePercent || undefined,
       rating: product.rating,
       reviews: product.reviews,
       image: product.image,
@@ -43,9 +45,31 @@ export async function GET(
     }
 
     return NextResponse.json(transformedProduct)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching product:', error)
-    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 })
+    
+    // Handle MongoDB connection errors
+    if (error.message && error.message.includes('IP')) {
+      return NextResponse.json(
+        { 
+          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
+          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
+        },
+        { status: 503 }
+      )
+    }
+    
+    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
+    
+    return NextResponse.json({ error: error.message || 'Failed to fetch product' }, { status: 500 })
   }
 }
 
@@ -115,9 +139,31 @@ export async function PUT(
       id: product._id.toString(),
       ...product.toObject(),
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error updating product:', error)
-    return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
+    
+    // Handle MongoDB connection errors
+    if (error.message && error.message.includes('IP')) {
+      return NextResponse.json(
+        { 
+          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
+          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
+        },
+        { status: 503 }
+      )
+    }
+    
+    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
+    
+    return NextResponse.json({ error: error.message || 'Failed to update product' }, { status: 500 })
   }
 }
 
@@ -144,6 +190,28 @@ export async function DELETE(
     })
   } catch (error: any) {
     console.error('Error deleting product:', error)
+    
+    // Handle MongoDB connection errors
+    if (error.message && error.message.includes('IP')) {
+      return NextResponse.json(
+        { 
+          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
+          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
+        },
+        { status: 503 }
+      )
+    }
+    
+    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
+    
     return NextResponse.json(
       { error: error.message || 'Failed to delete product' },
       { status: 500 }

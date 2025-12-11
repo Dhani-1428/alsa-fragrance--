@@ -12,7 +12,7 @@ export const runtime = "nodejs"
  * 3. Scheduled cron job that checks for payments
  * 
  * Expected payload examples:
- * - { "phone": "+351 920306889", "amount": 1.00, "reference": "order-ref" }
+ * - { "phone": "+351 920062535", "amount": 1.00, "reference": "order-ref" }
  * - { "amount": 1.00, "timestamp": "2024-01-01T12:00:00Z" }
  * - { "transactionId": "MBW123456", "orderNumber": "AF-1234567890" }
  */
@@ -24,14 +24,14 @@ export async function POST(request: NextRequest) {
     console.log("MBWay webhook received:", body)
 
     // Find matching pending order
-    const pendingOrders = getPendingMBWayOrders()
+    const pendingOrders = await getPendingMBWayOrders()
     let orderToConfirm
 
     // Try multiple matching strategies
     if (orderNumber) {
       const order = pendingOrders.find((o) => o.orderNumber === orderNumber)
       if (order && (!amount || Math.abs(order.grandTotal - parseFloat(amount)) < 0.01)) {
-        orderToConfirm = confirmOrder(order.id)
+        orderToConfirm = await confirmOrder(order.id)
       }
     } else if (amount) {
       // Find by amount match (with timestamp if provided for better matching)
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       
       if (matchingOrders.length === 1) {
         // Single match - confirm it
-        orderToConfirm = confirmOrder(matchingOrders[0].id)
+        orderToConfirm = await confirmOrder(matchingOrders[0].id)
       } else if (matchingOrders.length > 1 && timestamp) {
         // Multiple matches - use timestamp to find closest match
         const targetTime = new Date(timestamp).getTime()
@@ -52,13 +52,13 @@ export async function POST(request: NextRequest) {
             ? current
             : closest
         })
-        orderToConfirm = confirmOrder(closestOrder.id)
+        orderToConfirm = await confirmOrder(closestOrder.id)
       } else if (matchingOrders.length > 0) {
         // Multiple matches but no timestamp - confirm most recent
         const mostRecent = matchingOrders.sort(
           (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         )[0]
-        orderToConfirm = confirmOrder(mostRecent.id)
+        orderToConfirm = await confirmOrder(mostRecent.id)
       }
     } else if (reference) {
       // Find by reference/transaction ID
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         (transactionId && o.orderNumber.includes(transactionId))
       )
       if (order) {
-        orderToConfirm = confirmOrder(order.id)
+        orderToConfirm = await confirmOrder(order.id)
       }
     }
 

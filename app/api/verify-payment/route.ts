@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
-import { getPendingMBWayOrders, confirmOrder, getOrderByEmailAndStatus } from "@/lib/orders"
+import { getPendingOrders, confirmOrder, getOrderById, getOrderByOrderNumber, getOrderByEmailAndStatus } from "@/lib/orders"
 
 export const runtime = "nodejs"
 
+// Generic payment verification endpoint - works for all payment types
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -13,11 +14,13 @@ export async function POST(request: NextRequest) {
 
     // Find order by ID, order number, email, phone number, or amount
     if (orderId) {
-      orderToConfirm = await confirmOrder(orderId)
+      const order = await getOrderById(orderId)
+      if (order && order.status === "pending") {
+        orderToConfirm = await confirmOrder(orderId)
+      }
     } else if (orderNumber) {
-      const orders = await getPendingMBWayOrders()
-      const order = orders.find((o) => o.orderNumber === orderNumber)
-      if (order) {
+      const order = await getOrderByOrderNumber(orderNumber)
+      if (order && order.status === "pending") {
         orderToConfirm = await confirmOrder(order.id)
       }
     } else if (email) {
@@ -27,14 +30,14 @@ export async function POST(request: NextRequest) {
       }
     } else if (phoneNumber) {
       // Find by phone number
-      const orders = await getPendingMBWayOrders()
+      const orders = await getPendingOrders()
       const order = orders.find((o) => o.billingInfo.phone === phoneNumber)
       if (order) {
         orderToConfirm = await confirmOrder(order.id)
       }
     } else if (amount) {
       // Find by matching amount (most recent pending order with matching amount)
-      const orders = await getPendingMBWayOrders()
+      const orders = await getPendingOrders()
       const matchingOrders = orders.filter((o) => Math.abs(o.grandTotal - parseFloat(amount)) < 0.01)
       if (matchingOrders.length > 0) {
         // Get the most recent order
@@ -44,10 +47,8 @@ export async function POST(request: NextRequest) {
         orderToConfirm = await confirmOrder(mostRecent.id)
       }
     } else if (paymentReference) {
-      // Find by payment reference (if MBWay provides transaction ID)
-      const orders = await getPendingMBWayOrders()
-      // This would need to be stored with order if MBWay provides ref numbers
-      // For now, we'll use order number as reference
+      // Find by payment reference
+      const orders = await getPendingOrders()
       const order = orders.find((o) => o.orderNumber.includes(paymentReference))
       if (order) {
         orderToConfirm = await confirmOrder(order.id)
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     if (!orderToConfirm) {
       return NextResponse.json(
-        { success: false, error: "No pending MBWay order found" },
+        { success: false, error: "No pending order found" },
         { status: 404 }
       )
     }
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
           
           <p style="font-size: 16px;">Dear ${orderToConfirm.billingInfo.fullName},</p>
           
-          <p style="font-size: 16px;">Your MBWay payment has been confirmed! Your order is now confirmed and will be delivered in <strong>5-7 days</strong>.</p>
+          <p style="font-size: 16px;">Your ${orderToConfirm.paymentMethod} payment has been confirmed! Your order is now confirmed and will be delivered in <strong>5-7 days</strong>.</p>
           
           <div style="background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0;">
             <h2 style="color: #2c3e50; margin-top: 0;">Order Details</h2>
@@ -155,7 +156,7 @@ export async function POST(request: NextRequest) {
           </div>
 
           <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Payment Method:</strong> MBWay</p>
+            <p style="margin: 0;"><strong>Payment Method:</strong> ${orderToConfirm.paymentMethod}</p>
             <p style="margin: 10px 0 0 0; font-size: 14px;">Payment confirmed and received.</p>
           </div>
 
@@ -178,23 +179,24 @@ export async function POST(request: NextRequest) {
     await transporter.sendMail({
       from: `Alsa Fragrance <${smtpUser}>`,
       to: "fragrancealsa@gmail.com",
-      subject: `MBWay Payment Confirmed - Order ${orderToConfirm.orderNumber}`,
+      subject: `${orderToConfirm.paymentMethod} Payment Confirmed - Order ${orderToConfirm.orderNumber}`,
       html: `
         <!DOCTYPE html>
         <html>
           <head>
             <meta charset="utf-8">
-            <title>MBWay Payment Confirmed</title>
+            <title>Payment Confirmed</title>
           </head>
           <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="background-color: #28a745; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-              <h1 style="margin: 0;">MBWay Payment Confirmed ✅</h1>
+              <h1 style="margin: 0;">${orderToConfirm.paymentMethod} Payment Confirmed ✅</h1>
             </div>
             
             <p><strong>Order Number:</strong> ${orderToConfirm.orderNumber}</p>
             <p><strong>Customer:</strong> ${orderToConfirm.billingInfo.fullName}</p>
             <p><strong>Email:</strong> ${orderToConfirm.billingInfo.email}</p>
             <p><strong>Amount:</strong> €${orderToConfirm.grandTotal.toFixed(2)}</p>
+            <p><strong>Payment Method:</strong> ${orderToConfirm.paymentMethod}</p>
             <p><strong>Confirmed at:</strong> ${new Date().toLocaleString()}</p>
             
             <p style="margin-top: 30px; color: #28a745; font-weight: bold;">
@@ -207,11 +209,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "MBWay payment confirmed and order confirmed",
+      message: `${orderToConfirm.paymentMethod} payment confirmed and order confirmed`,
       order: orderToConfirm,
     })
   } catch (error) {
-    console.error("MBWay verification error:", error)
+    console.error("Payment verification error:", error)
     return NextResponse.json(
       { success: false, error: "Failed to verify payment" },
       { status: 500 }
@@ -222,7 +224,7 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check pending orders (for admin use)
 export async function GET(request: NextRequest) {
   try {
-    const pendingOrders = await getPendingMBWayOrders()
+    const pendingOrders = await getPendingOrders()
     return NextResponse.json({
       success: true,
       pendingOrders: pendingOrders.map((order) => ({
@@ -231,6 +233,7 @@ export async function GET(request: NextRequest) {
         customerName: order.billingInfo.fullName,
         email: order.billingInfo.email,
         amount: order.grandTotal,
+        paymentMethod: order.paymentMethod,
         createdAt: order.createdAt,
       })),
     })

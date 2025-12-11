@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -12,14 +12,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function CheckoutPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    if (!loading && !user) {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (isMounted && !loading && !user) {
       router.push("/auth/login?redirect=/checkout")
     }
-  }, [user, loading, router])
+  }, [isMounted, user, loading, router])
 
-  if (loading) {
+  // Prevent hydration mismatch by showing consistent initial render
+  if (!isMounted || loading) {
     return (
       <main className="min-h-screen">
         <Navigation />

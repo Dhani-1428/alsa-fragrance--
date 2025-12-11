@@ -1,3 +1,6 @@
+import connectDB from './mongodb'
+import Order from './models/Order'
+
 export interface Order {
   id: string
   orderNumber: string
@@ -13,7 +16,7 @@ export interface Order {
   }
   cartItems: Array<{
     product: {
-      id: number
+      id: string | number // Support both string (MongoDB ObjectId) and number
       name: string
       price: number
       image?: string
@@ -31,65 +34,133 @@ export interface Order {
   confirmedAt?: string
 }
 
-// Simple in-memory storage (in production, use a database)
-const orders: Map<string, Order> = new Map()
+// Helper function to transform MongoDB order to Order interface
+function transformOrder(mongoOrder: any): Order {
+  return {
+    id: mongoOrder._id.toString(),
+    orderNumber: mongoOrder.orderNumber,
+    billingInfo: mongoOrder.billingInfo,
+    cartItems: mongoOrder.cartItems,
+    subtotal: mongoOrder.subtotal,
+    shipping: mongoOrder.shipping,
+    tax: mongoOrder.tax,
+    grandTotal: mongoOrder.grandTotal,
+    paymentMethod: mongoOrder.paymentMethod,
+    status: mongoOrder.status,
+    createdAt: mongoOrder.createdAt?.toISOString() || new Date().toISOString(),
+    confirmedAt: mongoOrder.confirmedAt?.toISOString(),
+  }
+}
 
-export function createOrder(order: Omit<Order, "id" | "orderNumber" | "status" | "createdAt">): Order {
-  const id = `order-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-  const orderNumber = `AF-${Date.now()}`
+export async function createOrder(order: Omit<Order, "id" | "orderNumber" | "status" | "createdAt">): Promise<Order> {
+  await connectDB()
   
-  const newOrder: Order = {
-    ...order,
+  // Generate unique order number with timestamp and random suffix to avoid collisions
+  const orderNumber = `AF-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+  const status = order.paymentMethod === "MBWay" ? "pending" : "confirmed"
+  
+  // Ensure all product IDs are strings (MongoDB ObjectIds are strings)
+  const cartItemsWithStringIds = order.cartItems.map(item => ({
+    ...item,
+    product: {
+      ...item.product,
+      id: String(item.product.id), // Convert to string to match MongoDB schema
+    },
+  }))
+  
+  try {
+    const newOrder = await Order.create({
+      orderNumber,
+      billingInfo: order.billingInfo,
+      cartItems: cartItemsWithStringIds,
+      subtotal: order.subtotal,
+      shipping: order.shipping,
+      tax: order.tax,
+      grandTotal: order.grandTotal,
+      paymentMethod: order.paymentMethod,
+      status,
+      confirmedAt: status === "confirmed" ? new Date() : undefined,
+    })
+    
+    return transformOrder(newOrder)
+  } catch (error: any) {
+    console.error("Error creating order in MongoDB:", error)
+    // If it's a duplicate key error, try again with a new order number
+    if (error.code === 11000) {
+      const retryOrderNumber = `AF-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
+      const newOrder = await Order.create({
+        orderNumber: retryOrderNumber,
+        billingInfo: order.billingInfo,
+        cartItems: cartItemsWithStringIds,
+        subtotal: order.subtotal,
+        shipping: order.shipping,
+        tax: order.tax,
+        grandTotal: order.grandTotal,
+        paymentMethod: order.paymentMethod,
+        status,
+        confirmedAt: status === "confirmed" ? new Date() : undefined,
+      })
+      return transformOrder(newOrder)
+    }
+    throw error
+  }
+}
+
+export async function getOrderById(id: string): Promise<Order | undefined> {
+  await connectDB()
+  const order = await Order.findById(id)
+  return order ? transformOrder(order) : undefined
+}
+
+export async function getOrderByOrderNumber(orderNumber: string): Promise<Order | undefined> {
+  await connectDB()
+  const order = await Order.findOne({ orderNumber })
+  return order ? transformOrder(order) : undefined
+}
+
+export async function getPendingMBWayOrders(): Promise<Order[]> {
+  await connectDB()
+  const orders = await Order.find({
+    paymentMethod: "MBWay",
+    status: "pending"
+  }).sort({ createdAt: -1 })
+  return orders.map(transformOrder)
+}
+
+export async function getPendingOrders(): Promise<Order[]> {
+  await connectDB()
+  const orders = await Order.find({
+    status: "pending"
+  }).sort({ createdAt: -1 })
+  return orders.map(transformOrder)
+}
+
+export async function confirmOrder(id: string): Promise<Order | null> {
+  await connectDB()
+  const order = await Order.findByIdAndUpdate(
     id,
-    orderNumber,
-    status: order.paymentMethod === "MBWay" ? "pending" : "confirmed",
-    createdAt: new Date().toISOString(),
-  }
-  
-  orders.set(id, newOrder)
-  return newOrder
-}
-
-export function getOrderById(id: string): Order | undefined {
-  return orders.get(id)
-}
-
-export function getOrderByOrderNumber(orderNumber: string): Order | undefined {
-  for (const order of orders.values()) {
-    if (order.orderNumber === orderNumber) {
-      return order
-    }
-  }
-  return undefined
-}
-
-export function getPendingMBWayOrders(): Order[] {
-  return Array.from(orders.values()).filter(
-    (order) => order.paymentMethod === "MBWay" && order.status === "pending"
+    {
+      status: "confirmed",
+      confirmedAt: new Date(),
+    },
+    { new: true }
   )
+  return order ? transformOrder(order) : null
 }
 
-export function confirmOrder(id: string): Order | null {
-  const order = orders.get(id)
-  if (!order) {
-    return null
+export async function getOrderByEmailAndStatus(email: string, status?: "pending" | "confirmed"): Promise<Order | undefined> {
+  await connectDB()
+  const query: any = { "billingInfo.email": email }
+  if (status) {
+    query.status = status
   }
-  
-  order.status = "confirmed"
-  order.confirmedAt = new Date().toISOString()
-  orders.set(id, order)
-  
-  return order
+  const order = await Order.findOne(query).sort({ createdAt: -1 })
+  return order ? transformOrder(order) : undefined
 }
 
-export function getOrderByEmailAndStatus(email: string, status?: "pending" | "confirmed"): Order | undefined {
-  for (const order of orders.values()) {
-    if (order.billingInfo.email === email) {
-      if (!status || order.status === status) {
-        return order
-      }
-    }
-  }
-  return undefined
+export async function getAllOrders(): Promise<Order[]> {
+  await connectDB()
+  const orders = await Order.find().sort({ createdAt: -1 })
+  return orders.map(transformOrder)
 }
 

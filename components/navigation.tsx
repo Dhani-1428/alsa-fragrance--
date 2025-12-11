@@ -16,6 +16,7 @@ import { useLanguage } from "@/contexts/language-provider"
 import { useAuth } from "@/contexts/auth-provider"
 import { motion, AnimatePresence } from "framer-motion"
 import { searchProducts } from "@/lib/products-main"
+import { getProducts } from "@/lib/products-api"
 import Image from "next/image"
 import {
   DropdownMenu,
@@ -32,6 +33,9 @@ export function Navigation() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<any[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
+  const [allProducts, setAllProducts] = useState<any[]>([])
   const [mounted, setMounted] = useState(false)
   const { toggleCart, getTotalItems } = useCart()
   const { language, setLanguage, t } = useLanguage()
@@ -41,6 +45,8 @@ export function Navigation() {
 
   useEffect(() => {
     setMounted(true)
+    // Load products for search suggestions
+    getProducts().then(setAllProducts).catch(console.error)
   }, [])
 
   useEffect(() => {
@@ -52,20 +58,88 @@ export function Navigation() {
   }, [])
 
   useEffect(() => {
-    if (searchQuery.trim()) {
+    if (searchQuery.trim() && allProducts.length > 0) {
+      const query = searchQuery.toLowerCase()
+      const results = allProducts.filter(
+        (product) =>
+          product.name.toLowerCase().includes(query) ||
+          product.description.toLowerCase().includes(query) ||
+          product.category.toLowerCase().includes(query) ||
+          (product.notes?.top?.some((note: string) => note.toLowerCase().includes(query))) ||
+          (product.notes?.middle?.some((note: string) => note.toLowerCase().includes(query))) ||
+          (product.notes?.base?.some((note: string) => note.toLowerCase().includes(query)))
+      )
+      setSearchResults(results.slice(0, 8)) // Limit to 8 suggestions
+      setShowSuggestions(true)
+      setSelectedSuggestionIndex(-1)
+    } else if (searchQuery.trim() && allProducts.length === 0) {
+      // Fallback to static products if API products not loaded yet
       const results = searchProducts(searchQuery)
-      setSearchResults(results)
+      setSearchResults(results.slice(0, 8))
+      setShowSuggestions(true)
+      setSelectedSuggestionIndex(-1)
     } else {
       setSearchResults([])
+      setShowSuggestions(false)
     }
-  }, [searchQuery])
+  }, [searchQuery, allProducts])
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.search-container')) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       setIsSearchOpen(false)
+      setShowSuggestions(false)
       router.push(`/shop?search=${encodeURIComponent(searchQuery)}`)
       setSearchQuery("")
+    }
+  }
+
+  const handleSuggestionClick = (product: any) => {
+    setSearchQuery("")
+    setShowSuggestions(false)
+    // Handle both string and number IDs
+    const productId = typeof product.id === 'string' ? product.id : product.id.toString()
+    router.push(`/product/${productId}`)
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!showSuggestions || searchResults.length === 0) return
+
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault()
+        setSelectedSuggestionIndex((prev) => 
+          prev < searchResults.length - 1 ? prev + 1 : prev
+        )
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        setSelectedSuggestionIndex((prev) => (prev > 0 ? prev - 1 : -1))
+        break
+      case 'Enter':
+        e.preventDefault()
+        if (selectedSuggestionIndex >= 0 && selectedSuggestionIndex < searchResults.length) {
+          handleSuggestionClick(searchResults[selectedSuggestionIndex])
+        } else {
+          handleSearchSubmit(e)
+        }
+        break
+      case 'Escape':
+        setShowSuggestions(false)
+        setSelectedSuggestionIndex(-1)
+        break
     }
   }
 
@@ -130,13 +204,15 @@ export function Navigation() {
             {/* Search Bar - Centered */}
             <div className="flex-1 flex items-center justify-center px-8">
               <div className="hidden sm:flex items-center w-full max-w-lg">
-                <form onSubmit={handleSearchSubmit} className="relative w-full">
+                <form onSubmit={handleSearchSubmit} className="relative w-full search-container">
                   <div className="relative w-full">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
                     <Input
                       placeholder="Search fragrances..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      onFocus={() => searchQuery.trim() && setShowSuggestions(true)}
                       className="pl-12 pr-12 w-full h-12 text-lg bg-background/50 border-gold/20 focus:border-gold focus:ring-gold/20 rounded-full"
                     />
                     {searchQuery && (
@@ -144,13 +220,84 @@ export function Navigation() {
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="absolute right-3 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
-                        onClick={() => setSearchQuery("")}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 h-8 w-8 p-0 z-10"
+                        onClick={() => {
+                          setSearchQuery("")
+                          setShowSuggestions(false)
+                        }}
                       >
                         <X className="h-5 w-5" />
                       </Button>
                     )}
                   </div>
+                  
+                  {/* Search Suggestions Dropdown */}
+                  {showSuggestions && searchResults.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-background border border-gold/20 rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto"
+                    >
+                      <div className="p-2">
+                        {searchResults.map((product, index) => (
+                          <motion.div
+                            key={product.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.05 }}
+                            className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                              selectedSuggestionIndex === index
+                                ? 'bg-gold/20 border border-gold/40'
+                                : 'hover:bg-gold/10 border border-transparent'
+                            }`}
+                            onClick={() => handleSuggestionClick(product)}
+                            onMouseEnter={() => setSelectedSuggestionIndex(index)}
+                          >
+                            <div className="relative w-12 h-12 flex-shrink-0 rounded overflow-hidden bg-muted">
+                              {product.image ? (
+                                <Image
+                                  src={product.image}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="48px"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
+                                  No Image
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm truncate text-foreground">
+                                {product.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {product.category.charAt(0).toUpperCase() + product.category.slice(1)}
+                              </p>
+                            </div>
+                            <div className="text-sm font-semibold text-gold">
+                              ${product.price}
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                  
+                  {/* No results message */}
+                  {showSuggestions && searchQuery.trim() && searchResults.length === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute top-full left-0 right-0 mt-2 bg-background border border-gold/20 rounded-lg shadow-xl z-50 p-4"
+                    >
+                      <p className="text-sm text-muted-foreground text-center">
+                        No products found for "{searchQuery}"
+                      </p>
+                    </motion.div>
+                  )}
                 </form>
               </div>
             </div>

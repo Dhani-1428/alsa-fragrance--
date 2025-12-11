@@ -17,8 +17,23 @@ export async function POST(request: NextRequest) {
     const effectiveTax = 0
     const effectiveGrandTotal = effectiveSubtotal
 
+    // Validate required fields
+    if (!billingInfo || !billingInfo.fullName || !billingInfo.email || !billingInfo.phone || !billingInfo.address || !billingInfo.city || !billingInfo.postalCode || !billingInfo.country) {
+      return NextResponse.json({ 
+        success: false, 
+        error: "Missing required billing information" 
+      }, { status: 400 })
+    }
+
+    if (!cartItems || cartItems.length === 0) {
+      return NextResponse.json({ 
+        success: false, 
+        error: "Cart is empty" 
+      }, { status: 400 })
+    }
+
     // Create and store order
-    const order = createOrder({
+    const order = await createOrder({
       billingInfo,
       cartItems,
       subtotal: effectiveSubtotal,
@@ -116,7 +131,7 @@ export async function POST(request: NextRequest) {
           <div style="background-color: ${isMBWayPending ? "#fff3cd" : "#e7f3ff"}; border-left: 4px solid ${isMBWayPending ? "#ffc107" : "#2196F3"}; padding: 15px; margin: 20px 0;">
             <p style="margin: 0;"><strong>Payment Method:</strong> ${paymentMethod || "Card"}</p>
             ${isMBWayPending 
-              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Action Required:</strong> Please send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920306889</strong> via MBWay.</p>
+              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Action Required:</strong> Please send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong> via MBWay.</p>
                  <p style="margin: 10px 0 0 0; font-size: 14px;">Once payment is received and confirmed, you will receive a confirmation email and your order will be processed.</p>`
               : `<p style="margin: 10px 0 0 0; font-size: 14px;">Payment processed successfully.</p>`
             }
@@ -209,7 +224,7 @@ export async function POST(request: NextRequest) {
           <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
             <p style="margin: 0;"><strong>Payment Method:</strong> ${paymentMethod || "Card"}</p>
             ${isMBWayPending 
-              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Status:</strong> Payment Pending - Customer should send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920306889</strong></p>
+              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Status:</strong> Payment Pending - Customer should send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong></p>
                  <p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Order Number:</strong> ${order.orderNumber}</p>
                  <p style="margin: 10px 0 0 0; font-size: 14px;">Once payment is received, verify it via the admin panel or API endpoint to confirm the order.</p>`
               : `<p style="margin: 10px 0 0 0; font-size: 14px;">Payment processed via card.</p>`
@@ -263,9 +278,46 @@ export async function POST(request: NextRequest) {
       status: order.status,
       isMBWayPending
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error("Checkout error:", error)
-    return NextResponse.json({ success: false, error: "Failed to process order" }, { status: 500 })
+    console.error("Error name:", error?.name)
+    console.error("Error message:", error?.message)
+    console.error("Error stack:", error?.stack)
+    
+    // Handle MongoDB connection errors
+    if (error?.message?.includes('MongoDB') || error?.message?.includes('connection') || error?.message?.includes('IP')) {
+      return NextResponse.json({ 
+        success: false, 
+        error: "Database connection error. Please check your MongoDB connection.",
+        details: process.env.NODE_ENV === "development" ? error.message : undefined
+      }, { status: 503 })
+    }
+    
+    // Handle validation errors
+    if (error?.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors || {}).map((err: any) => err.message).join(', ')
+      return NextResponse.json({ 
+        success: false, 
+        error: `Validation error: ${validationErrors}`,
+        details: process.env.NODE_ENV === "development" ? error.message : undefined
+      }, { status: 400 })
+    }
+    
+    // Handle duplicate key errors
+    if (error?.code === 11000) {
+      return NextResponse.json({ 
+        success: false, 
+        error: "Order number conflict. Please try again.",
+        details: process.env.NODE_ENV === "development" ? error.message : undefined
+      }, { status: 409 })
+    }
+    
+    const errorMessage = error?.message || "Failed to process order"
+    return NextResponse.json({ 
+      success: false, 
+      error: errorMessage,
+      details: process.env.NODE_ENV === "development" ? error.stack : undefined
+    }, { status: 500 })
   }
 }
 

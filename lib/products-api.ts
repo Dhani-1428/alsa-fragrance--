@@ -87,3 +87,9 @@ export async function getNewArrivals(): Promise<Product[]> {
   return products.filter((product) => product.isNew)
 }
 
+// Get limited edition products
+export async function getLimitedEditionProducts(): Promise<Product[]> {
+  const products = await getProducts()
+  return products.filter((product) => product.badge === "Limited Edition")
+}
+

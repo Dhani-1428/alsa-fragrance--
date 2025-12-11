@@ -119,7 +119,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
         // For now, we'll proceed assuming user will send payment
         toast({
           title: "MBWay Payment Instructions",
-          description: "Please send payment to +351 920306889. Your order will be confirmed once payment is received.",
+          description: "Please send payment to +351 920062535. Your order will be confirmed once payment is received.",
         })
       }
 
@@ -149,18 +149,36 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
       console.log("API response status:", response.status)
 
       if (!response.ok) {
-        const errorText = await response.text()
-        console.error("API error:", errorText)
-        throw new Error(`Failed to process order: ${response.statusText}`)
+        let errorMessage = `Failed to process order: ${response.statusText}`
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.error || errorData.message || errorMessage
+          if (errorData.details) {
+            console.error("Error details:", errorData.details)
+          }
+        } catch {
+          const errorText = await response.text()
+          console.error("API error:", errorText)
+          try {
+            const errorData = JSON.parse(errorText)
+            errorMessage = errorData.error || errorData.message || errorMessage
+          } catch {
+            // If it's not JSON, use the text as error message
+            if (errorText) {
+              errorMessage = errorText
+            }
+          }
+        }
+        throw new Error(errorMessage)
       }
       
-      const responseData = await response.json().catch(() => ({}))
+      const responseData = await response.json()
       console.log("API response:", responseData)
 
       if (responseData.isMBWayPending) {
         toast({
           title: "Order Received - Payment Pending 📱",
-          description: `Please send payment of €${grandTotal.toFixed(2)} to +351 920306889 via MBWay. You will receive a confirmation email once payment is verified. Order Number: ${responseData.orderNumber || ""}`,
+          description: `Please send payment of €${grandTotal.toFixed(2)} to +351 920062535 via MBWay. You will receive a confirmation email once payment is verified. Order Number: ${responseData.orderNumber || ""}`,
           duration: 10000,
         })
         // Keep cart for MBWay until payment is confirmed
@@ -218,9 +236,12 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
   const tax = 0
   const grandTotal = subtotal
 
+  // Render as overlay if onClose is provided (modal), otherwise render inline (page)
+  const isModal = onClose !== undefined
+
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center p-4 overflow-y-auto pt-8">
-      <Card className="w-full max-w-2xl my-8 mt-12">
+    <div className={isModal ? "fixed inset-0 z-50 bg-black/50 flex items-start justify-center p-4 overflow-y-auto pt-8" : "container mx-auto px-4 py-12 flex items-center justify-center min-h-[60vh]"}>
+      <Card className={`w-full max-w-2xl ${isModal ? "my-8 mt-12" : ""}`}>
         <CardHeader>
           <CardTitle>{t.checkout.title}</CardTitle>
           <CardDescription>{t.pages.selectPaymentMethod}</CardDescription>

@@ -25,8 +25,10 @@ export async function GET(request: NextRequest) {
         id: product._id.toString(),
         name: product.name,
         category: product.category,
-        price: product.isSale && product.salePrice ? product.salePrice : product.price,
+        price: product.price,
         originalPrice: product.originalPrice || product.price,
+        salePrice: product.salePrice || undefined,
+        salePercent: product.salePercent || undefined,
         rating: product.rating,
         reviews: product.reviews,
         image: product.image,
@@ -46,9 +48,34 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json(transformedProducts)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching products:', error)
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 })
+    
+    // Handle MongoDB connection errors
+    if (error.message && error.message.includes('IP')) {
+      return NextResponse.json(
+        { 
+          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
+          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
+        },
+        { status: 503 }
+      )
+    }
+    
+    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
+    
+    return NextResponse.json(
+      { error: error.message || 'Failed to fetch products' },
+      { status: 500 }
+    )
   }
 }
 
@@ -78,35 +105,94 @@ export async function POST(request: NextRequest) {
       badge,
     } = body
 
+    // Validate required fields
+    if (!name || !name.trim()) {
+      return NextResponse.json({ error: 'Product name is required' }, { status: 400 })
+    }
+    if (!category || !category.trim()) {
+      return NextResponse.json({ error: 'Product category is required' }, { status: 400 })
+    }
+    if (!price || isNaN(parseFloat(price))) {
+      return NextResponse.json({ error: 'Valid product price is required' }, { status: 400 })
+    }
+    if (!image || !image.trim()) {
+      return NextResponse.json({ error: 'Product image is required' }, { status: 400 })
+    }
+    if (!description || !description.trim()) {
+      return NextResponse.json({ error: 'Product description is required' }, { status: 400 })
+    }
+
     const product = await Product.create({
-      name,
-      category,
+      name: name.trim(),
+      category: category.trim(),
       price: parseFloat(price),
       originalPrice: originalPrice ? parseFloat(originalPrice) : undefined,
       salePrice: salePrice ? parseFloat(salePrice) : undefined,
       salePercent: salePercent ? parseFloat(salePercent) : undefined,
       rating: rating ? parseFloat(rating) : 0,
       reviews: reviews || 0,
-      image,
-      images: images || undefined,
-      description,
-      notesTop: notes?.top || undefined,
-      notesMiddle: notes?.middle || undefined,
-      notesBase: notes?.base || undefined,
-      size: size || undefined,
+      image: image.trim(),
+      images: images && Array.isArray(images) ? images : undefined,
+      description: description.trim(),
+      notesTop: notes?.top && Array.isArray(notes.top) ? notes.top : undefined,
+      notesMiddle: notes?.middle && Array.isArray(notes.middle) ? notes.middle : undefined,
+      notesBase: notes?.base && Array.isArray(notes.base) ? notes.base : undefined,
+      size: size && Array.isArray(size) ? size : undefined,
       inStock: inStock !== undefined ? inStock : true,
       isNew: isNew || false,
       isSale: isSale || false,
-      badge: badge || undefined,
+      badge: badge ? badge.trim() : undefined,
     })
 
     return NextResponse.json({
       id: product._id.toString(),
       ...product.toObject(),
     }, { status: 201 })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating product:', error)
-    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 })
+    
+    // Handle MongoDB connection errors
+    if (error.message && error.message.includes('IP')) {
+      return NextResponse.json(
+        { 
+          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
+          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
+        },
+        { status: 503 }
+      )
+    }
+    
+    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
+      return NextResponse.json(
+        { 
+          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          details: error.message
+        },
+        { status: 503 }
+      )
+    }
+    
+    // Handle MongoDB validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors || {}).map((err: any) => err.message).join(', ')
+      return NextResponse.json(
+        { error: `Validation error: ${validationErrors}` },
+        { status: 400 }
+      )
+    }
+    
+    // Handle duplicate key errors
+    if (error.code === 11000) {
+      return NextResponse.json(
+        { error: 'A product with this name already exists' },
+        { status: 409 }
+      )
+    }
+    
+    return NextResponse.json(
+      { error: error.message || 'Failed to create product' },
+      { status: 500 }
+    )
   }
 }
 

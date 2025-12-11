@@ -11,12 +11,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Edit, Trash2, LogOut } from "lucide-react"
+import { Plus, Edit, Trash2, LogOut, Package, CheckCircle, Clock, Filter } from "lucide-react"
 import { getAuthToken, removeAuthToken } from "@/lib/auth"
 import { toast } from "sonner"
 
 interface Product {
-  id: number
+  id: string
   name: string
   category: string
   price: number
@@ -40,11 +40,49 @@ interface Product {
   badge?: string
 }
 
+interface Order {
+  id: string
+  orderNumber: string
+  billingInfo: {
+    fullName: string
+    email: string
+    phone: string
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  cartItems: Array<{
+    product: {
+      id: number
+      name: string
+      price: number
+      image?: string
+    }
+    size: string
+    quantity: number
+  }>
+  subtotal: number
+  shipping: number
+  tax: number
+  grandTotal: number
+  paymentMethod: "Card" | "MBWay"
+  status: "pending" | "confirmed" | "cancelled"
+  createdAt: string
+  confirmedAt?: string
+}
+
 export default function AdminDashboard() {
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<"products" | "orders">("products")
   const [products, setProducts] = useState<Product[]>([])
+  const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const [ordersLoading, setOrdersLoading] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [orderFilter, setOrderFilter] = useState<"all" | "pending" | "confirmed" | "mbway">("all")
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
   const [formData, setFormData] = useState({
     name: "",
@@ -79,19 +117,72 @@ export default function AdminDashboard() {
       return
     }
     fetchProducts()
+    fetchOrders()
   }, [router])
+
+  const fetchOrders = async () => {
+    setOrdersLoading(true)
+    try {
+      const response = await fetch("/api/orders")
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders")
+      }
+      const data = await response.json()
+      setOrders(data)
+    } catch (error: any) {
+      console.error("Error fetching orders:", error)
+      toast.error(error.message || "Failed to fetch orders")
+    } finally {
+      setOrdersLoading(false)
+    }
+  }
+
+  const handleConfirmPayment = async (orderId: string, paymentMethod: string) => {
+    if (!window.confirm(`Are you sure you want to confirm this ${paymentMethod} payment? This will mark the order as confirmed and send a confirmation email to the customer.`)) {
+      return
+    }
+
+    try {
+      const response = await fetch("/api/verify-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || "Failed to confirm payment")
+      }
+
+      toast.success(`${paymentMethod} payment confirmed! Order is now confirmed.`)
+      fetchOrders()
+      if (selectedOrder?.id === orderId) {
+        setIsOrderDialogOpen(false)
+        setSelectedOrder(null)
+      }
+    } catch (error: any) {
+      console.error("Error confirming payment:", error)
+      toast.error(error.message || "Failed to confirm payment")
+    }
+  }
 
   const fetchProducts = async () => {
     try {
       const response = await fetch("/api/products")
       if (!response.ok) {
-        throw new Error("Failed to fetch products")
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        const errorMessage = errorData.error || `Failed to fetch products: ${response.status} ${response.statusText}`
+        const errorDetails = errorData.details ? ` ${errorData.details}` : ''
+        throw new Error(errorMessage + errorDetails)
       }
       const data = await response.json()
       setProducts(data)
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching products:", error)
-      toast.error("Failed to fetch products")
+      toast.error(error.message || "Failed to fetch products", {
+        duration: error.message?.includes('whitelist') ? 10000 : 5000,
+      })
     } finally {
       setLoading(false)
     }
@@ -119,6 +210,17 @@ export default function AdminDashboard() {
     e.preventDefault()
     setUploading(true)
     try {
+      // Validate required fields
+      if (!formData.name || !formData.name.trim()) {
+        throw new Error("Product name is required")
+      }
+      if (!formData.price || isNaN(parseFloat(formData.price))) {
+        throw new Error("Valid product price is required")
+      }
+      if (!formData.description || !formData.description.trim()) {
+        throw new Error("Product description is required")
+      }
+
       let mainImageUrl = formData.image
       let additionalImageUrls: string[] = []
 
@@ -139,27 +241,27 @@ export default function AdminDashboard() {
       }
 
       const productData = {
-        name: formData.name,
+        name: formData.name.trim(),
         category: formData.category,
         price: parseFloat(formData.price),
-        originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
-        salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
-        salePercent: formData.salePercent ? parseFloat(formData.salePercent) : null,
-        rating: formData.rating ? parseFloat(formData.rating) : 0,
-        reviews: formData.reviews ? parseInt(formData.reviews) : 0,
+        originalPrice: formData.originalPrice && formData.originalPrice.trim() ? parseFloat(formData.originalPrice) : null,
+        salePrice: formData.salePrice && formData.salePrice.trim() ? parseFloat(formData.salePrice) : null,
+        salePercent: formData.salePercent && formData.salePercent.trim() ? parseFloat(formData.salePercent) : null,
+        rating: formData.rating && formData.rating.trim() ? parseFloat(formData.rating) : 0,
+        reviews: formData.reviews && formData.reviews.trim() ? parseInt(formData.reviews) : 0,
         image: mainImageUrl,
         images: additionalImageUrls,
-        description: formData.description,
+        description: formData.description.trim(),
         notes: {
-          top: formData.notesTop ? formData.notesTop.split(",").map((n) => n.trim()) : [],
-          middle: formData.notesMiddle ? formData.notesMiddle.split(",").map((n) => n.trim()) : [],
-          base: formData.notesBase ? formData.notesBase.split(",").map((n) => n.trim()) : [],
+          top: formData.notesTop && formData.notesTop.trim() ? formData.notesTop.split(",").map((n) => n.trim()).filter(Boolean) : [],
+          middle: formData.notesMiddle && formData.notesMiddle.trim() ? formData.notesMiddle.split(",").map((n) => n.trim()).filter(Boolean) : [],
+          base: formData.notesBase && formData.notesBase.trim() ? formData.notesBase.split(",").map((n) => n.trim()).filter(Boolean) : [],
         },
-        size: formData.size ? formData.size.split(",").map((s) => s.trim()) : [],
+        size: formData.size && formData.size.trim() ? formData.size.split(",").map((s) => s.trim()).filter(Boolean) : [],
         inStock: formData.inStock,
         isNew: formData.isNew,
         isSale: formData.isSale,
-        badge: formData.badge || null,
+        badge: formData.badge && formData.badge.trim() ? formData.badge.trim() : null,
       }
 
       const url = editingProduct ? `/api/products/${editingProduct.id}` : "/api/products"
@@ -172,7 +274,8 @@ export default function AdminDashboard() {
       })
 
       if (!response.ok) {
-        throw new Error("Failed to save product")
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        throw new Error(errorData.error || `Failed to save product: ${response.status} ${response.statusText}`)
       }
 
       toast.success(editingProduct ? "Product updated!" : "Product created!")
@@ -180,7 +283,11 @@ export default function AdminDashboard() {
       resetForm()
       fetchProducts()
     } catch (error: any) {
-      toast.error(error.message || "Failed to save product")
+      const errorMessage = error.message || "Failed to save product"
+      const errorDetails = error.details ? ` ${error.details}` : ''
+      toast.error(errorMessage + errorDetails, {
+        duration: error.details ? 10000 : 5000, // Show longer if there are details
+      })
     } finally {
       setUploading(false)
     }
@@ -217,7 +324,7 @@ export default function AdminDashboard() {
     setIsDialogOpen(true)
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!window.confirm("Are you sure you want to delete this product? This action cannot be undone.")) {
       return
     }
@@ -320,6 +427,32 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
           <div className="flex gap-2">
+            <div className="flex gap-2 border border-gray-700 rounded-md p-1">
+              <Button
+                variant={activeTab === "products" ? "default" : "ghost"}
+                onClick={() => setActiveTab("products")}
+                className={activeTab === "products" ? "bg-white text-black hover:bg-gray-200" : "text-white hover:bg-gray-800"}
+              >
+                <Package className="mr-2 h-4 w-4" />
+                Products
+              </Button>
+              <Button
+                variant={activeTab === "orders" ? "default" : "ghost"}
+                onClick={() => {
+                  setActiveTab("orders")
+                  fetchOrders()
+                }}
+                className={activeTab === "orders" ? "bg-white text-black hover:bg-gray-200" : "text-white hover:bg-gray-800"}
+              >
+                <Package className="mr-2 h-4 w-4" />
+                Orders
+                {orders.filter(o => o.status === "pending").length > 0 && (
+                  <span className="ml-2 bg-yellow-500 text-black text-xs px-2 py-0.5 rounded-full">
+                    {orders.filter(o => o.status === "pending").length}
+                  </span>
+                )}
+              </Button>
+            </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
                 <Button onClick={resetForm} className="bg-white text-black hover:bg-gray-200">
@@ -589,7 +722,8 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <Card className="bg-gray-900 border-gray-700">
+        {activeTab === "products" ? (
+          <Card className="bg-gray-900 border-gray-700">
           <CardHeader>
             <CardTitle className="text-white">Products ({products.length})</CardTitle>
             <CardDescription className="text-gray-400">Manage your product catalog</CardDescription>
@@ -622,11 +756,11 @@ export default function AdminDashboard() {
                         <TableCell className="text-white">
                           {product.isSale && product.salePrice ? (
                             <span>
-                              <span className="line-through text-gray-500">${product.originalPrice}</span>{" "}
-                              <span className="text-red-400 font-bold">${product.salePrice}</span>
+                              <span className="line-through text-gray-500">€{product.originalPrice}</span>{" "}
+                              <span className="text-red-400 font-bold">€{product.salePrice}</span>
                             </span>
                           ) : (
-                            `$${product.price}`
+                            `€${product.price}`
                           )}
                         </TableCell>
                         <TableCell className="text-white">
@@ -671,6 +805,261 @@ export default function AdminDashboard() {
             )}
           </CardContent>
         </Card>
+        ) : (
+          <div className="space-y-4">
+            <Card className="bg-gray-900 border-gray-700">
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle className="text-white">Orders ({orders.length})</CardTitle>
+                    <CardDescription className="text-gray-400">Manage customer orders and verify payments</CardDescription>
+                  </div>
+                  <Select value={orderFilter} onValueChange={(value: any) => setOrderFilter(value)}>
+                    <SelectTrigger className="w-48 bg-gray-800 border-gray-600 text-white">
+                      <Filter className="mr-2 h-4 w-4" />
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-800 border-gray-600">
+                      <SelectItem value="all" className="text-white">All Orders</SelectItem>
+                      <SelectItem value="pending" className="text-white">Pending</SelectItem>
+                      <SelectItem value="mbway" className="text-white">MBWay Pending</SelectItem>
+                      <SelectItem value="card" className="text-white">Card Pending</SelectItem>
+                      <SelectItem value="confirmed" className="text-white">Confirmed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {ordersLoading ? (
+                  <div className="text-center py-8 text-gray-400">Loading orders...</div>
+                ) : orders.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400">No orders found.</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="border-gray-700 hover:bg-gray-800">
+                          <TableHead className="text-white">Order #</TableHead>
+                          <TableHead className="text-white">Customer</TableHead>
+                          <TableHead className="text-white">Amount</TableHead>
+                          <TableHead className="text-white">Payment</TableHead>
+                          <TableHead className="text-white">Status</TableHead>
+                          <TableHead className="text-white">Date</TableHead>
+                          <TableHead className="text-white">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {orders
+                          .filter(order => {
+                            if (orderFilter === "all") return true
+                            if (orderFilter === "pending") return order.status === "pending"
+                            if (orderFilter === "mbway") return order.paymentMethod === "MBWay" && order.status === "pending"
+                            if (orderFilter === "card") return order.paymentMethod === "Card" && order.status === "pending"
+                            if (orderFilter === "confirmed") return order.status === "confirmed"
+                            return true
+                          })
+                          .map((order) => (
+                            <TableRow key={order.id} className="border-gray-700 hover:bg-gray-800">
+                              <TableCell className="text-white font-mono">{order.orderNumber}</TableCell>
+                              <TableCell className="text-white">
+                                <div>
+                                  <div className="font-medium">{order.billingInfo.fullName}</div>
+                                  <div className="text-sm text-gray-400">{order.billingInfo.email}</div>
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-white">€{order.grandTotal.toFixed(2)}</TableCell>
+                              <TableCell className="text-white">
+                                <span className={`px-2 py-1 rounded text-xs ${
+                                  order.paymentMethod === "MBWay" 
+                                    ? "bg-yellow-500/20 text-yellow-400" 
+                                    : "bg-green-500/20 text-green-400"
+                                }`}>
+                                  {order.paymentMethod}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-white">
+                                <span className={`px-2 py-1 rounded text-xs ${
+                                  order.status === "confirmed" 
+                                    ? "bg-green-500/20 text-green-400" 
+                                    : order.status === "pending"
+                                    ? "bg-yellow-500/20 text-yellow-400"
+                                    : "bg-red-500/20 text-red-400"
+                                }`}>
+                                  {order.status === "confirmed" && <CheckCircle className="inline h-3 w-3 mr-1" />}
+                                  {order.status === "pending" && <Clock className="inline h-3 w-3 mr-1" />}
+                                  {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                                </span>
+                              </TableCell>
+                              <TableCell className="text-gray-300 text-sm">
+                                {new Date(order.createdAt).toLocaleDateString()}
+                              </TableCell>
+                              <TableCell>
+                                <div className="flex gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setSelectedOrder(order)
+                                      setIsOrderDialogOpen(true)
+                                    }}
+                                    className="border-gray-600 text-white hover:bg-gray-700"
+                                  >
+                                    View
+                                  </Button>
+                                  {order.status === "pending" && (
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => handleConfirmPayment(order.id, order.paymentMethod)}
+                                      className="border-green-600 text-green-400 hover:bg-green-900"
+                                    >
+                                      <CheckCircle className="h-4 w-4 mr-1" />
+                                      Confirm
+                                    </Button>
+                                  )}
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Order Details Dialog */}
+        <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
+          <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto bg-gray-900 border-gray-700 text-white">
+            {selectedOrder && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-white">Order Details - {selectedOrder.orderNumber}</DialogTitle>
+                  <DialogDescription className="text-gray-400">
+                    {selectedOrder.status === "pending" 
+                      ? `${selectedOrder.paymentMethod} payment pending verification`
+                      : `Order ${selectedOrder.status}`}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="font-semibold text-white mb-2">Customer Information</h3>
+                      <div className="bg-gray-800 p-4 rounded-lg space-y-1 text-sm">
+                        <p className="text-white"><strong>Name:</strong> {selectedOrder.billingInfo.fullName}</p>
+                        <p className="text-gray-300"><strong>Email:</strong> {selectedOrder.billingInfo.email}</p>
+                        <p className="text-gray-300"><strong>Phone:</strong> {selectedOrder.billingInfo.phone}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white mb-2">Order Information</h3>
+                      <div className="bg-gray-800 p-4 rounded-lg space-y-1 text-sm">
+                        <p className="text-white"><strong>Status:</strong> 
+                          <span className={`ml-2 px-2 py-1 rounded text-xs ${
+                            selectedOrder.status === "confirmed" 
+                              ? "bg-green-500/20 text-green-400" 
+                              : "bg-yellow-500/20 text-yellow-400"
+                          }`}>
+                            {selectedOrder.status}
+                          </span>
+                        </p>
+                        <p className="text-gray-300"><strong>Payment:</strong> {selectedOrder.paymentMethod}</p>
+                        <p className="text-gray-300"><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                        {selectedOrder.confirmedAt && (
+                          <p className="text-gray-300"><strong>Confirmed:</strong> {new Date(selectedOrder.confirmedAt).toLocaleString()}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-white mb-2">Delivery Address</h3>
+                    <div className="bg-gray-800 p-4 rounded-lg text-sm">
+                      <p className="text-white">{selectedOrder.billingInfo.address}</p>
+                      <p className="text-gray-300">{selectedOrder.billingInfo.city}, {selectedOrder.billingInfo.postalCode}</p>
+                      <p className="text-gray-300">{selectedOrder.billingInfo.country}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-white mb-2">Order Items</h3>
+                    <div className="bg-gray-800 rounded-lg overflow-hidden">
+                      <Table>
+                        <TableHeader>
+                          <TableRow className="border-gray-700">
+                            <TableHead className="text-white">Product</TableHead>
+                            <TableHead className="text-white">Size</TableHead>
+                            <TableHead className="text-white">Qty</TableHead>
+                            <TableHead className="text-white">Price</TableHead>
+                            <TableHead className="text-white">Total</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {selectedOrder.cartItems.map((item, idx) => (
+                            <TableRow key={idx} className="border-gray-700">
+                              <TableCell className="text-white">{item.product.name}</TableCell>
+                              <TableCell className="text-gray-300">{item.size}</TableCell>
+                              <TableCell className="text-gray-300">{item.quantity}</TableCell>
+                              <TableCell className="text-gray-300">€{item.product.price.toFixed(2)}</TableCell>
+                              <TableCell className="text-white">€{(item.product.price * item.quantity).toFixed(2)}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </div>
+
+                  <div className="bg-gray-800 p-4 rounded-lg">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Subtotal:</span>
+                      <span className="text-white">€{selectedOrder.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Shipping:</span>
+                      <span className="text-white">€{selectedOrder.shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Tax:</span>
+                      <span className="text-white">€{selectedOrder.tax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-700">
+                      <span className="text-white">Total:</span>
+                      <span className="text-white">€{selectedOrder.grandTotal.toFixed(2)}</span>
+                    </div>
+                  </div>
+
+                  {selectedOrder.status === "pending" && (
+                    <div className="bg-yellow-500/20 border border-yellow-500/50 p-4 rounded-lg">
+                      <p className="text-yellow-400 mb-3">
+                        <strong>Action Required:</strong> This order is waiting for {selectedOrder.paymentMethod} payment verification. 
+                        Once you receive the payment, click the button below to confirm.
+                      </p>
+                      <Button
+                        onClick={() => handleConfirmPayment(selectedOrder.id, selectedOrder.paymentMethod)}
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        Confirm {selectedOrder.paymentMethod} Payment
+                      </Button>
+                    </div>
+                  )}
+
+                  <div className="flex justify-end gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setIsOrderDialogOpen(false)} 
+                      className="border-gray-600 text-white hover:bg-gray-700"
+                    >
+                      Close
+                    </Button>
+                  </div>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
