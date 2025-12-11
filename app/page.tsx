@@ -10,6 +10,11 @@ import { Footer } from "@/components/footer"
 import { NewArrivals } from "@/components/new-arrivals"
 import { LimitedEdition } from "@/components/limited-edition"
 
+export const metadata = {
+  title: "AlsaFragrance - Luxury Perfumes & Attars",
+  description: "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+}
+
 export default function HomePage() {
   return (
     <main className="min-h-screen">
