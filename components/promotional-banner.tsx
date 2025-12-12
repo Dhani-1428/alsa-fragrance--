@@ -3,68 +3,72 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Sparkles, Crown, Star, Tag, Gift, Zap } from "lucide-react"
+import { useLanguage } from "@/contexts/language-provider"
+import { useMemo } from "react"
 
 interface PromotionalBannerProps {
   type?: "exclusive" | "signature" | "premium" | "sale" | "new" | "limited"
 }
 
 export function PromotionalBanner({ type = "exclusive" }: PromotionalBannerProps) {
-  const bannerConfig = {
+  const { t } = useLanguage()
+  
+  const bannerConfig = useMemo(() => ({
     exclusive: {
       icon: Crown,
-      title: "Exclusive Collection",
-      subtitle: "Alsa Fragrance Premium Series",
-      description: "Discover our most coveted fragrances crafted with rare ingredients",
-      cta: "Explore Exclusive",
+      title: t.components.promotionalBanner.exclusiveTitle,
+      subtitle: t.components.promotionalBanner.exclusiveSubtitle,
+      description: t.components.promotionalBanner.exclusiveDesc,
+      cta: t.components.promotionalBanner.exclusiveCta,
       gradient: "from-primary/90 to-primary",
       backgroundImage: null,
     },
     signature: {
       icon: Star,
-      title: "Signature Scents",
-      subtitle: "Handcrafted Alsa Originals",
-      description: "Experience our master perfumer's finest creations",
-      cta: "Shop Signature",
+      title: t.components.promotionalBanner.signatureTitle,
+      subtitle: t.components.promotionalBanner.signatureSubtitle,
+      description: t.components.promotionalBanner.signatureDesc,
+      cta: t.components.promotionalBanner.signatureCta,
       gradient: "from-primary/80 to-primary/90",
       backgroundImage: null,
     },
     premium: {
       icon: Sparkles,
-      title: "Premium Attars",
-      subtitle: "Traditional Luxury Redefined",
-      description: "Pure oil-based fragrances from the finest natural essences",
-      cta: "Discover Premium",
+      title: t.components.promotionalBanner.premiumTitle,
+      subtitle: t.components.promotionalBanner.premiumSubtitle,
+      description: t.components.promotionalBanner.premiumDesc,
+      cta: t.components.promotionalBanner.premiumCta,
       gradient: "from-primary/70 to-primary/80",
       backgroundImage: null,
     },
     sale: {
       icon: Tag,
-      title: "Special Sale",
-      subtitle: "Alsa Fragrance Limited Time Offer",
-      description: "Get up to 40% off on selected premium fragrances",
-      cta: "Shop Sale",
+      title: t.components.promotionalBanner.saleTitle,
+      subtitle: t.components.promotionalBanner.saleSubtitle,
+      description: t.components.promotionalBanner.saleDesc,
+      cta: t.components.promotionalBanner.saleCta,
       gradient: "from-red-600/90 to-red-700",
       backgroundImage: null,
     },
     new: {
       icon: Gift,
-      title: "New Arrivals",
-      subtitle: "Fresh Alsa Fragrance Collection",
-      description: "Explore our latest captivating scents just launched",
-      cta: "Discover New",
+      title: t.components.promotionalBanner.newTitle,
+      subtitle: t.components.promotionalBanner.newSubtitle,
+      description: t.components.promotionalBanner.newDesc,
+      cta: t.components.promotionalBanner.newCta,
       gradient: "from-green-600/90 to-green-700",
       backgroundImage: "/alsa-attar-bottles-carry-bags-collection.jpg",
     },
     limited: {
       icon: Zap,
-      title: "Limited Edition",
-      subtitle: "Exclusive Alsa Fragrance Series",
-      description: "Rare fragrances available for a limited time only",
-      cta: "Get Limited",
+      title: t.components.promotionalBanner.limitedTitle,
+      subtitle: t.components.promotionalBanner.limitedSubtitle,
+      description: t.components.promotionalBanner.limitedDesc,
+      cta: t.components.promotionalBanner.limitedCta,
       gradient: "from-purple-600/90 to-purple-700",
       backgroundImage: "/alsa-limited-edition-bottles-collection.jpg",
     },
-  }
+  }), [t])
 
   const config = bannerConfig[type]
   const Icon = config.icon

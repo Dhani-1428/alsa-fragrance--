@@ -1,46 +1,52 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-
-const heroSlides = [
-  {
-    id: 1,
-    title: "Alsa Signature Collection",
-    subtitle: "Discover Our Premium Fragrances",
-    description: "Experience luxury with our carefully curated selection of premium perfumes and attars",
-    image: "/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg",
-    cta: "Shop Collection",
-  },
-  {
-    id: 2,
-    title: "Alsa Limited Edition",
-    subtitle: "Exclusive Scents for Connoisseurs",
-    description: "Rare and exquisite fragrances crafted for those who appreciate the finest",
-    image: "/alsa-fragrance-limited-edition-perfume-bottles-pre.jpg",
-    cta: "Explore Limited Edition",
-  },
-  {
-    id: 3,
-    title: "Alsa Attar Collection",
-    subtitle: "Traditional Luxury Redefined",
-    description: "Pure, alcohol-free fragrances that capture the essence of timeless elegance",
-    image: "/alsa-fragrance-traditional-attar-bottles-ornate-go.jpg",
-    cta: "Discover Attars",
-  },
-]
+import { useLanguage } from "@/contexts/language-provider"
+import Link from "next/link"
 
 export function HeroSection() {
+  const { t } = useLanguage()
   const [currentSlide, setCurrentSlide] = useState(0)
+
+  const heroSlides = useMemo(() => [
+    {
+      id: 1,
+      title: t.home.signatureCollection,
+      subtitle: t.home.signatureSubtitle,
+      description: t.home.signatureDescription,
+      image: "/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg",
+      cta: t.home.shopCollection,
+      href: "/shop",
+    },
+    {
+      id: 2,
+      title: t.home.limitedEditionTitle,
+      subtitle: t.home.limitedEditionSubtitle,
+      description: t.home.limitedEditionDescription,
+      image: "/alsa-fragrance-limited-edition-perfume-bottles-pre.jpg",
+      cta: t.home.exploreLimitedEdition,
+      href: "/limited-edition",
+    },
+    {
+      id: 3,
+      title: t.home.attarCollection,
+      subtitle: t.home.attarSubtitle,
+      description: t.home.attarDescription,
+      image: "/alsa-fragrance-traditional-attar-bottles-ornate-go.jpg",
+      cta: t.home.discoverAttars,
+      href: "/attars",
+    },
+  ], [t])
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [heroSlides.length])
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
@@ -110,8 +116,11 @@ export function HeroSection() {
                       <Button
                         size="lg"
                         className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 text-lg"
+                        asChild
                       >
-                        {slide.cta}
+                        <Link href={slide.href}>
+                          {slide.cta}
+                        </Link>
                       </Button>
                     </motion.div>
                   </div>

@@ -5,8 +5,10 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { getNewArrivals } from "@/lib/products-main"
 import { ProductCard } from "@/components/product-card"
+import { useLanguage } from "@/contexts/language-provider"
 
 export function NewArrivals() {
+  const { t } = useLanguage()
   const newProducts = getNewArrivals()
 
   return (
@@ -34,7 +36,7 @@ export function NewArrivals() {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  New Arrivals
+                  {t.components.newArrivals.title}
                 </motion.h2>
                 <motion.p
                   className="text-white/90 text-lg max-w-2xl mx-auto"
@@ -43,7 +45,7 @@ export function NewArrivals() {
                   transition={{ delay: 0.2, duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  Discover our latest ALSA FRAGRANCE creations with premium packaging
+                  {t.components.newArrivals.description}
                 </motion.p>
               </div>
             </div>
@@ -74,7 +76,7 @@ export function NewArrivals() {
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button size="lg" className="px-8" asChild>
-              <Link href="/new-arrivals">View All New Arrivals</Link>
+              <Link href="/new-arrivals">{t.components.newArrivals.viewAll}</Link>
             </Button>
           </motion.div>
         </motion.div>

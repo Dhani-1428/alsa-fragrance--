@@ -7,31 +7,34 @@ import { Separator } from "@/components/ui/separator"
 import { Facebook, Instagram, Twitter, Youtube, Mail, MapPin, Phone } from "lucide-react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { useLanguage } from "@/contexts/language-provider"
 
 export function Footer() {
+  const { t } = useLanguage()
+  
   const footerLinks = {
     shop: [
-      { name: "All Products", href: "/shop" },
-      { name: "Women's Fragrances", href: "/women" },
-      { name: "Men's Fragrances", href: "/men" },
-      { name: "Attars", href: "/attars" },
-      { name: "Testers", href: "/testers" },
-      { name: "New Arrivals", href: "/new-arrivals" },
-      { name: "Limited Edition", href: "/limited-edition" },
+      { name: t.footer.allProducts, href: "/shop" },
+      { name: t.footer.womensFragrances, href: "/women" },
+      { name: t.footer.mensFragrances, href: "/men" },
+      { name: t.footer.attars, href: "/attars" },
+      { name: t.footer.testers, href: "/testers" },
+      { name: t.footer.newArrivals, href: "/new-arrivals" },
+      { name: t.footer.limitedEdition, href: "/limited-edition" },
     ],
     company: [
-      { name: "About Us", href: "/about" },
-      { name: "Contact", href: "/contact" },
-      { name: "Careers", href: "/careers" },
-      { name: "Press", href: "/press" },
-      { name: "Blog", href: "/blog" },
+      { name: t.footer.aboutUs, href: "/about" },
+      { name: t.footer.contact, href: "/contact" },
+      { name: t.footer.careers, href: "/careers" },
+      { name: t.footer.press, href: "/press" },
+      { name: t.footer.blog, href: "/blog" },
     ],
     support: [
-      { name: "FAQ", href: "/faq" },
-      { name: "Shipping Info", href: "/shipping" },
-      { name: "Returns", href: "/returns" },
-      { name: "Size Guide", href: "/size-guide" },
-      { name: "Track Order", href: "/track" },
+      { name: t.footer.faq, href: "/faq" },
+      { name: t.footer.shippingInfo, href: "/shipping" },
+      { name: t.footer.returns, href: "/returns" },
+      { name: t.footer.sizeGuide, href: "/size-guide" },
+      { name: t.footer.trackOrder, href: "/track" },
     ],
   }
 
@@ -61,13 +64,13 @@ export function Footer() {
         >
           <div className="max-w-md mx-auto text-center">
             <h3 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)] text-primary">
-              Stay in the Scent
+              {t.footer.stayInTheScent}
             </h3>
             <p className="text-muted-foreground mb-6 text-lg">
-              Subscribe to get special offers, new arrivals, and fragrance tips.
+              {t.footer.subscribeDescription}
             </p>
             <motion.div className="flex gap-2" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-              <Input placeholder="Enter your email" type="email" className="border-primary/20 focus:border-primary" />
+              <Input placeholder={t.footer.enterEmail} type="email" className="border-primary/20 focus:border-primary" />
               <Button className="bg-primary hover:bg-primary/90">
                 <Mail className="h-4 w-4" />
               </Button>
@@ -91,7 +94,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Crafting exceptional fragrances that define elegance and luxury since 2018.
+              {t.footer.companyDescription}
             </p>
 
             <div className="flex space-x-4">
@@ -122,7 +125,7 @@ export function Footer() {
             transition={{ delay: 0.4, duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h4 className="font-semibold mb-6 text-primary font-[family-name:var(--font-playfair)] text-xl">Shop</h4>
+            <h4 className="font-semibold mb-6 text-primary font-[family-name:var(--font-playfair)] text-xl">{t.footer.shop}</h4>
             <ul className="space-y-3">
               {footerLinks.shop.map((link, index) => (
                 <motion.li
@@ -148,7 +151,7 @@ export function Footer() {
             transition={{ delay: 0.5, duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h4 className="font-semibold mb-6 text-primary font-[family-name:var(--font-playfair)] text-xl">Company</h4>
+            <h4 className="font-semibold mb-6 text-primary font-[family-name:var(--font-playfair)] text-xl">{t.footer.company}</h4>
             <ul className="space-y-3">
               {footerLinks.company.map((link, index) => (
                 <motion.li
@@ -174,7 +177,7 @@ export function Footer() {
             viewport={{ once: true }}
           >
             <h4 className="font-semibold mb-6 text-primary font-[family-name:var(--font-playfair)] text-xl">
-              Contact Us
+              {t.footer.contactUs}
             </h4>
             <div className="space-y-4">
               <motion.a
@@ -218,9 +221,9 @@ export function Footer() {
           className="space-y-6"
         >
           <div className="flex flex-col md:flex-row justify-between items-center text-muted-foreground gap-4">
-            <p>&copy; 2025 Alsa Fragrance. All rights reserved.</p>
+            <p>{t.footer.copyright}</p>
             <div className="flex items-center gap-4">
-              <span className="text-sm">We accept:</span>
+              <span className="text-sm">{t.footer.weAccept}</span>
               <div className="flex items-center gap-3">
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
@@ -264,7 +267,7 @@ export function Footer() {
             className="text-center pt-4 border-t border-border/50"
           >
             <p className="text-sm text-muted-foreground">
-              Designed by{" "}
+              {t.footer.designedBy}{" "}
               <a 
                 href="https://bonusitsolutions.com/" 
                 target="_blank" 

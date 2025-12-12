@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { FadeInUp, StaggerContainer, StaggerItem } from "./page-animations"
+import { useLanguage } from "@/contexts/language-provider"
 
 interface CategoryGalleryProps {
   title: string
@@ -15,13 +16,14 @@ interface CategoryGalleryProps {
 }
 
 export function CategoryGallery({ title, images }: CategoryGalleryProps) {
+  const { t } = useLanguage()
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-background to-muted/20">
       <div className="container mx-auto">
         <FadeInUp className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-[family-name:var(--font-playfair)] font-bold mb-4">{title}</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Explore our curated collection of premium fragrances, each bottle crafted with precision and elegance
+            {t.components.categoryGallery.description}
           </p>
         </FadeInUp>
 

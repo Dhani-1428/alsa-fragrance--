@@ -1,11 +1,15 @@
+"use client"
+
 import { ProductCard } from "@/components/product-card"
 import { products, type Product } from "@/lib/products-main"
+import { useLanguage } from "@/contexts/language-provider"
 
 interface RelatedProductsProps {
   currentProduct: Product
 }
 
 export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
+  const { t } = useLanguage()
   // Get related products from the same category, excluding current product
   const relatedProducts = products
     .filter((product) => product.category === currentProduct.category && product.id !== currentProduct.id)
@@ -19,7 +23,7 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
     <section className="py-12">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl md:text-3xl font-bold mb-8 font-[family-name:var(--font-playfair)]">
-          You Might Also Like
+          {t.pages.youMightAlsoLike}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

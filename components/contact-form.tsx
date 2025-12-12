@@ -9,8 +9,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Send, CheckCircle, AlertCircle } from "lucide-react"
+import { useLanguage } from "@/contexts/language-provider"
 
 export function ContactForm() {
+  const { t } = useLanguage()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -158,26 +160,26 @@ Submitted on: ${new Date().toLocaleString()}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2">
-                Full Name *
+                {t.contact.fullName}
               </label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
-                placeholder="Your full name"
+                placeholder={t.contact.yourFullName}
                 required
               />
             </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium mb-2">
-                Email Address *
+                {t.contact.emailAddress}
               </label>
               <Input
                 id="email"
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
-                placeholder="your.email@example.com"
+                placeholder={t.contact.yourEmail}
                 required
               />
             </div>
@@ -185,32 +187,32 @@ Submitted on: ${new Date().toLocaleString()}
 
           <div>
             <label htmlFor="subject" className="block text-sm font-medium mb-2">
-              Subject *
+              {t.contact.subject}
             </label>
             <Select value={formData.subject} onValueChange={(value) => handleChange("subject", value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select a subject" />
+                <SelectValue placeholder={t.contact.selectSubject} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="general">General Inquiry</SelectItem>
-                <SelectItem value="product">Product Question</SelectItem>
-                <SelectItem value="order">Order Support</SelectItem>
-                <SelectItem value="return">Returns & Exchanges</SelectItem>
-                <SelectItem value="consultation">Fragrance Consultation</SelectItem>
-                <SelectItem value="wholesale">Wholesale Inquiry</SelectItem>
+                <SelectItem value="general">{t.contact.generalInquiry}</SelectItem>
+                <SelectItem value="product">{t.contact.productQuestion}</SelectItem>
+                <SelectItem value="order">{t.contact.orderSupport}</SelectItem>
+                <SelectItem value="return">{t.contact.returnsExchanges}</SelectItem>
+                <SelectItem value="consultation">{t.contact.fragranceConsultation}</SelectItem>
+                <SelectItem value="wholesale">{t.contact.wholesaleInquiry}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
             <label htmlFor="message" className="block text-sm font-medium mb-2">
-              Message *
+              {t.contact.message}
             </label>
             <Textarea
               id="message"
               value={formData.message}
               onChange={(e) => handleChange("message", e.target.value)}
-              placeholder="Tell us how we can help you..."
+              placeholder={t.contact.tellUsHow}
               rows={6}
               required
             />
@@ -225,22 +227,22 @@ Submitted on: ${new Date().toLocaleString()}
             {isSubmitting ? (
               <>
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Sending...
+                {t.contact.sending}
               </>
             ) : submitStatus === 'success' ? (
               <>
                 <CheckCircle className="h-4 w-4 mr-2" />
-                Message Sent!
+                {t.contact.messageSent}
               </>
             ) : submitStatus === 'error' ? (
               <>
                 <AlertCircle className="h-4 w-4 mr-2" />
-                Try Again
+                {t.contact.tryAgain}
               </>
             ) : (
               <>
                 <Send className="h-4 w-4 mr-2" />
-                Send Message
+                {t.contact.sendMessage}
               </>
             )}
           </Button>
@@ -250,7 +252,7 @@ Submitted on: ${new Date().toLocaleString()}
               <div className="flex items-center">
                 <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
                 <p className="text-green-800 text-sm">
-                  Thank you! Your message has been sent to fragrancealsa@gmail.com. You should receive a response within 24 hours.
+                  {t.contact.thankYouMessage}
                 </p>
               </div>
             </div>
@@ -261,7 +263,7 @@ Submitted on: ${new Date().toLocaleString()}
               <div className="flex items-center">
                 <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
                 <p className="text-red-800 text-sm">
-                  There was an issue opening your email client. Please try again or send an email manually to fragrancealsa@gmail.com
+                  {t.contact.errorMessage}
                 </p>
               </div>
             </div>

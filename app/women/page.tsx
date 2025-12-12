@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input"
 import { Search, Grid, List } from "lucide-react"
 import { getProductsByCategory, type Product } from "@/lib/products-api"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function WomenPage() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -99,7 +101,7 @@ export default function WomenPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                For Her
+                {t.categoryPages.forHer.title}
               </motion.h1>
               <motion.p
                 className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance"
@@ -107,8 +109,7 @@ export default function WomenPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                Discover our exquisite collection of feminine fragrances that capture elegance, sophistication, and
-                timeless beauty
+                {t.categoryPages.forHer.description}
               </motion.p>
               <motion.p
                 className="text-sm text-primary font-medium"
@@ -116,7 +117,7 @@ export default function WomenPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
-                {womenProducts.length} Products Available
+                {womenProducts.length} {t.components.categoryHero.productsAvailable}
               </motion.p>
             </div>
           </div>
@@ -128,7 +129,7 @@ export default function WomenPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search women's fragrances..."
+                placeholder={t.categoryPages.forHer.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -138,14 +139,14 @@ export default function WomenPage() {
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t.categoryPages.common.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">{t.categoryPages.common.nameAZ}</SelectItem>
+                  <SelectItem value="price-low">{t.categoryPages.common.priceLowHigh}</SelectItem>
+                  <SelectItem value="price-high">{t.categoryPages.common.priceHighLow}</SelectItem>
+                  <SelectItem value="rating">{t.categoryPages.common.highestRated}</SelectItem>
+                  <SelectItem value="newest">{t.categoryPages.common.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -173,19 +174,19 @@ export default function WomenPage() {
           {/* Products Grid */}
           <SlideInRight delay={0.2} className="mb-6">
             <p className="text-muted-foreground">
-              {loading ? "Loading..." : `Showing ${filteredAndSortedProducts.length} of ${womenProducts.length} products`}
+              {loading ? t.common.loading : `${t.categoryPages.common.showing} ${filteredAndSortedProducts.length} ${t.categoryPages.common.of} ${womenProducts.length} ${t.categoryPages.common.products}`}
             </p>
           </SlideInRight>
 
           {loading ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg">Loading products...</p>
+              <p className="text-muted-foreground text-lg">{t.categoryPages.common.loadingProducts}</p>
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">No products found</p>
+              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">
-                Clear Search
+                {t.categoryPages.common.clearSearch}
               </Button>
             </FadeInUp>
           ) : (

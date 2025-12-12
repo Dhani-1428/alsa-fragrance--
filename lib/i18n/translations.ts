@@ -75,6 +75,33 @@ export interface Translations {
     customerService: string
     newsletter: string
     subscribe: string
+    stayInTheScent: string
+    subscribeDescription: string
+    enterEmail: string
+    shop: string
+    company: string
+    contactUs: string
+    allProducts: string
+    womensFragrances: string
+    mensFragrances: string
+    attars: string
+    testers: string
+    newArrivals: string
+    limitedEdition: string
+    aboutUs: string
+    contact: string
+    careers: string
+    press: string
+    blog: string
+    faq: string
+    shippingInfo: string
+    returns: string
+    sizeGuide: string
+    trackOrder: string
+    companyDescription: string
+    copyright: string
+    weAccept: string
+    designedBy: string
   }
   // Homepage
   home: {
@@ -83,6 +110,18 @@ export interface Translations {
     newArrivals: string
     featuredProducts: string
     limitedEdition: string
+    signatureCollection: string
+    signatureSubtitle: string
+    signatureDescription: string
+    shopCollection: string
+    limitedEditionTitle: string
+    limitedEditionSubtitle: string
+    limitedEditionDescription: string
+    exploreLimitedEdition: string
+    attarCollection: string
+    attarSubtitle: string
+    attarDescription: string
+    discoverAttars: string
   }
   // Shop
   shop: {
@@ -104,6 +143,299 @@ export interface Translations {
     mbwayInstructions: string
     mbwayNumber: string
     mbwayDescription: string
+    cardNumber: string
+    cardExpiry: string
+    cardCvv: string
+    secure: string
+    encrypted: string
+    cardAcceptance: string
+    mbwayPaymentNote: string
+    loadingProduct: string
+    save: string
+    new: string
+    freeShipping: string
+    authentic: string
+    dayReturn: string
+    fragranceNotes: string
+    topNotes: string
+    middleNotes: string
+    baseNotes: string
+    productDetails: string
+    category: string
+    availableSizes: string
+    stockStatus: string
+    sku: string
+    careInstructions: string
+    careInstruction1: string
+    careInstruction2: string
+    careInstruction3: string
+    careInstruction4: string
+    careInstruction5: string
+      viewAllProducts: string
+      featuredProductsDescription: string
+      reviews: string
+      customerReviews: string
+      basedOnReviews: string
+      verifiedPurchase: string
+      helpful: string
+      loadMoreReviews: string
+      youMightAlsoLike: string
+    }
+  // About
+  about: {
+    ourStory: string
+    ourStoryDescription: string
+    welcomeToAlsa: string
+    aboutParagraph1: string
+    aboutParagraph2: string
+    aboutParagraph3: string
+    ourMission: string
+    ourMissionDescription: string
+    ourVision: string
+    ourVisionDescription: string
+    ourValues: string
+    ourValuesDescription: string
+    passionForFragrance: string
+    passionForFragranceDescription: string
+    premiumQuality: string
+    premiumQualityDescription: string
+    naturalIngredients: string
+    naturalIngredientsDescription: string
+    customerFirst: string
+    customerFirstDescription: string
+    ourJourney: string
+    ourJourneyDescription: string
+    happyCustomers: string
+    premiumFragrances: string
+    yearsOfExcellence: string
+    customerSatisfaction: string
+    milestone2018: string
+    milestone2019: string
+    milestone2020: string
+    milestone2021: string
+    milestone2022: string
+    milestone2023: string
+    milestone2024: string
+  }
+  // Contact
+  contact: {
+    title: string
+    subtitle: string
+    sendUsMessage: string
+    getInTouch: string
+    visitOurStore: string
+    callUs: string
+    emailUs: string
+    businessHours: string
+    businessHoursMonFri: string
+    businessHoursSat: string
+    businessHoursSun: string
+    faq: string
+    faqDescription: string
+    shippingTime: string
+    shippingTimeAnswer: string
+    returnPolicy: string
+    returnPolicyAnswer: string
+    authenticProducts: string
+    authenticProductsAnswer: string
+    fragranceConsultations: string
+    fragranceConsultationsAnswer: string
+    fullName: string
+    emailAddress: string
+    subject: string
+    message: string
+    selectSubject: string
+    generalInquiry: string
+    productQuestion: string
+    orderSupport: string
+    returnsExchanges: string
+    fragranceConsultation: string
+    wholesaleInquiry: string
+    yourFullName: string
+    yourEmail: string
+    tellUsHow: string
+    sending: string
+    messageSent: string
+    sendMessage: string
+    tryAgain: string
+    thankYouMessage: string
+    errorMessage: string
+  }
+  // Components
+  components: {
+    categoryShowcase: {
+      title: string
+      description: string
+      womenName: string
+      womenDescription: string
+      menName: string
+      menDescription: string
+      attarsName: string
+      attarsDescription: string
+      testersName: string
+      testersDescription: string
+    }
+    newArrivals: {
+      title: string
+      description: string
+      viewAll: string
+    }
+    limitedEdition: {
+      title: string
+      description: string
+      exclusiveBottles: string
+      exclusiveBottlesDesc: string
+      premiumGifting: string
+      premiumGiftingDesc: string
+      rareScents: string
+      rareScentsDesc: string
+      viewAll: string
+    }
+    testimonials: {
+      title: string
+      description: string
+      purchased: string
+      readMore: string
+    }
+    craftingProcess: {
+      title: string
+      description: string
+      step1Title: string
+      step1Desc: string
+      step2Title: string
+      step2Desc: string
+      step3Title: string
+      step3Desc: string
+      step4Title: string
+      step4Desc: string
+      step5Title: string
+      step5Desc: string
+      step6Title: string
+      step6Desc: string
+    }
+    fragranceNotes: {
+      title: string
+      description: string
+      topNotes: string
+      topNotesDesc: string
+      heartNotes: string
+      heartNotesDesc: string
+      baseNotes: string
+      baseNotesDesc: string
+      pyramidTitle: string
+      pyramidDescription: string
+    }
+    perfumeCollection: {
+      title: string
+      description: string
+      exploreCollection: string
+    }
+    categoryHero: {
+      productsAvailable: string
+      shopNow: string
+    }
+    categoryGallery: {
+      description: string
+    }
+    promotionalBanner: {
+      exclusiveTitle: string
+      exclusiveSubtitle: string
+      exclusiveDesc: string
+      exclusiveCta: string
+      signatureTitle: string
+      signatureSubtitle: string
+      signatureDesc: string
+      signatureCta: string
+      premiumTitle: string
+      premiumSubtitle: string
+      premiumDesc: string
+      premiumCta: string
+      saleTitle: string
+      saleSubtitle: string
+      saleDesc: string
+      saleCta: string
+      newTitle: string
+      newSubtitle: string
+      newDesc: string
+      newCta: string
+      limitedTitle: string
+      limitedSubtitle: string
+      limitedDesc: string
+      limitedCta: string
+    }
+  }
+  // Category Pages
+  categoryPages: {
+    forHer: {
+      title: string
+      description: string
+      searchPlaceholder: string
+    }
+    forHim: {
+      title: string
+      description: string
+      searchPlaceholder: string
+    }
+    attars: {
+      title: string
+      description: string
+      aboutTitle: string
+      aboutDescription: string
+      searchPlaceholder: string
+    }
+    testers: {
+      title: string
+      description: string
+      infoTitle: string
+      infoDescription: string
+      searchPlaceholder: string
+      riskFreeTitle: string
+      riskFreeDesc: string
+      travelTitle: string
+      travelDesc: string
+      discoverTitle: string
+      discoverDesc: string
+    }
+    newArrivals: {
+      title: string
+      description: string
+      productsAvailable: string
+      searchPlaceholder: string
+      showingProducts: string
+      latestTitle: string
+      latestDesc: string
+      premiumTitle: string
+      premiumDesc: string
+      exclusiveTitle: string
+      exclusiveDesc: string
+    }
+    limitedEdition: {
+      title: string
+      description: string
+      productsAvailable: string
+      searchPlaceholder: string
+      showingProducts: string
+      exclusiveBottlesTitle: string
+      exclusiveBottlesDesc: string
+      premiumGiftingTitle: string
+      premiumGiftingDesc: string
+      rareScentsTitle: string
+      rareScentsDesc: string
+    }
+    common: {
+      sortBy: string
+      nameAZ: string
+      priceLowHigh: string
+      priceHighLow: string
+      highestRated: string
+      newestFirst: string
+      showing: string
+      of: string
+      products: string
+      loadingProducts: string
+      noProductsFound: string
+      clearSearch: string
+    }
   }
 }
 
@@ -177,6 +509,33 @@ export const translations: Record<Language, Translations> = {
       customerService: "Customer Service",
       newsletter: "Newsletter",
       subscribe: "Subscribe",
+      stayInTheScent: "Stay in the Scent",
+      subscribeDescription: "Subscribe to get special offers, new arrivals, and fragrance tips.",
+      enterEmail: "Enter your email",
+      shop: "Shop",
+      company: "Company",
+      contactUs: "Contact Us",
+      allProducts: "All Products",
+      womensFragrances: "Women's Fragrances",
+      mensFragrances: "Men's Fragrances",
+      attars: "Attars",
+      testers: "Testers",
+      newArrivals: "New Arrivals",
+      limitedEdition: "Limited Edition",
+      aboutUs: "About Us",
+      contact: "Contact",
+      careers: "Careers",
+      press: "Press",
+      blog: "Blog",
+      faq: "FAQ",
+      shippingInfo: "Shipping Info",
+      returns: "Returns",
+      sizeGuide: "Size Guide",
+      trackOrder: "Track Order",
+      companyDescription: "Crafting exceptional fragrances that define elegance and luxury since 2018.",
+      copyright: "© 2025 Alsa Fragrance. All rights reserved.",
+      weAccept: "We accept:",
+      designedBy: "Designed by",
     },
     home: {
       discoverCollection: "Discover Our Collection",
@@ -184,6 +543,18 @@ export const translations: Record<Language, Translations> = {
       newArrivals: "New Arrivals",
       featuredProducts: "Featured Products",
       limitedEdition: "Limited Edition",
+      signatureCollection: "Alsa Signature Collection",
+      signatureSubtitle: "Discover Our Premium Fragrances",
+      signatureDescription: "Experience luxury with our carefully curated selection of premium perfumes and attars",
+      shopCollection: "Shop Collection",
+      limitedEditionTitle: "Alsa Limited Edition",
+      limitedEditionSubtitle: "Exclusive Scents for Connoisseurs",
+      limitedEditionDescription: "Rare and exquisite fragrances crafted for those who appreciate the finest",
+      exploreLimitedEdition: "Explore Limited Edition",
+      attarCollection: "Alsa Attar Collection",
+      attarSubtitle: "Traditional Luxury Redefined",
+      attarDescription: "Pure, alcohol-free fragrances that capture the essence of timeless elegance",
+      discoverAttars: "Discover Attars",
     },
     shop: {
       title: "Shop",
@@ -203,6 +574,295 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "MBWay Payment Instructions",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "Please send payment to the following MBWay number:",
+      cardNumber: "Card Number",
+      cardExpiry: "MM/YY",
+      cardCvv: "CVV",
+      secure: "Secure",
+      encrypted: "Encrypted",
+      cardAcceptance: "We accept all major debit and credit cards worldwide (Visa, Mastercard, American Express, etc.). Your card details are secure and encrypted.",
+      mbwayPaymentNote: "Once payment is sent, your order will be processed. Payments accepted from all countries worldwide.",
+      loadingProduct: "Loading product...",
+      save: "Save",
+      new: "New",
+      freeShipping: "Free Shipping",
+      authentic: "Authentic",
+      dayReturn: "30-Day Return",
+      fragranceNotes: "Fragrance Notes",
+      topNotes: "Top Notes",
+      middleNotes: "Middle Notes",
+      baseNotes: "Base Notes",
+      productDetails: "Product Details",
+      category: "Category",
+      availableSizes: "Available Sizes",
+      stockStatus: "Stock Status",
+      sku: "SKU",
+      careInstructions: "Care Instructions",
+      careInstruction1: "Store in a cool, dry place away from direct sunlight",
+      careInstruction2: "Keep bottle tightly closed when not in use",
+      careInstruction3: "Apply to pulse points for best longevity",
+      careInstruction4: "Avoid contact with jewelry and light fabrics",
+      careInstruction5: "For external use only",
+      viewAllProducts: "View All Products",
+      featuredProductsDescription: "Discover our most popular fragrances, loved by customers worldwide",
+      reviews: "reviews",
+      customerReviews: "Customer Reviews",
+      basedOnReviews: "Based on {count} reviews",
+      verifiedPurchase: "Verified Purchase",
+      helpful: "Helpful",
+      loadMoreReviews: "Load More Reviews",
+      youMightAlsoLike: "You Might Also Like",
+    },
+    about: {
+      ourStory: "Our Story",
+      ourStoryDescription: "Crafting exceptional fragrances that define elegance and luxury since 2018",
+      welcomeToAlsa: "Welcome to AlsaFragrance",
+      aboutParagraph1: "Founded in 2018, AlsaFragrance began as a passion project to bring the world's finest fragrances to discerning customers who appreciate quality and authenticity. What started as a small collection of carefully curated scents has grown into a comprehensive fragrance house offering everything from contemporary perfumes to traditional attars.",
+      aboutParagraph2: "Our journey is rooted in the belief that fragrance is more than just a scent – it's a form of self-expression, a memory maker, and a confidence booster. Each product in our collection is selected or crafted with meticulous attention to detail, ensuring that every bottle tells a unique story.",
+      aboutParagraph3: "Today, we're proud to serve customers worldwide, offering an extensive range of premium fragrances for men and women, traditional alcohol-free attars, and convenient tester sizes that allow you to discover your perfect scent without commitment.",
+      ourMission: "Our Mission",
+      ourMissionDescription: "To make luxury fragrances accessible to everyone while maintaining the highest standards of quality, authenticity, and customer service.",
+      ourVision: "Our Vision",
+      ourVisionDescription: "To become the world's most trusted destination for premium fragrances, known for our exceptional quality, diverse selection, and personalized customer experience.",
+      ourValues: "Our Values",
+      ourValuesDescription: "The principles that guide everything we do",
+      passionForFragrance: "Passion for Fragrance",
+      passionForFragranceDescription: "We believe that fragrance is an art form that tells a story and evokes emotions.",
+      premiumQuality: "Premium Quality",
+      premiumQualityDescription: "Every product in our collection meets the highest standards of quality and authenticity.",
+      naturalIngredients: "Natural Ingredients",
+      naturalIngredientsDescription: "We source the finest natural ingredients from around the world for our exclusive blends.",
+      customerFirst: "Customer First",
+      customerFirstDescription: "Your satisfaction is our priority, and we're committed to exceptional service.",
+      ourJourney: "Our Journey",
+      ourJourneyDescription: "Key milestones in our fragrance story",
+      happyCustomers: "Happy Customers",
+      premiumFragrances: "Premium Fragrances",
+      yearsOfExcellence: "Years of Excellence",
+      customerSatisfaction: "Customer Satisfaction",
+      milestone2018: "AlsaFragrance was founded with a vision to bring luxury fragrances to everyone",
+      milestone2019: "Launched our first signature collection featuring 12 exclusive scents",
+      milestone2020: "Expanded into traditional attars and alcohol-free fragrances",
+      milestone2021: "Reached 10,000 satisfied customers worldwide",
+      milestone2022: "Introduced our tester collection for risk-free fragrance discovery",
+      milestone2023: "Opened our flagship boutique and launched premium limited editions",
+      milestone2024: "Celebrating 6 years of excellence with over 50,000 happy customers",
+    },
+    contact: {
+      title: "Contact Us",
+      subtitle: "We'd love to hear from you. Get in touch with our fragrance experts.",
+      sendUsMessage: "Send us a Message",
+      getInTouch: "Get in Touch",
+      visitOurStore: "Visit Our Store",
+      callUs: "Call Us",
+      emailUs: "Email Us",
+      businessHours: "Business Hours",
+      businessHoursMonFri: "Monday - Friday: 9AM - 6PM",
+      businessHoursSat: "Saturday: 10AM - 4PM",
+      businessHoursSun: "Sunday: Closed",
+      faq: "Frequently Asked Questions",
+      faqDescription: "Quick answers to common questions",
+      shippingTime: "How long does shipping take?",
+      shippingTimeAnswer: "We offer free standard shipping (3-5 business days) on orders over €100. Express shipping (1-2 business days) is available for €15.",
+      returnPolicy: "What is your return policy?",
+      returnPolicyAnswer: "We offer a 30-day return policy for unopened items. Opened items can be returned within 14 days if you're not completely satisfied.",
+      authenticProducts: "Are your products authentic?",
+      authenticProductsAnswer: "Yes, we guarantee 100% authentic products. We work directly with authorized distributors and brands to ensure authenticity.",
+      fragranceConsultations: "Do you offer fragrance consultations?",
+      fragranceConsultationsAnswer: "Yes! Our fragrance experts are available for personalized consultations. Contact us to schedule a virtual or in-store appointment.",
+      fullName: "Full Name *",
+      emailAddress: "Email Address *",
+      subject: "Subject *",
+      message: "Message *",
+      selectSubject: "Select a subject",
+      generalInquiry: "General Inquiry",
+      productQuestion: "Product Question",
+      orderSupport: "Order Support",
+      returnsExchanges: "Returns & Exchanges",
+      fragranceConsultation: "Fragrance Consultation",
+      wholesaleInquiry: "Wholesale Inquiry",
+      yourFullName: "Your full name",
+      yourEmail: "your.email@example.com",
+      tellUsHow: "Tell us how we can help you...",
+      sending: "Sending...",
+      messageSent: "Message Sent!",
+      sendMessage: "Send Message",
+      tryAgain: "Try Again",
+      thankYouMessage: "Thank you! Your message has been sent to fragrancealsa@gmail.com. You should receive a response within 24 hours.",
+      errorMessage: "There was an issue opening your email client. Please try again or send an email manually to fragrancealsa@gmail.com",
+    },
+    components: {
+      categoryShowcase: {
+        title: "Shop by Collection",
+        description: "Explore our carefully curated collections designed for every preference and occasion",
+        womenName: "Women",
+        womenDescription: "Feminine fragrances that captivate and inspire",
+        menName: "Men",
+        menDescription: "Bold and sophisticated scents for the modern man",
+        attarsName: "Attars",
+        attarsDescription: "Pure, alcohol-free traditional fragrances",
+        testersName: "Testers",
+        testersDescription: "Try before you buy with our tester collection",
+      },
+      newArrivals: {
+        title: "New Arrivals",
+        description: "Discover our latest ALSA FRAGRANCE creations with premium packaging",
+        viewAll: "View All New Arrivals",
+      },
+      limitedEdition: {
+        title: "Limited Edition",
+        description: "Exclusive ALSA FRAGRANCE bottles with premium gifting presentation",
+        exclusiveBottles: "Exclusive Bottles",
+        exclusiveBottlesDesc: "Limited edition ALSA FRAGRANCE bottles with premium craftsmanship",
+        premiumGifting: "Premium Gifting",
+        premiumGiftingDesc: "Elegant packaging perfect for special occasions and celebrations",
+        rareScents: "Rare Scents",
+        rareScentsDesc: "Unique fragrances available only in our limited collection",
+        viewAll: "View All Limited Edition",
+      },
+      testimonials: {
+        title: "What Our Customers Say",
+        description: "Join thousands of satisfied customers who have made our fragrances part of their daily ritual",
+        purchased: "Purchased",
+        readMore: "Read More Reviews",
+      },
+      craftingProcess: {
+        title: "The Art of Perfume Making",
+        description: "Discover the meticulous process behind every bottle, where centuries-old tradition meets modern innovation to create fragrances that captivate the senses",
+        step1Title: "Ingredient Selection",
+        step1Desc: "We source the finest raw materials from around the world, from Bulgarian roses to Indian sandalwood.",
+        step2Title: "Extraction & Distillation",
+        step2Desc: "Using traditional methods combined with modern techniques to extract the purest essences.",
+        step3Title: "Blending Artistry",
+        step3Desc: "Master perfumers carefully blend notes to create harmonious and unique fragrance compositions.",
+        step4Title: "Aging & Maturation",
+        step4Desc: "Fragrances are aged in optimal conditions to allow the notes to marry and develop complexity.",
+        step5Title: "Quality Testing",
+        step5Desc: "Each batch undergoes rigorous testing to ensure consistency, longevity, and safety standards.",
+        step6Title: "Bottling & Packaging",
+        step6Desc: "Hand-bottled with care and presented in elegant packaging that reflects the luxury within.",
+      },
+      fragranceNotes: {
+        title: "Understanding Fragrance Notes",
+        description: "Discover the art of perfumery through the three-tier structure that creates every memorable scent",
+        topNotes: "Top Notes",
+        topNotesDesc: "The first impression that captivates your senses",
+        heartNotes: "Heart Notes",
+        heartNotesDesc: "The soul of the fragrance that defines its character",
+        baseNotes: "Base Notes",
+        baseNotesDesc: "The lasting foundation that lingers on your skin",
+        pyramidTitle: "The Fragrance Pyramid",
+        pyramidDescription: "Each ALSA FRAGRANCE perfume is carefully crafted using this three-tier structure. The top notes create the initial impression, lasting 15-30 minutes. Heart notes emerge next, forming the core character for 2-4 hours. Finally, base notes provide the lasting foundation that can linger for 6-8 hours or more, creating a unique scent journey on your skin.",
+      },
+      perfumeCollection: {
+        title: "Signature Collections",
+        description: "Each collection tells a unique story, crafted with the finest ingredients from around the world",
+        exploreCollection: "Explore Collection",
+      },
+      categoryHero: {
+        productsAvailable: "Products Available",
+        shopNow: "Shop Now",
+      },
+      categoryGallery: {
+        description: "Explore our curated collection of premium fragrances, each bottle crafted with precision and elegance",
+      },
+      promotionalBanner: {
+        exclusiveTitle: "Exclusive Collection",
+        exclusiveSubtitle: "Alsa Fragrance Premium Series",
+        exclusiveDesc: "Discover our most coveted fragrances crafted with rare ingredients",
+        exclusiveCta: "Explore Exclusive",
+        signatureTitle: "Signature Scents",
+        signatureSubtitle: "Handcrafted Alsa Originals",
+        signatureDesc: "Experience our master perfumer's finest creations",
+        signatureCta: "Shop Signature",
+        premiumTitle: "Premium Attars",
+        premiumSubtitle: "Traditional Luxury Redefined",
+        premiumDesc: "Pure oil-based fragrances from the finest natural essences",
+        premiumCta: "Discover Premium",
+        saleTitle: "Special Sale",
+        saleSubtitle: "Alsa Fragrance Limited Time Offer",
+        saleDesc: "Get up to 40% off on selected premium fragrances",
+        saleCta: "Shop Sale",
+        newTitle: "New Arrivals",
+        newSubtitle: "Fresh Alsa Fragrance Collection",
+        newDesc: "Explore our latest captivating scents just launched",
+        newCta: "Discover New",
+        limitedTitle: "Limited Edition",
+        limitedSubtitle: "Exclusive Alsa Fragrance Series",
+        limitedDesc: "Rare fragrances available for a limited time only",
+        limitedCta: "Get Limited",
+      },
+    },
+    categoryPages: {
+      forHer: {
+        title: "For Her",
+        description: "Discover our exquisite collection of feminine fragrances that capture elegance, sophistication, and timeless beauty",
+        searchPlaceholder: "Search women's fragrances...",
+      },
+      forHim: {
+        title: "For Him",
+        description: "Bold and sophisticated scents crafted for the modern gentleman who appreciates quality and distinction",
+        searchPlaceholder: "Search men's fragrances...",
+      },
+      attars: {
+        title: "Attar Collection",
+        description: "Pure, alcohol-free traditional fragrances that capture the essence of timeless elegance and authentic luxury",
+        aboutTitle: "About Our Attars",
+        aboutDescription: "Attars are concentrated perfume oils derived from natural sources, traditionally used in Middle Eastern and South Asian cultures. Our collection features authentic, alcohol-free fragrances that offer long-lasting scents with deep, rich notes.",
+        searchPlaceholder: "Search attars...",
+      },
+      testers: {
+        title: "Tester Collection",
+        description: "Try before you buy with our carefully curated selection of fragrance testers and sample sizes",
+        infoTitle: "Our tester collection allows you to experience our fragrances in smaller sizes before committing to full bottles. Perfect for discovering your new signature scent or trying multiple fragrances.",
+        infoDescription: "",
+        searchPlaceholder: "Search testers...",
+        riskFreeTitle: "Risk-Free Testing",
+        riskFreeDesc: "Try fragrances without committing to full-size bottles",
+        travelTitle: "Perfect for Travel",
+        travelDesc: "Compact sizes ideal for travel and on-the-go touch-ups",
+        discoverTitle: "Discover New Scents",
+        discoverDesc: "Explore different fragrance families and find your favorites",
+      },
+      newArrivals: {
+        title: "New Arrivals",
+        description: "Discover our latest ALSA FRAGRANCE creations with premium packaging and exceptional quality",
+        productsAvailable: "New Products Available",
+        searchPlaceholder: "Search new arrivals...",
+        showingProducts: "new arrival products",
+        latestTitle: "Latest Fragrances",
+        latestDesc: "Be among the first to experience our newest fragrance creations",
+        premiumTitle: "Premium Quality",
+        premiumDesc: "Each new arrival is crafted with the finest ingredients and exceptional attention to detail",
+        exclusiveTitle: "Exclusive Packaging",
+        exclusiveDesc: "Our new arrivals feature premium packaging that reflects the luxury within",
+      },
+      limitedEdition: {
+        title: "Limited Edition",
+        description: "Exclusive ALSA FRAGRANCE bottles with premium gifting presentation and rare fragrances",
+        productsAvailable: "Limited Edition Products Available",
+        searchPlaceholder: "Search limited edition...",
+        showingProducts: "limited edition products",
+        exclusiveBottlesTitle: "Exclusive Bottles",
+        exclusiveBottlesDesc: "Limited edition ALSA FRAGRANCE bottles with premium craftsmanship and unique designs",
+        premiumGiftingTitle: "Premium Gifting",
+        premiumGiftingDesc: "Elegant packaging perfect for special occasions, celebrations, and luxury gifting",
+        rareScentsTitle: "Rare Scents",
+        rareScentsDesc: "Unique fragrances available only in our limited collection - once they're gone, they're gone",
+      },
+      common: {
+        sortBy: "Sort by",
+        nameAZ: "Name A-Z",
+        priceLowHigh: "Price: Low to High",
+        priceHighLow: "Price: High to Low",
+        highestRated: "Highest Rated",
+        newestFirst: "Newest First",
+        showing: "Showing",
+        of: "of",
+        products: "products",
+        loadingProducts: "Loading products...",
+        noProductsFound: "No products found",
+        clearSearch: "Clear Search",
+      },
     },
   },
   pt: {
@@ -274,6 +934,33 @@ export const translations: Record<Language, Translations> = {
       customerService: "Serviço ao Cliente",
       newsletter: "Newsletter",
       subscribe: "Subscrever",
+      stayInTheScent: "Mantenha-se no Aroma",
+      subscribeDescription: "Subscreva para receber ofertas especiais, novidades e dicas de fragrâncias.",
+      enterEmail: "Introduza o seu email",
+      shop: "Loja",
+      company: "Empresa",
+      contactUs: "Contacte-nos",
+      allProducts: "Todos os Produtos",
+      womensFragrances: "Fragrâncias Femininas",
+      mensFragrances: "Fragrâncias Masculinas",
+      attars: "Attars",
+      testers: "Testadores",
+      newArrivals: "Novidades",
+      limitedEdition: "Edição Limitada",
+      aboutUs: "Sobre Nós",
+      contact: "Contacto",
+      careers: "Carreiras",
+      press: "Imprensa",
+      blog: "Blog",
+      faq: "FAQ",
+      shippingInfo: "Informações de Envio",
+      returns: "Devoluções",
+      sizeGuide: "Guia de Tamanhos",
+      trackOrder: "Acompanhar Pedido",
+      companyDescription: "Criando fragrâncias excecionais que definem elegância e luxo desde 2018.",
+      copyright: "© 2025 Alsa Fragrance. Todos os direitos reservados.",
+      weAccept: "Aceitamos:",
+      designedBy: "Desenhado por",
     },
     home: {
       discoverCollection: "Descubra a Nossa Coleção",
@@ -281,6 +968,18 @@ export const translations: Record<Language, Translations> = {
       newArrivals: "Novidades",
       featuredProducts: "Produtos em Destaque",
       limitedEdition: "Edição Limitada",
+      signatureCollection: "Coleção Assinatura Alsa",
+      signatureSubtitle: "Descubra as Nossas Fragrâncias Premium",
+      signatureDescription: "Experimente o luxo com a nossa seleção cuidadosamente curada de perfumes e attars premium",
+      shopCollection: "Comprar Coleção",
+      limitedEditionTitle: "Alsa Edição Limitada",
+      limitedEditionSubtitle: "Aromas Exclusivos para Conhecedores",
+      limitedEditionDescription: "Fragrâncias raras e requintadas criadas para quem aprecia o melhor",
+      exploreLimitedEdition: "Explorar Edição Limitada",
+      attarCollection: "Coleção Attar Alsa",
+      attarSubtitle: "Luxo Tradicional Redefinido",
+      attarDescription: "Fragrâncias puras, sem álcool, que capturam a essência da elegância atemporal",
+      discoverAttars: "Descobrir Attars",
     },
     shop: {
       title: "Loja",
@@ -300,6 +999,295 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "Instruções de Pagamento MBWay",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "Por favor, envie o pagamento para o seguinte número MBWay:",
+      cardNumber: "Número do Cartão",
+      cardExpiry: "MM/AA",
+      cardCvv: "CVV",
+      secure: "Seguro",
+      encrypted: "Criptografado",
+      cardAcceptance: "Aceitamos todos os principais cartões de débito e crédito em todo o mundo (Visa, Mastercard, American Express, etc.). Os detalhes do seu cartão estão seguros e criptografados.",
+      mbwayPaymentNote: "Assim que o pagamento for enviado, o seu pedido será processado. Pagamentos aceites de todos os países em todo o mundo.",
+      loadingProduct: "A carregar produto...",
+      save: "Poupar",
+      new: "Novo",
+      freeShipping: "Portes Grátis",
+      authentic: "Autêntico",
+      dayReturn: "Devolução de 30 Dias",
+      fragranceNotes: "Notas de Fragrância",
+      topNotes: "Notas Superiores",
+      middleNotes: "Notas Médias",
+      baseNotes: "Notas de Base",
+      productDetails: "Detalhes do Produto",
+      category: "Categoria",
+      availableSizes: "Tamanhos Disponíveis",
+      stockStatus: "Estado do Stock",
+      sku: "SKU",
+      careInstructions: "Instruções de Cuidado",
+      careInstruction1: "Armazenar em local fresco e seco, longe da luz solar direta",
+      careInstruction2: "Manter o frasco bem fechado quando não estiver em uso",
+      careInstruction3: "Aplicar nos pontos de pulso para melhor duração",
+      careInstruction4: "Evitar contacto com joias e tecidos claros",
+      careInstruction5: "Apenas para uso externo",
+      viewAllProducts: "Ver Todos os Produtos",
+      featuredProductsDescription: "Descubra as nossas fragrâncias mais populares, adoradas por clientes em todo o mundo",
+      reviews: "avaliações",
+      customerReviews: "Avaliações dos Clientes",
+      basedOnReviews: "Com base em {count} avaliações",
+      verifiedPurchase: "Compra Verificada",
+      helpful: "Útil",
+      loadMoreReviews: "Carregar Mais Avaliações",
+      youMightAlsoLike: "Também Pode Gostar",
+    },
+    about: {
+      ourStory: "A Nossa História",
+      ourStoryDescription: "Criando fragrâncias excecionais que definem elegância e luxo desde 2018",
+      welcomeToAlsa: "Bem-vindo à AlsaFragrance",
+      aboutParagraph1: "Fundada em 2018, a AlsaFragrance começou como um projeto de paixão para trazer as melhores fragrâncias do mundo a clientes exigentes que apreciam qualidade e autenticidade. O que começou como uma pequena coleção de aromas cuidadosamente curados cresceu até se tornar uma casa de fragrâncias abrangente que oferece tudo, desde perfumes contemporâneos até attars tradicionais.",
+      aboutParagraph2: "A nossa jornada está enraizada na crença de que a fragrância é mais do que apenas um aroma – é uma forma de autoexpressão, um criador de memórias e um impulsionador de confiança. Cada produto da nossa coleção é selecionado ou criado com atenção meticulosa aos detalhes, garantindo que cada frasco conta uma história única.",
+      aboutParagraph3: "Hoje, orgulhamo-nos de servir clientes em todo o mundo, oferecendo uma gama extensa de fragrâncias premium para homens e mulheres, attars tradicionais sem álcool e tamanhos de teste convenientes que permitem descobrir o seu aroma perfeito sem compromisso.",
+      ourMission: "A Nossa Missão",
+      ourMissionDescription: "Tornar as fragrâncias de luxo acessíveis a todos, mantendo os mais altos padrões de qualidade, autenticidade e serviço ao cliente.",
+      ourVision: "A Nossa Visão",
+      ourVisionDescription: "Tornar-nos o destino mais confiável do mundo para fragrâncias premium, conhecidos pela nossa qualidade excecional, seleção diversificada e experiência personalizada do cliente.",
+      ourValues: "Os Nossos Valores",
+      ourValuesDescription: "Os princípios que orientam tudo o que fazemos",
+      passionForFragrance: "Paixão pela Fragrância",
+      passionForFragranceDescription: "Acreditamos que a fragrância é uma forma de arte que conta uma história e evoca emoções.",
+      premiumQuality: "Qualidade Premium",
+      premiumQualityDescription: "Cada produto da nossa coleção atende aos mais altos padrões de qualidade e autenticidade.",
+      naturalIngredients: "Ingredientes Naturais",
+      naturalIngredientsDescription: "Fornecemos os melhores ingredientes naturais de todo o mundo para as nossas misturas exclusivas.",
+      customerFirst: "Cliente em Primeiro Lugar",
+      customerFirstDescription: "A sua satisfação é a nossa prioridade e estamos comprometidos com um serviço excecional.",
+      ourJourney: "A Nossa Jornada",
+      ourJourneyDescription: "Marcos importantes na nossa história de fragrâncias",
+      happyCustomers: "Clientes Felizes",
+      premiumFragrances: "Fragrâncias Premium",
+      yearsOfExcellence: "Anos de Excelência",
+      customerSatisfaction: "Satisfação do Cliente",
+      milestone2018: "A AlsaFragrance foi fundada com a visão de trazer fragrâncias de luxo a todos",
+      milestone2019: "Lançámos a nossa primeira coleção de assinatura com 12 aromas exclusivos",
+      milestone2020: "Expandimos para attars tradicionais e fragrâncias sem álcool",
+      milestone2021: "Atingimos 10.000 clientes satisfeitos em todo o mundo",
+      milestone2022: "Introduzimos a nossa coleção de testadores para descoberta de fragrâncias sem riscos",
+      milestone2023: "Abrimos a nossa boutique principal e lançámos edições limitadas premium",
+      milestone2024: "Celebrando 6 anos de excelência com mais de 50.000 clientes felizes",
+    },
+    contact: {
+      title: "Contacte-nos",
+      subtitle: "Adoraríamos ouvir de si. Entre em contacto com os nossos especialistas em fragrâncias.",
+      sendUsMessage: "Envie-nos uma Mensagem",
+      getInTouch: "Entre em Contacto",
+      visitOurStore: "Visite a Nossa Loja",
+      callUs: "Ligue-nos",
+      emailUs: "Envie-nos um Email",
+      businessHours: "Horário de Funcionamento",
+      businessHoursMonFri: "Segunda - Sexta: 9h - 18h",
+      businessHoursSat: "Sábado: 10h - 16h",
+      businessHoursSun: "Domingo: Fechado",
+      faq: "Perguntas Frequentes",
+      faqDescription: "Respostas rápidas a perguntas comuns",
+      shippingTime: "Quanto tempo demora o envio?",
+      shippingTimeAnswer: "Oferecemos envio padrão gratuito (3-5 dias úteis) em pedidos superiores a €100. Envio expresso (1-2 dias úteis) disponível por €15.",
+      returnPolicy: "Qual é a vossa política de devolução?",
+      returnPolicyAnswer: "Oferecemos uma política de devolução de 30 dias para itens não abertos. Itens abertos podem ser devolvidos no prazo de 14 dias se não estiver completamente satisfeito.",
+      authenticProducts: "Os vossos produtos são autênticos?",
+      authenticProductsAnswer: "Sim, garantimos produtos 100% autênticos. Trabalhamos diretamente com distribuidores e marcas autorizados para garantir a autenticidade.",
+      fragranceConsultations: "Oferecem consultas de fragrâncias?",
+      fragranceConsultationsAnswer: "Sim! Os nossos especialistas em fragrâncias estão disponíveis para consultas personalizadas. Contacte-nos para agendar uma consulta virtual ou na loja.",
+      fullName: "Nome Completo *",
+      emailAddress: "Endereço de Email *",
+      subject: "Assunto *",
+      message: "Mensagem *",
+      selectSubject: "Selecionar um assunto",
+      generalInquiry: "Consulta Geral",
+      productQuestion: "Pergunta sobre Produto",
+      orderSupport: "Suporte de Pedido",
+      returnsExchanges: "Devoluções e Trocas",
+      fragranceConsultation: "Consulta de Fragrância",
+      wholesaleInquiry: "Consulta de Atacado",
+      yourFullName: "O seu nome completo",
+      yourEmail: "o.seu.email@exemplo.com",
+      tellUsHow: "Diga-nos como podemos ajudá-lo...",
+      sending: "A enviar...",
+      messageSent: "Mensagem Enviada!",
+      sendMessage: "Enviar Mensagem",
+      tryAgain: "Tentar Novamente",
+      thankYouMessage: "Obrigado! A sua mensagem foi enviada para fragrancealsa@gmail.com. Deve receber uma resposta no prazo de 24 horas.",
+      errorMessage: "Houve um problema ao abrir o seu cliente de email. Por favor, tente novamente ou envie um email manualmente para fragrancealsa@gmail.com",
+    },
+    components: {
+      categoryShowcase: {
+        title: "Comprar por Coleção",
+        description: "Explore as nossas coleções cuidadosamente curadas, concebidas para todas as preferências e ocasiões",
+        womenName: "Mulheres",
+        womenDescription: "Fragrâncias femininas que cativam e inspiram",
+        menName: "Homens",
+        menDescription: "Aromas ousados e sofisticados para o homem moderno",
+        attarsName: "Attars",
+        attarsDescription: "Fragrâncias tradicionais puras, sem álcool",
+        testersName: "Testadores",
+        testersDescription: "Experimente antes de comprar com a nossa coleção de testadores",
+      },
+      newArrivals: {
+        title: "Novidades",
+        description: "Descubra as nossas mais recentes criações ALSA FRAGRANCE com embalagem premium",
+        viewAll: "Ver Todas as Novidades",
+      },
+      limitedEdition: {
+        title: "Edição Limitada",
+        description: "Frascos exclusivos ALSA FRAGRANCE com apresentação premium para presente",
+        exclusiveBottles: "Frascos Exclusivos",
+        exclusiveBottlesDesc: "Frascos ALSA FRAGRANCE de edição limitada com artesanato premium",
+        premiumGifting: "Presentes Premium",
+        premiumGiftingDesc: "Embalagem elegante perfeita para ocasiões especiais e celebrações",
+        rareScents: "Aromas Raros",
+        rareScentsDesc: "Fragrâncias únicas disponíveis apenas na nossa coleção limitada",
+        viewAll: "Ver Toda a Edição Limitada",
+      },
+      testimonials: {
+        title: "O Que Dizem os Nossos Clientes",
+        description: "Junte-se a milhares de clientes satisfeitos que tornaram as nossas fragrâncias parte do seu ritual diário",
+        purchased: "Comprado",
+        readMore: "Ler Mais Avaliações",
+      },
+      craftingProcess: {
+        title: "A Arte de Fazer Perfume",
+        description: "Descubra o processo meticuloso por trás de cada frasco, onde a tradição secular encontra a inovação moderna para criar fragrâncias que cativam os sentidos",
+        step1Title: "Seleção de Ingredientes",
+        step1Desc: "Procuramos as melhores matérias-primas de todo o mundo, desde rosas búlgaras até sândalo indiano.",
+        step2Title: "Extração e Destilação",
+        step2Desc: "Usando métodos tradicionais combinados com técnicas modernas para extrair as essências mais puras.",
+        step3Title: "Arte de Mistura",
+        step3Desc: "Perfumistas mestres misturam cuidadosamente notas para criar composições de fragrâncias harmoniosas e únicas.",
+        step4Title: "Envelhecimento e Maturação",
+        step4Desc: "As fragrâncias são envelhecidas em condições ótimas para permitir que as notas se unam e desenvolvam complexidade.",
+        step5Title: "Teste de Qualidade",
+        step5Desc: "Cada lote passa por testes rigorosos para garantir consistência, durabilidade e padrões de segurança.",
+        step6Title: "Envasamento e Embalagem",
+        step6Desc: "Envasado à mão com cuidado e apresentado em embalagem elegante que reflete o luxo dentro.",
+      },
+      fragranceNotes: {
+        title: "Compreender as Notas de Fragrância",
+        description: "Descubra a arte da perfumaria através da estrutura de três níveis que cria cada aroma memorável",
+        topNotes: "Notas Superiores",
+        topNotesDesc: "A primeira impressão que cativa os seus sentidos",
+        heartNotes: "Notas de Coração",
+        heartNotesDesc: "A alma da fragrância que define o seu caráter",
+        baseNotes: "Notas de Base",
+        baseNotesDesc: "A base duradoura que permanece na sua pele",
+        pyramidTitle: "A Pirâmide de Fragrância",
+        pyramidDescription: "Cada perfume ALSA FRAGRANCE é cuidadosamente criado usando esta estrutura de três níveis. As notas superiores criam a impressão inicial, durando 15-30 minutos. As notas de coração emergem a seguir, formando o caráter central por 2-4 horas. Finalmente, as notas de base fornecem a base duradoura que pode permanecer por 6-8 horas ou mais, criando uma jornada de aroma única na sua pele.",
+      },
+      perfumeCollection: {
+        title: "Coleções de Assinatura",
+        description: "Cada coleção conta uma história única, criada com os melhores ingredientes de todo o mundo",
+        exploreCollection: "Explorar Coleção",
+      },
+      categoryHero: {
+        productsAvailable: "Produtos Disponíveis",
+        shopNow: "Comprar Agora",
+      },
+      categoryGallery: {
+        description: "Explore a nossa coleção curada de fragrâncias premium, cada frasco criado com precisão e elegância",
+      },
+      promotionalBanner: {
+        exclusiveTitle: "Coleção Exclusiva",
+        exclusiveSubtitle: "Série Premium Alsa Fragrance",
+        exclusiveDesc: "Descubra as nossas fragrâncias mais cobiçadas criadas com ingredientes raros",
+        exclusiveCta: "Explorar Exclusivo",
+        signatureTitle: "Aromas de Assinatura",
+        signatureSubtitle: "Originais Alsa Artesanais",
+        signatureDesc: "Experimente as melhores criações do nosso perfumista mestre",
+        signatureCta: "Comprar Assinatura",
+        premiumTitle: "Attars Premium",
+        premiumSubtitle: "Luxo Tradicional Redefinido",
+        premiumDesc: "Fragrâncias à base de óleo puro das melhores essências naturais",
+        premiumCta: "Descobrir Premium",
+        saleTitle: "Venda Especial",
+        saleSubtitle: "Oferta por Tempo Limitado Alsa Fragrance",
+        saleDesc: "Obtenha até 40% de desconto em fragrâncias premium selecionadas",
+        saleCta: "Comprar Venda",
+        newTitle: "Novidades",
+        newSubtitle: "Coleção Fresca Alsa Fragrance",
+        newDesc: "Explore os nossos mais recentes aromas cativantes recém-lançados",
+        newCta: "Descobrir Novo",
+        limitedTitle: "Edição Limitada",
+        limitedSubtitle: "Série Exclusiva Alsa Fragrance",
+        limitedDesc: "Fragrâncias raras disponíveis apenas por tempo limitado",
+        limitedCta: "Obter Limitado",
+      },
+    },
+    categoryPages: {
+      forHer: {
+        title: "Para Ela",
+        description: "Descubra a nossa requintada coleção de fragrâncias femininas que capturam elegância, sofisticação e beleza atemporal",
+        searchPlaceholder: "Pesquisar fragrâncias femininas...",
+      },
+      forHim: {
+        title: "Para Ele",
+        description: "Aromas ousados e sofisticados criados para o cavalheiro moderno que aprecia qualidade e distinção",
+        searchPlaceholder: "Pesquisar fragrâncias masculinas...",
+      },
+      attars: {
+        title: "Coleção Attar",
+        description: "Fragrâncias tradicionais puras, sem álcool, que capturam a essência da elegância atemporal e do luxo autêntico",
+        aboutTitle: "Sobre os Nossos Attars",
+        aboutDescription: "Attars são óleos de perfume concentrados derivados de fontes naturais, tradicionalmente usados em culturas do Médio Oriente e do Sul da Ásia. A nossa coleção apresenta fragrâncias autênticas, sem álcool, que oferecem aromas duradouros com notas profundas e ricas.",
+        searchPlaceholder: "Pesquisar attars...",
+      },
+      testers: {
+        title: "Coleção de Testadores",
+        description: "Experimente antes de comprar com a nossa seleção cuidadosamente curada de testadores de fragrâncias e tamanhos de amostra",
+        infoTitle: "A nossa coleção de testadores permite-lhe experimentar as nossas fragrâncias em tamanhos menores antes de se comprometer com frascos completos. Perfeito para descobrir o seu novo aroma de assinatura ou experimentar múltiplas fragrâncias.",
+        infoDescription: "",
+        searchPlaceholder: "Pesquisar testadores...",
+        riskFreeTitle: "Teste Sem Riscos",
+        riskFreeDesc: "Experimente fragrâncias sem se comprometer com frascos de tamanho completo",
+        travelTitle: "Perfeito para Viagem",
+        travelDesc: "Tamanhos compactos ideais para viagem e retoques em movimento",
+        discoverTitle: "Descobrir Novos Aromas",
+        discoverDesc: "Explore diferentes famílias de fragrâncias e encontre os seus favoritos",
+      },
+      newArrivals: {
+        title: "Novidades",
+        description: "Descubra as nossas mais recentes criações ALSA FRAGRANCE com embalagem premium e qualidade excecional",
+        productsAvailable: "Novos Produtos Disponíveis",
+        searchPlaceholder: "Pesquisar novidades...",
+        showingProducts: "produtos de novidades",
+        latestTitle: "Fragrâncias Mais Recentes",
+        latestDesc: "Seja um dos primeiros a experimentar as nossas mais recentes criações de fragrâncias",
+        premiumTitle: "Qualidade Premium",
+        premiumDesc: "Cada novidade é criada com os melhores ingredientes e atenção excecional aos detalhes",
+        exclusiveTitle: "Embalagem Exclusiva",
+        exclusiveDesc: "As nossas novidades apresentam embalagem premium que reflete o luxo dentro",
+      },
+      limitedEdition: {
+        title: "Edição Limitada",
+        description: "Frascos exclusivos ALSA FRAGRANCE com apresentação premium para presente e fragrâncias raras",
+        productsAvailable: "Produtos de Edição Limitada Disponíveis",
+        searchPlaceholder: "Pesquisar edição limitada...",
+        showingProducts: "produtos de edição limitada",
+        exclusiveBottlesTitle: "Frascos Exclusivos",
+        exclusiveBottlesDesc: "Frascos ALSA FRAGRANCE de edição limitada com artesanato premium e designs únicos",
+        premiumGiftingTitle: "Presentes Premium",
+        premiumGiftingDesc: "Embalagem elegante perfeita para ocasiões especiais, celebrações e presentes de luxo",
+        rareScentsTitle: "Aromas Raros",
+        rareScentsDesc: "Fragrâncias únicas disponíveis apenas na nossa coleção limitada - quando acabarem, acabaram",
+      },
+      common: {
+        sortBy: "Ordenar por",
+        nameAZ: "Nome A-Z",
+        priceLowHigh: "Preço: Baixo para Alto",
+        priceHighLow: "Preço: Alto para Baixo",
+        highestRated: "Mais Bem Avaliado",
+        newestFirst: "Mais Recente Primeiro",
+        showing: "Mostrando",
+        of: "de",
+        products: "produtos",
+        loadingProducts: "A carregar produtos...",
+        noProductsFound: "Nenhum produto encontrado",
+        clearSearch: "Limpar Pesquisa",
+      },
     },
   },
   hi: {
@@ -371,6 +1359,33 @@ export const translations: Record<Language, Translations> = {
       customerService: "ग्राहक सेवा",
       newsletter: "न्यूज़लेटर",
       subscribe: "सब्सक्राइब करें",
+      stayInTheScent: "खुशबू में बने रहें",
+      subscribeDescription: "विशेष ऑफर, नए आगमन और खुशबू युक्तियां प्राप्त करने के लिए सब्सक्राइब करें।",
+      enterEmail: "अपना ईमेल दर्ज करें",
+      shop: "दुकान",
+      company: "कंपनी",
+      contactUs: "संपर्क करें",
+      allProducts: "सभी उत्पाद",
+      womensFragrances: "महिलाओं की खुशबू",
+      mensFragrances: "पुरुषों की खुशबू",
+      attars: "अत्तर",
+      testers: "टेस्टर",
+      newArrivals: "नए आगमन",
+      limitedEdition: "सीमित संस्करण",
+      aboutUs: "हमारे बारे में",
+      contact: "संपर्क",
+      careers: "करियर",
+      press: "प्रेस",
+      blog: "ब्लॉग",
+      faq: "FAQ",
+      shippingInfo: "शिपिंग जानकारी",
+      returns: "रिटर्न",
+      sizeGuide: "साइज गाइड",
+      trackOrder: "ऑर्डर ट्रैक करें",
+      companyDescription: "2018 से शानदार खुशबू बनाना जो शान और विलासिता को परिभाषित करता है।",
+      copyright: "© 2025 Alsa Fragrance. सभी अधिकार सुरक्षित।",
+      weAccept: "हम स्वीकार करते हैं:",
+      designedBy: "डिज़ाइन किया गया",
     },
     home: {
       discoverCollection: "हमारे संग्रह की खोज करें",
@@ -378,6 +1393,18 @@ export const translations: Record<Language, Translations> = {
       newArrivals: "नए आगमन",
       featuredProducts: "विशेष उत्पाद",
       limitedEdition: "सीमित संस्करण",
+      signatureCollection: "अल्सा सिग्नेचर कलेक्शन",
+      signatureSubtitle: "हमारी प्रीमियम खुशबू की खोज करें",
+      signatureDescription: "हमारे सावधानीपूर्वक चुने गए प्रीमियम परफ्यूम और अत्तर के चयन के साथ विलासिता का अनुभव करें",
+      shopCollection: "संग्रह खरीदें",
+      limitedEditionTitle: "अल्सा सीमित संस्करण",
+      limitedEditionSubtitle: "पारखियों के लिए विशेष खुशबू",
+      limitedEditionDescription: "दुर्लभ और उत्कृष्ट खुशबू जो सर्वश्रेष्ठ की सराहना करने वालों के लिए बनाई गई हैं",
+      exploreLimitedEdition: "सीमित संस्करण देखें",
+      attarCollection: "अल्सा अत्तर संग्रह",
+      attarSubtitle: "पारंपरिक विलासिता को फिर से परिभाषित",
+      attarDescription: "शुद्ध, अल्कोहल-मुक्त खुशबू जो कालातीत शान की सार को पकड़ती हैं",
+      discoverAttars: "अत्तर खोजें",
     },
     shop: {
       title: "दुकान",
@@ -397,6 +1424,295 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "MBWay भुगतान निर्देश",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "कृपया निम्नलिखित MBWay नंबर पर भुगतान भेजें:",
+      cardNumber: "कार्ड नंबर",
+      cardExpiry: "MM/YY",
+      cardCvv: "CVV",
+      secure: "सुरक्षित",
+      encrypted: "एन्क्रिप्टेड",
+      cardAcceptance: "हम दुनिया भर में सभी प्रमुख डेबिट और क्रेडिट कार्ड स्वीकार करते हैं (वीज़ा, मास्टरकार्ड, अमेरिकन एक्सप्रेस, आदि)। आपके कार्ड विवरण सुरक्षित और एन्क्रिप्टेड हैं।",
+      mbwayPaymentNote: "एक बार भुगतान भेज दिया जाए, तो आपका ऑर्डर प्रसंस्कृत हो जाएगा। दुनिया भर के सभी देशों से भुगतान स्वीकार किए जाते हैं।",
+      loadingProduct: "उत्पाद लोड हो रहा है...",
+      save: "बचाएं",
+      new: "नया",
+      freeShipping: "मुफ्त शिपिंग",
+      authentic: "प्रामाणिक",
+      dayReturn: "30-दिवसीय रिटर्न",
+      fragranceNotes: "खुशबू नोट्स",
+      topNotes: "शीर्ष नोट्स",
+      middleNotes: "मध्य नोट्स",
+      baseNotes: "आधार नोट्स",
+      productDetails: "उत्पाद विवरण",
+      category: "श्रेणी",
+      availableSizes: "उपलब्ध आकार",
+      stockStatus: "स्टॉक स्थिति",
+      sku: "SKU",
+      careInstructions: "देखभाल निर्देश",
+      careInstruction1: "सीधी धूप से दूर ठंडी, सूखी जगह पर स्टोर करें",
+      careInstruction2: "उपयोग में न होने पर बोतल को कसकर बंद रखें",
+      careInstruction3: "सर्वोत्तम दीर्घायु के लिए नाड़ी बिंदुओं पर लगाएं",
+      careInstruction4: "गहने और हल्के कपड़ों के संपर्क से बचें",
+      careInstruction5: "केवल बाहरी उपयोग के लिए",
+      viewAllProducts: "सभी उत्पाद देखें",
+      featuredProductsDescription: "हमारी सबसे लोकप्रिय खुशबू की खोज करें, जो दुनिया भर के ग्राहकों द्वारा पसंद की जाती हैं",
+      reviews: "समीक्षाएं",
+      customerReviews: "ग्राहक समीक्षाएं",
+      basedOnReviews: "{count} समीक्षाओं के आधार पर",
+      verifiedPurchase: "सत्यापित खरीद",
+      helpful: "मददगार",
+      loadMoreReviews: "अधिक समीक्षाएं लोड करें",
+      youMightAlsoLike: "आपको यह भी पसंद आ सकता है",
+    },
+    about: {
+      ourStory: "हमारी कहानी",
+      ourStoryDescription: "2018 से शानदार खुशबू बनाना जो शान और विलासिता को परिभाषित करता है",
+      welcomeToAlsa: "AlsaFragrance में आपका स्वागत है",
+      aboutParagraph1: "2018 में स्थापित, AlsaFragrance एक जुनून परियोजना के रूप में शुरू हुआ जो गुणवत्ता और प्रामाणिकता की सराहना करने वाले विवेकपूर्ण ग्राहकों को दुनिया की बेहतरीन खुशबू लाने के लिए था। जो एक छोटे से सावधानीपूर्वक चुने गए सुगंधों के संग्रह के रूप में शुरू हुआ, वह समकालीन इत्र से लेकर पारंपरिक अत्तर तक सब कुछ प्रदान करने वाले एक व्यापक खुशबू घर में विकसित हो गया है।",
+      aboutParagraph2: "हमारी यात्रा इस विश्वास में निहित है कि खुशबू सिर्फ एक सुगंध से अधिक है – यह आत्म-अभिव्यक्ति का एक रूप, एक स्मृति निर्माता और आत्मविश्वास बढ़ाने वाला है। हमारे संग्रह में प्रत्येक उत्पाद को विस्तार से सावधानीपूर्वक ध्यान देने के साथ चुना या तैयार किया जाता है, यह सुनिश्चित करते हुए कि प्रत्येक बोतल एक अनूठी कहानी बताती है।",
+      aboutParagraph3: "आज, हमें दुनिया भर के ग्राहकों की सेवा करने पर गर्व है, पुरुषों और महिलाओं के लिए प्रीमियम खुशबू की एक व्यापक श्रृंखला, पारंपरिक अल्कोहल-मुक्त अत्तर, और सुविधाजनक टेस्टर आकार प्रदान करते हैं जो आपको प्रतिबद्धता के बिना अपनी सही खुशबू खोजने की अनुमति देते हैं।",
+      ourMission: "हमारा मिशन",
+      ourMissionDescription: "गुणवत्ता, प्रामाणिकता और ग्राहक सेवा के उच्चतम मानकों को बनाए रखते हुए सभी के लिए लक्जरी खुशबू को सुलभ बनाना।",
+      ourVision: "हमारी दृष्टि",
+      ourVisionDescription: "प्रीमियम खुशबू के लिए दुनिया का सबसे भरोसेमंद गंतव्य बनना, हमारी असाधारण गुणवत्ता, विविध चयन और व्यक्तिगत ग्राहक अनुभव के लिए जाना जाता है।",
+      ourValues: "हमारे मूल्य",
+      ourValuesDescription: "वे सिद्धांत जो हम जो कुछ भी करते हैं उसे निर्देशित करते हैं",
+      passionForFragrance: "खुशबू के लिए जुनून",
+      passionForFragranceDescription: "हम मानते हैं कि खुशबू एक कला का रूप है जो एक कहानी बताती है और भावनाओं को जगाती है।",
+      premiumQuality: "प्रीमियम गुणवत्ता",
+      premiumQualityDescription: "हमारे संग्रह में प्रत्येक उत्पाद गुणवत्ता और प्रामाणिकता के उच्चतम मानकों को पूरा करता है।",
+      naturalIngredients: "प्राकृतिक सामग्री",
+      naturalIngredientsDescription: "हम अपने विशेष मिश्रणों के लिए दुनिया भर से बेहतरीन प्राकृतिक सामग्री प्राप्त करते हैं।",
+      customerFirst: "ग्राहक पहले",
+      customerFirstDescription: "आपकी संतुष्टि हमारी प्राथमिकता है, और हम असाधारण सेवा के लिए प्रतिबद्ध हैं।",
+      ourJourney: "हमारी यात्रा",
+      ourJourneyDescription: "हमारी खुशबू कहानी में प्रमुख मील के पत्थर",
+      happyCustomers: "खुश ग्राहक",
+      premiumFragrances: "प्रीमियम खुशबू",
+      yearsOfExcellence: "उत्कृष्टता के वर्ष",
+      customerSatisfaction: "ग्राहक संतुष्टि",
+      milestone2018: "AlsaFragrance की स्थापना सभी के लिए लक्जरी खुशबू लाने के दृष्टिकोण के साथ की गई थी",
+      milestone2019: "12 विशेष सुगंधों वाला हमारा पहला सिग्नेचर संग्रह लॉन्च किया",
+      milestone2020: "पारंपरिक अत्तर और अल्कोहल-मुक्त खुशबू में विस्तार किया",
+      milestone2021: "दुनिया भर में 10,000 संतुष्ट ग्राहकों तक पहुंचे",
+      milestone2022: "जोखिम-मुक्त खुशबू खोज के लिए हमारा टेस्टर संग्रह पेश किया",
+      milestone2023: "हमारी प्रमुख बुटीक खोली और प्रीमियम सीमित संस्करण लॉन्च किए",
+      milestone2024: "50,000 से अधिक खुश ग्राहकों के साथ 6 वर्षों की उत्कृष्टता का जश्न मनाया",
+    },
+    contact: {
+      title: "संपर्क करें",
+      subtitle: "हम आपसे सुनना पसंद करेंगे। हमारे खुशबू विशेषज्ञों से संपर्क करें।",
+      sendUsMessage: "हमें एक संदेश भेजें",
+      getInTouch: "संपर्क में रहें",
+      visitOurStore: "हमारी दुकान पर जाएं",
+      callUs: "हमें कॉल करें",
+      emailUs: "हमें ईमेल करें",
+      businessHours: "व्यावसायिक घंटे",
+      businessHoursMonFri: "सोमवार - शुक्रवार: सुबह 9 बजे - शाम 6 बजे",
+      businessHoursSat: "शनिवार: सुबह 10 बजे - दोपहर 4 बजे",
+      businessHoursSun: "रविवार: बंद",
+      faq: "अक्सर पूछे जाने वाले प्रश्न",
+      faqDescription: "सामान्य प्रश्नों के त्वरित उत्तर",
+      shippingTime: "शिपिंग में कितना समय लगता है?",
+      shippingTimeAnswer: "हम €100 से अधिक के ऑर्डर पर मुफ्त मानक शिपिंग (3-5 व्यावसायिक दिन) प्रदान करते हैं। एक्सप्रेस शिपिंग (1-2 व्यावसायिक दिन) €15 के लिए उपलब्ध है।",
+      returnPolicy: "आपकी वापसी नीति क्या है?",
+      returnPolicyAnswer: "हम अनओपन आइटम के लिए 30-दिवसीय वापसी नीति प्रदान करते हैं। यदि आप पूरी तरह से संतुष्ट नहीं हैं तो खुले आइटम 14 दिनों के भीतर वापस किए जा सकते हैं।",
+      authenticProducts: "क्या आपके उत्पाद प्रामाणिक हैं?",
+      authenticProductsAnswer: "हां, हम 100% प्रामाणिक उत्पादों की गारंटी देते हैं। हम प्रामाणिकता सुनिश्चित करने के लिए अधिकृत वितरकों और ब्रांडों के साथ सीधे काम करते हैं।",
+      fragranceConsultations: "क्या आप खुशबू परामर्श प्रदान करते हैं?",
+      fragranceConsultationsAnswer: "हां! हमारे खुशबू विशेषज्ञ व्यक्तिगत परामर्श के लिए उपलब्ध हैं। वर्चुअल या इन-स्टोर अपॉइंटमेंट शेड्यूल करने के लिए हमसे संपर्क करें।",
+      fullName: "पूरा नाम *",
+      emailAddress: "ईमेल पता *",
+      subject: "विषय *",
+      message: "संदेश *",
+      selectSubject: "एक विषय चुनें",
+      generalInquiry: "सामान्य पूछताछ",
+      productQuestion: "उत्पाद प्रश्न",
+      orderSupport: "ऑर्डर सपोर्ट",
+      returnsExchanges: "वापसी और एक्सचेंज",
+      fragranceConsultation: "खुशबू परामर्श",
+      wholesaleInquiry: "थोक पूछताछ",
+      yourFullName: "आपका पूरा नाम",
+      yourEmail: "आपका.ईमेल@उदाहरण.com",
+      tellUsHow: "हमें बताएं कि हम आपकी कैसे मदद कर सकते हैं...",
+      sending: "भेज रहे हैं...",
+      messageSent: "संदेश भेजा गया!",
+      sendMessage: "संदेश भेजें",
+      tryAgain: "फिर से कोशिश करें",
+      thankYouMessage: "धन्यवाद! आपका संदेश fragrancealsa@gmail.com पर भेजा गया है। आपको 24 घंटों के भीतर प्रतिक्रिया मिलनी चाहिए।",
+      errorMessage: "आपके ईमेल क्लाइंट को खोलने में एक समस्या थी। कृपया पुनः प्रयास करें या fragrancealsa@gmail.com पर मैन्युअल रूप से ईमेल भेजें",
+    },
+    components: {
+      categoryShowcase: {
+        title: "संग्रह के अनुसार खरीदें",
+        description: "हमारे सावधानी से चुने गए संग्रहों का अन्वेषण करें, जो हर प्राथमिकता और अवसर के लिए डिज़ाइन किए गए हैं",
+        womenName: "महिलाएं",
+        womenDescription: "महिला खुशबू जो मोहित करती हैं और प्रेरित करती हैं",
+        menName: "पुरुष",
+        menDescription: "आधुनिक पुरुष के लिए बोल्ड और परिष्कृत खुशबू",
+        attarsName: "अत्तर",
+        attarsDescription: "शुद्ध, अल्कोहल-मुक्त पारंपरिक खुशबू",
+        testersName: "टेस्टर",
+        testersDescription: "हमारे टेस्टर संग्रह के साथ खरीदने से पहले आज़माएं",
+      },
+      newArrivals: {
+        title: "नए आगमन",
+        description: "प्रीमियम पैकेजिंग के साथ हमारी नवीनतम ALSA FRAGRANCE रचनाओं की खोज करें",
+        viewAll: "सभी नए आगमन देखें",
+      },
+      limitedEdition: {
+        title: "सीमित संस्करण",
+        description: "प्रीमियम उपहार प्रस्तुति के साथ विशेष ALSA FRAGRANCE बोतलें",
+        exclusiveBottles: "विशेष बोतलें",
+        exclusiveBottlesDesc: "प्रीमियम शिल्प कौशल के साथ सीमित संस्करण ALSA FRAGRANCE बोतलें",
+        premiumGifting: "प्रीमियम उपहार",
+        premiumGiftingDesc: "विशेष अवसरों और उत्सवों के लिए सुरुचिपूर्ण पैकेजिंग",
+        rareScents: "दुर्लभ खुशबू",
+        rareScentsDesc: "अद्वितीय खुशबू केवल हमारे सीमित संग्रह में उपलब्ध",
+        viewAll: "सभी सीमित संस्करण देखें",
+      },
+      testimonials: {
+        title: "हमारे ग्राहक क्या कहते हैं",
+        description: "हजारों संतुष्ट ग्राहकों में शामिल हों जिन्होंने हमारी खुशबू को अपनी दैनिक दिनचर्या का हिस्सा बनाया है",
+        purchased: "खरीदा गया",
+        readMore: "अधिक समीक्षाएं पढ़ें",
+      },
+      craftingProcess: {
+        title: "परफ्यूम बनाने की कला",
+        description: "हर बोतल के पीछे की सूक्ष्म प्रक्रिया की खोज करें, जहां सदियों पुरानी परंपरा आधुनिक नवाचार से मिलती है ताकि खुशबू बनाई जा सके जो इंद्रियों को मोहित करती है",
+        step1Title: "सामग्री चयन",
+        step1Desc: "हम दुनिया भर से बेहतरीन कच्चे माल का स्रोत करते हैं, बल्गेरियाई गुलाब से लेकर भारतीय चंदन तक।",
+        step2Title: "निष्कर्षण और आसवन",
+        step2Desc: "शुद्धतम सार निकालने के लिए पारंपरिक तरीकों को आधुनिक तकनीकों के साथ मिलाकर उपयोग करना।",
+        step3Title: "मिश्रण कला",
+        step3Desc: "मास्टर परफ्यूमर सावधानी से नोट्स को मिलाते हैं ताकि सामंजस्यपूर्ण और अद्वितीय खुशबू रचनाएं बनाई जा सकें।",
+        step4Title: "एजिंग और परिपक्वता",
+        step4Desc: "खुशबू को इष्टतम स्थितियों में उम्र दी जाती है ताकि नोट्स एक साथ आ सकें और जटिलता विकसित कर सकें।",
+        step5Title: "गुणवत्ता परीक्षण",
+        step5Desc: "प्रत्येक बैच स्थिरता, दीर्घायु और सुरक्षा मानकों को सुनिश्चित करने के लिए कठोर परीक्षण से गुजरता है।",
+        step6Title: "बोतलबंदी और पैकेजिंग",
+        step6Desc: "सावधानी से हाथ से बोतलबंद और सुरुचिपूर्ण पैकेजिंग में प्रस्तुत जो अंदर की विलासिता को दर्शाती है।",
+      },
+      fragranceNotes: {
+        title: "खुशबू नोट्स को समझना",
+        description: "तीन-स्तरीय संरचना के माध्यम से परफ्यूमरी की कला की खोज करें जो हर यादगार खुशबू बनाती है",
+        topNotes: "टॉप नोट्स",
+        topNotesDesc: "पहली छाप जो आपकी इंद्रियों को मोहित करती है",
+        heartNotes: "हार्ट नोट्स",
+        heartNotesDesc: "खुशबू की आत्मा जो इसके चरित्र को परिभाषित करती है",
+        baseNotes: "बेस नोट्स",
+        baseNotesDesc: "स्थायी नींव जो आपकी त्वचा पर रहती है",
+        pyramidTitle: "खुशबू पिरामिड",
+        pyramidDescription: "प्रत्येक ALSA FRAGRANCE परफ्यूम को इस तीन-स्तरीय संरचना का उपयोग करके सावधानी से तैयार किया जाता है। टॉप नोट्स प्रारंभिक छाप बनाते हैं, 15-30 मिनट तक चलते हैं। हार्ट नोट्स अगले उभरते हैं, 2-4 घंटे के लिए मुख्य चरित्र बनाते हैं। अंत में, बेस नोट्स स्थायी नींव प्रदान करते हैं जो 6-8 घंटे या उससे अधिक समय तक रह सकते हैं, आपकी त्वचा पर एक अद्वितीय खुशबू यात्रा बनाते हैं।",
+      },
+      perfumeCollection: {
+        title: "हस्ताक्षर संग्रह",
+        description: "प्रत्येक संग्रह एक अद्वितीय कहानी बताता है, दुनिया भर के बेहतरीन सामग्रियों से तैयार",
+        exploreCollection: "संग्रह का अन्वेषण करें",
+      },
+      categoryHero: {
+        productsAvailable: "उत्पाद उपलब्ध",
+        shopNow: "अभी खरीदें",
+      },
+      categoryGallery: {
+        description: "प्रीमियम खुशबू के हमारे चुने गए संग्रह का अन्वेषण करें, प्रत्येक बोतल सटीकता और सुरुचि के साथ तैयार",
+      },
+      promotionalBanner: {
+        exclusiveTitle: "विशेष संग्रह",
+        exclusiveSubtitle: "अल्सा फ्रैग्रेंस प्रीमियम सीरीज़",
+        exclusiveDesc: "दुर्लभ सामग्रियों से तैयार हमारी सबसे मांगी जाने वाली खुशबू की खोज करें",
+        exclusiveCta: "विशेष का अन्वेषण करें",
+        signatureTitle: "हस्ताक्षर खुशबू",
+        signatureSubtitle: "हस्तनिर्मित अल्सा ओरिजिनल्स",
+        signatureDesc: "हमारे मास्टर परफ्यूमर की बेहतरीन रचनाओं का अनुभव करें",
+        signatureCta: "हस्ताक्षर खरीदें",
+        premiumTitle: "प्रीमियम अत्तर",
+        premiumSubtitle: "पारंपरिक विलासिता को फिर से परिभाषित",
+        premiumDesc: "बेहतरीन प्राकृतिक सार से शुद्ध तेल-आधारित खुशबू",
+        premiumCta: "प्रीमियम की खोज करें",
+        saleTitle: "विशेष बिक्री",
+        saleSubtitle: "अल्सा फ्रैग्रेंस सीमित समय की पेशकश",
+        saleDesc: "चयनित प्रीमियम खुशबू पर 40% तक की छूट पाएं",
+        saleCta: "बिक्री खरीदें",
+        newTitle: "नए आगमन",
+        newSubtitle: "ताज़ा अल्सा फ्रैग्रेंस संग्रह",
+        newDesc: "अभी लॉन्च किए गए हमारे नवीनतम मोहक खुशबू का अन्वेषण करें",
+        newCta: "नया खोजें",
+        limitedTitle: "सीमित संस्करण",
+        limitedSubtitle: "विशेष अल्सा फ्रैग्रेंस सीरीज़",
+        limitedDesc: "दुर्लभ खुशबू केवल सीमित समय के लिए उपलब्ध",
+        limitedCta: "सीमित प्राप्त करें",
+      },
+    },
+    categoryPages: {
+      forHer: {
+        title: "उसके लिए",
+        description: "हमारे उत्कृष्ट महिला खुशबू संग्रह की खोज करें जो सुरुचि, परिष्कार और कालातीत सुंदरता को दर्शाता है",
+        searchPlaceholder: "महिला खुशबू खोजें...",
+      },
+      forHim: {
+        title: "उसके लिए",
+        description: "आधुनिक सज्जन के लिए तैयार बोल्ड और परिष्कृत खुशबू जो गुणवत्ता और भेद की सराहना करता है",
+        searchPlaceholder: "पुरुष खुशबू खोजें...",
+      },
+      attars: {
+        title: "अत्तर संग्रह",
+        description: "शुद्ध, अल्कोहल-मुक्त पारंपरिक खुशबू जो कालातीत सुरुचि और प्रामाणिक विलासिता का सार पकड़ती है",
+        aboutTitle: "हमारे अत्तर के बारे में",
+        aboutDescription: "अत्तर प्राकृतिक स्रोतों से प्राप्त केंद्रित परफ्यूम तेल हैं, जो पारंपरिक रूप से मध्य पूर्वी और दक्षिण एशियाई संस्कृतियों में उपयोग किए जाते हैं। हमारा संग्रह प्रामाणिक, अल्कोहल-मुक्त खुशबू प्रस्तुत करता है जो गहरी, समृद्ध नोट्स के साथ लंबे समय तक चलने वाली खुशबू प्रदान करता है।",
+        searchPlaceholder: "अत्तर खोजें...",
+      },
+      testers: {
+        title: "टेस्टर संग्रह",
+        description: "हमारे सावधानी से चुने गए खुशबू टेस्टर और नमूना आकारों के साथ खरीदने से पहले आज़माएं",
+        infoTitle: "हमारा टेस्टर संग्रह आपको पूर्ण बोतलों के लिए प्रतिबद्ध होने से पहले छोटे आकारों में हमारी खुशबू का अनुभव करने की अनुमति देता है। अपनी नई हस्ताक्षर खुशबू खोजने या कई खुशबू आज़माने के लिए परिपूर्ण।",
+        infoDescription: "",
+        searchPlaceholder: "टेस्टर खोजें...",
+        riskFreeTitle: "जोखिम-मुक्त परीक्षण",
+        riskFreeDesc: "पूर्ण आकार की बोतलों के लिए प्रतिबद्ध हुए बिना खुशबू आज़माएं",
+        travelTitle: "यात्रा के लिए परिपूर्ण",
+        travelDesc: "यात्रा और चलते-फिरते स्पर्श-अप के लिए आदर्श कॉम्पैक्ट आकार",
+        discoverTitle: "नई खुशबू खोजें",
+        discoverDesc: "विभिन्न खुशबू परिवारों का अन्वेषण करें और अपने पसंदीदा खोजें",
+      },
+      newArrivals: {
+        title: "नए आगमन",
+        description: "प्रीमियम पैकेजिंग और असाधारण गुणवत्ता के साथ हमारी नवीनतम ALSA FRAGRANCE रचनाओं की खोज करें",
+        productsAvailable: "नए उत्पाद उपलब्ध",
+        searchPlaceholder: "नए आगमन खोजें...",
+        showingProducts: "नए आगमन उत्पाद",
+        latestTitle: "नवीनतम खुशबू",
+        latestDesc: "हमारी नवीनतम खुशबू रचनाओं का अनुभव करने वाले पहले लोगों में से एक बनें",
+        premiumTitle: "प्रीमियम गुणवत्ता",
+        premiumDesc: "प्रत्येक नया आगमन बेहतरीन सामग्रियों और विवरणों पर असाधारण ध्यान के साथ तैयार किया जाता है",
+        exclusiveTitle: "विशेष पैकेजिंग",
+        exclusiveDesc: "हमारे नए आगमन में प्रीमियम पैकेजिंग है जो अंदर की विलासिता को दर्शाती है",
+      },
+      limitedEdition: {
+        title: "सीमित संस्करण",
+        description: "प्रीमियम उपहार प्रस्तुति और दुर्लभ खुशबू के साथ विशेष ALSA FRAGRANCE बोतलें",
+        productsAvailable: "सीमित संस्करण उत्पाद उपलब्ध",
+        searchPlaceholder: "सीमित संस्करण खोजें...",
+        showingProducts: "सीमित संस्करण उत्पाद",
+        exclusiveBottlesTitle: "विशेष बोतलें",
+        exclusiveBottlesDesc: "प्रीमियम शिल्प कौशल और अद्वितीय डिज़ाइन के साथ सीमित संस्करण ALSA FRAGRANCE बोतलें",
+        premiumGiftingTitle: "प्रीमियम उपहार",
+        premiumGiftingDesc: "विशेष अवसरों, उत्सवों और विलासिता उपहार के लिए सुरुचिपूर्ण पैकेजिंग",
+        rareScentsTitle: "दुर्लभ खुशबू",
+        rareScentsDesc: "अद्वितीय खुशबू केवल हमारे सीमित संग्रह में उपलब्ध - एक बार चले गए, तो चले गए",
+      },
+      common: {
+        sortBy: "क्रमबद्ध करें",
+        nameAZ: "नाम A-Z",
+        priceLowHigh: "मूल्य: कम से अधिक",
+        priceHighLow: "मूल्य: अधिक से कम",
+        highestRated: "सर्वोच्च रेटेड",
+        newestFirst: "नवीनतम पहले",
+        showing: "दिखा रहे हैं",
+        of: "का",
+        products: "उत्पाद",
+        loadingProducts: "उत्पाद लोड हो रहे हैं...",
+        noProductsFound: "कोई उत्पाद नहीं मिला",
+        clearSearch: "खोज साफ करें",
+      },
     },
   },
   ar: {
@@ -468,6 +1784,33 @@ export const translations: Record<Language, Translations> = {
       customerService: "خدمة العملاء",
       newsletter: "النشرة الإخبارية",
       subscribe: "اشترك",
+      stayInTheScent: "ابق في العطر",
+      subscribeDescription: "اشترك للحصول على عروض خاصة ووافدات جديدة ونصائح العطور.",
+      enterEmail: "أدخل بريدك الإلكتروني",
+      shop: "المتجر",
+      company: "الشركة",
+      contactUs: "اتصل بنا",
+      allProducts: "جميع المنتجات",
+      womensFragrances: "عطور النساء",
+      mensFragrances: "عطور الرجال",
+      attars: "العطار",
+      testers: "عينات",
+      newArrivals: "وافدات جديدة",
+      limitedEdition: "إصدار محدود",
+      aboutUs: "من نحن",
+      contact: "اتصل",
+      careers: "الوظائف",
+      press: "الصحافة",
+      blog: "المدونة",
+      faq: "الأسئلة الشائعة",
+      shippingInfo: "معلومات الشحن",
+      returns: "الإرجاع",
+      sizeGuide: "دليل المقاسات",
+      trackOrder: "تتبع الطلب",
+      companyDescription: "صنع عطور استثنائية تحدد الأناقة والرفاهية منذ عام 2018.",
+      copyright: "© 2025 Alsa Fragrance. جميع الحقوق محفوظة.",
+      weAccept: "نقبل:",
+      designedBy: "صمم بواسطة",
     },
     home: {
       discoverCollection: "اكتشف مجموعتنا",
@@ -475,6 +1818,18 @@ export const translations: Record<Language, Translations> = {
       newArrivals: "وافدات جديدة",
       featuredProducts: "منتجات مميزة",
       limitedEdition: "إصدار محدود",
+      signatureCollection: "مجموعة Alsa التوقيعية",
+      signatureSubtitle: "اكتشف عطورنا المميزة",
+      signatureDescription: "استمتع بالرفاهية مع مجموعتنا المختارة بعناية من العطور والعطار المميزة",
+      shopCollection: "تسوق المجموعة",
+      limitedEditionTitle: "Alsa إصدار محدود",
+      limitedEditionSubtitle: "عطور حصرية للخبراء",
+      limitedEditionDescription: "عطور نادرة وفاخرة مصنوعة لأولئك الذين يقدرون الأفضل",
+      exploreLimitedEdition: "استكشف الإصدار المحدود",
+      attarCollection: "مجموعة العطار Alsa",
+      attarSubtitle: "الرفاهية التقليدية المعاد تعريفها",
+      attarDescription: "عطور نقية خالية من الكحول تلتقط جوهر الأناقة الخالدة",
+      discoverAttars: "اكتشف العطار",
     },
     shop: {
       title: "المتجر",
@@ -494,6 +1849,295 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "تعليمات دفع MBWay",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "يرجى إرسال الدفع إلى رقم MBWay التالي:",
+      cardNumber: "رقم البطاقة",
+      cardExpiry: "MM/YY",
+      cardCvv: "CVV",
+      secure: "آمن",
+      encrypted: "مشفّر",
+      cardAcceptance: "نقبل جميع بطاقات الخصم والائتمان الرئيسية في جميع أنحاء العالم (فيزا، ماستركارد، أمريكان إكسبريس، إلخ). تفاصيل بطاقتك آمنة ومشفرة.",
+      mbwayPaymentNote: "بمجرد إرسال الدفع، سيتم معالجة طلبك. يتم قبول المدفوعات من جميع البلدان في جميع أنحاء العالم.",
+      loadingProduct: "جاري تحميل المنتج...",
+      save: "حفظ",
+      new: "جديد",
+      freeShipping: "شحن مجاني",
+      authentic: "أصلي",
+      dayReturn: "إرجاع 30 يوم",
+      fragranceNotes: "ملاحظات العطر",
+      topNotes: "الملاحظات العلوية",
+      middleNotes: "الملاحظات الوسطى",
+      baseNotes: "الملاحظات الأساسية",
+      productDetails: "تفاصيل المنتج",
+      category: "الفئة",
+      availableSizes: "الأحجام المتاحة",
+      stockStatus: "حالة المخزون",
+      sku: "SKU",
+      careInstructions: "تعليمات العناية",
+      careInstruction1: "تخزين في مكان بارد وجاف بعيدًا عن أشعة الشمس المباشرة",
+      careInstruction2: "إبقاء الزجاجة مغلقة بإحكام عند عدم الاستخدام",
+      careInstruction3: "تطبيق على نقاط النبض لأفضل مدة",
+      careInstruction4: "تجنب ملامسة المجوهرات والأقمشة الخفيفة",
+      careInstruction5: "للاستخدام الخارجي فقط",
+      viewAllProducts: "عرض جميع المنتجات",
+      featuredProductsDescription: "اكتشف عطورنا الأكثر شعبية، المحبوبة من قبل العملاء في جميع أنحاء العالم",
+      reviews: "المراجعات",
+      customerReviews: "مراجعات العملاء",
+      basedOnReviews: "بناءً على {count} مراجعة",
+      verifiedPurchase: "شراء مُتحقق منه",
+      helpful: "مفيد",
+      loadMoreReviews: "تحميل المزيد من المراجعات",
+      youMightAlsoLike: "قد يعجبك أيضًا",
+    },
+    about: {
+      ourStory: "قصتنا",
+      ourStoryDescription: "صنع عطور استثنائية تحدد الأناقة والرفاهية منذ عام 2018",
+      welcomeToAlsa: "مرحبًا بك في AlsaFragrance",
+      aboutParagraph1: "تأسست AlsaFragrance في عام 2018 كمشروع شغف لجلب أفضل العطور في العالم للعملاء المميزين الذين يقدرون الجودة والأصالة. ما بدأ كمجموعة صغيرة من العطور المختارة بعناية نما ليصبح دار عطور شاملة تقدم كل شيء من العطور المعاصرة إلى العطار التقليدي.",
+      aboutParagraph2: "رحلتنا متجذرة في الاعتقاد بأن العطر أكثر من مجرد رائحة – إنه شكل من أشكال التعبير عن الذات، وصانع ذكريات، ومعزز للثقة. يتم اختيار أو صنع كل منتج في مجموعتنا بعناية فائقة بالتفاصيل، مما يضمن أن كل زجاجة تحكي قصة فريدة.",
+      aboutParagraph3: "اليوم، نحن فخورون بخدمة العملاء في جميع أنحاء العالم، ونقدم مجموعة واسعة من العطور المميزة للرجال والنساء، والعطار التقليدي الخالي من الكحول، وأحجام الاختبار المريحة التي تسمح لك باكتشاف رائحتك المثالية دون التزام.",
+      ourMission: "مهمتنا",
+      ourMissionDescription: "جعل العطور الفاخرة في متناول الجميع مع الحفاظ على أعلى معايير الجودة والأصالة وخدمة العملاء.",
+      ourVision: "رؤيتنا",
+      ourVisionDescription: "أن نصبح الوجهة الأكثر ثقة في العالم للعطور المميزة، معروفين بجودتنا الاستثنائية، وتنوع اختيارنا، وتجربة العملاء الشخصية.",
+      ourValues: "قيمنا",
+      ourValuesDescription: "المبادئ التي توجه كل ما نقوم به",
+      passionForFragrance: "الشغف بالعطر",
+      passionForFragranceDescription: "نؤمن أن العطر هو شكل من أشكال الفن الذي يحكي قصة ويستحضر المشاعر.",
+      premiumQuality: "الجودة المميزة",
+      premiumQualityDescription: "كل منتج في مجموعتنا يلبي أعلى معايير الجودة والأصالة.",
+      naturalIngredients: "المكونات الطبيعية",
+      naturalIngredientsDescription: "نحصل على أفضل المكونات الطبيعية من جميع أنحاء العالم لمزائجنا الحصرية.",
+      customerFirst: "العميل أولاً",
+      customerFirstDescription: "رضاك هو أولويتنا، ونحن ملتزمون بخدمة استثنائية.",
+      ourJourney: "رحلتنا",
+      ourJourneyDescription: "معالم رئيسية في قصة عطورنا",
+      happyCustomers: "عملاء سعداء",
+      premiumFragrances: "عطور مميزة",
+      yearsOfExcellence: "سنوات من التميز",
+      customerSatisfaction: "رضا العملاء",
+      milestone2018: "تأسست AlsaFragrance برؤية لجلب العطور الفاخرة للجميع",
+      milestone2019: "أطلقنا مجموعتنا التوقيعية الأولى التي تضم 12 عطرًا حصريًا",
+      milestone2020: "توسعنا في العطار التقليدي والعطور الخالية من الكحول",
+      milestone2021: "وصلنا إلى 10,000 عميل راضٍ في جميع أنحاء العالم",
+      milestone2022: "قدمنا مجموعتنا التجريبية لاكتشاف العطور بدون مخاطر",
+      milestone2023: "فتحنا بوتيكنا الرئيسي وأطلقنا إصدارات محدودة مميزة",
+      milestone2024: "نحتفل بست سنوات من التميز مع أكثر من 50,000 عميل سعيد",
+    },
+    contact: {
+      title: "اتصل بنا",
+      subtitle: "نحب أن نسمع منك. تواصل مع خبراء العطور لدينا.",
+      sendUsMessage: "أرسل لنا رسالة",
+      getInTouch: "تواصل معنا",
+      visitOurStore: "زر متجرنا",
+      callUs: "اتصل بنا",
+      emailUs: "راسلنا",
+      businessHours: "ساعات العمل",
+      businessHoursMonFri: "الاثنين - الجمعة: 9 صباحًا - 6 مساءً",
+      businessHoursSat: "السبت: 10 صباحًا - 4 مساءً",
+      businessHoursSun: "الأحد: مغلق",
+      faq: "الأسئلة الشائعة",
+      faqDescription: "إجابات سريعة للأسئلة الشائعة",
+      shippingTime: "كم يستغرق الشحن؟",
+      shippingTimeAnswer: "نوفر شحنًا قياسيًا مجانيًا (3-5 أيام عمل) للطلبات التي تزيد عن 100 يورو. الشحن السريع (1-2 أيام عمل) متاح مقابل 15 يورو.",
+      returnPolicy: "ما هي سياسة الإرجاع الخاصة بك؟",
+      returnPolicyAnswer: "نوفر سياسة إرجاع لمدة 30 يومًا للعناصر غير المفتوحة. يمكن إرجاع العناصر المفتوحة خلال 14 يومًا إذا لم تكن راضيًا تمامًا.",
+      authenticProducts: "هل منتجاتك أصلية؟",
+      authenticProductsAnswer: "نعم، نضمن منتجات أصلية 100%. نعمل مباشرة مع الموزعين والعلامات التجارية المعتمدة لضمان الأصالة.",
+      fragranceConsultations: "هل تقدمون استشارات العطور؟",
+      fragranceConsultationsAnswer: "نعم! خبراء العطور لدينا متاحون للاستشارات الشخصية. اتصل بنا لجدولة موعد افتراضي أو في المتجر.",
+      fullName: "الاسم الكامل *",
+      emailAddress: "عنوان البريد الإلكتروني *",
+      subject: "الموضوع *",
+      message: "الرسالة *",
+      selectSubject: "اختر موضوعًا",
+      generalInquiry: "استفسار عام",
+      productQuestion: "سؤال عن المنتج",
+      orderSupport: "دعم الطلب",
+      returnsExchanges: "الإرجاع والتبديل",
+      fragranceConsultation: "استشارة العطور",
+      wholesaleInquiry: "استفسار الجملة",
+      yourFullName: "اسمك الكامل",
+      yourEmail: "بريدك.الإلكتروني@مثال.com",
+      tellUsHow: "أخبرنا كيف يمكننا مساعدتك...",
+      sending: "جاري الإرسال...",
+      messageSent: "تم إرسال الرسالة!",
+      sendMessage: "إرسال الرسالة",
+      tryAgain: "حاول مرة أخرى",
+      thankYouMessage: "شكرًا لك! تم إرسال رسالتك إلى fragrancealsa@gmail.com. يجب أن تتلقى ردًا خلال 24 ساعة.",
+      errorMessage: "كانت هناك مشكلة في فتح عميل البريد الإلكتروني الخاص بك. يرجى المحاولة مرة أخرى أو إرسال بريد إلكتروني يدويًا إلى fragrancealsa@gmail.com",
+    },
+    components: {
+      categoryShowcase: {
+        title: "تسوق حسب المجموعة",
+        description: "استكشف مجموعاتنا المختارة بعناية المصممة لكل تفضيل ومناسبة",
+        womenName: "نساء",
+        womenDescription: "عطور نسائية تأسر و تلهم",
+        menName: "رجال",
+        menDescription: "عطور جريئة ومتطورة للرجل العصري",
+        attarsName: "العطار",
+        attarsDescription: "عطور تقليدية نقية خالية من الكحول",
+        testersName: "عينات",
+        testersDescription: "جرب قبل الشراء مع مجموعتنا من العينات",
+      },
+      newArrivals: {
+        title: "وافدات جديدة",
+        description: "اكتشف أحدث إبداعات ALSA FRAGRANCE مع تغليف فاخر",
+        viewAll: "عرض جميع الوافدات الجديدة",
+      },
+      limitedEdition: {
+        title: "إصدار محدود",
+        description: "زجاجات ALSA FRAGRANCE الحصرية مع عرض هدايا فاخر",
+        exclusiveBottles: "زجاجات حصرية",
+        exclusiveBottlesDesc: "زجاجات ALSA FRAGRANCE إصدار محدود بحرفية فاخرة",
+        premiumGifting: "هدايا فاخرة",
+        premiumGiftingDesc: "تغليف أنيق مثالي للمناسبات الخاصة والاحتفالات",
+        rareScents: "عطور نادرة",
+        rareScentsDesc: "عطور فريدة متاحة فقط في مجموعتنا المحدودة",
+        viewAll: "عرض جميع الإصدارات المحدودة",
+      },
+      testimonials: {
+        title: "ماذا يقول عملاؤنا",
+        description: "انضم إلى آلاف العملاء الراضين الذين جعلوا عطورنا جزءًا من طقوسهم اليومية",
+        purchased: "تم الشراء",
+        readMore: "قراءة المزيد من المراجعات",
+      },
+      craftingProcess: {
+        title: "فن صنع العطور",
+        description: "اكتشف العملية الدقيقة وراء كل زجاجة، حيث تلتقي التقاليد القديمة بالابتكار الحديث لإنشاء عطور تأسر الحواس",
+        step1Title: "اختيار المكونات",
+        step1Desc: "نحن نستورد أفضل المواد الخام من جميع أنحاء العالم، من الورود البلغارية إلى خشب الصندل الهندي.",
+        step2Title: "الاستخراج والتقطير",
+        step2Desc: "استخدام الطرق التقليدية المدمجة مع التقنيات الحديثة لاستخراج أنقى العطور.",
+        step3Title: "فن المزج",
+        step3Desc: "يخلط العطارون الماهرون الملاحظات بعناية لإنشاء تركيبات عطرية متناغمة وفريدة.",
+        step4Title: "التقادم والنضج",
+        step4Desc: "يتم تقادم العطور في ظروف مثالية للسماح للملاحظات بالاندماج وتطوير التعقيد.",
+        step5Title: "اختبار الجودة",
+        step5Desc: "يخضع كل دفعة لاختبارات صارمة لضمان الاتساق والاستمرارية ومعايير السلامة.",
+        step6Title: "التعبئة والتغليف",
+        step6Desc: "معبأة يدويًا بعناية ومقدمة في تغليف أنيق يعكس الفخامة بداخلها.",
+      },
+      fragranceNotes: {
+        title: "فهم ملاحظات العطر",
+        description: "اكتشف فن العطور من خلال الهيكل ثلاثي المستويات الذي يخلق كل رائحة لا تُنسى",
+        topNotes: "الملاحظات العلوية",
+        topNotesDesc: "الانطباع الأول الذي يأسر حواسك",
+        heartNotes: "ملاحظات القلب",
+        heartNotesDesc: "روح العطر التي تحدد شخصيته",
+        baseNotes: "الملاحظات الأساسية",
+        baseNotesDesc: "الأساس الدائم الذي يبقى على بشرتك",
+        pyramidTitle: "هرم العطر",
+        pyramidDescription: "يتم صياغة كل عطر ALSA FRAGRANCE بعناية باستخدام هذا الهيكل ثلاثي المستويات. تخلق الملاحظات العلوية الانطباع الأولي، وتستمر من 15-30 دقيقة. تظهر ملاحظات القلب بعد ذلك، مشكلة الشخصية الأساسية لمدة 2-4 ساعات. أخيرًا، توفر الملاحظات الأساسية الأساس الدائم الذي يمكن أن يبقى لمدة 6-8 ساعات أو أكثر، مما يخلق رحلة عطرية فريدة على بشرتك.",
+      },
+      perfumeCollection: {
+        title: "مجموعات التوقيع",
+        description: "كل مجموعة تحكي قصة فريدة، مصنوعة بأفضل المكونات من جميع أنحاء العالم",
+        exploreCollection: "استكشف المجموعة",
+      },
+      categoryHero: {
+        productsAvailable: "منتجات متاحة",
+        shopNow: "تسوق الآن",
+      },
+      categoryGallery: {
+        description: "استكشف مجموعتنا المختارة من العطور الفاخرة، كل زجاجة مصنوعة بدقة وأناقة",
+      },
+      promotionalBanner: {
+        exclusiveTitle: "مجموعة حصرية",
+        exclusiveSubtitle: "سلسلة Alsa Fragrance المميزة",
+        exclusiveDesc: "اكتشف عطورنا الأكثر طلبًا المصنوعة بمكونات نادرة",
+        exclusiveCta: "استكشف الحصري",
+        signatureTitle: "عطور التوقيع",
+        signatureSubtitle: "أصلي Alsa الحرفي",
+        signatureDesc: "اختبر أفضل إبداعات عطارنا الرئيسي",
+        signatureCta: "تسوق التوقيع",
+        premiumTitle: "عطور فاخرة",
+        premiumSubtitle: "الفخامة التقليدية المعرفة",
+        premiumDesc: "عطور نقية قائمة على الزيت من أفضل العطور الطبيعية",
+        premiumCta: "اكتشف المميز",
+        saleTitle: "بيع خاص",
+        saleSubtitle: "عرض Alsa Fragrance لفترة محدودة",
+        saleDesc: "احصل على خصم يصل إلى 40% على العطور المميزة المختارة",
+        saleCta: "تسوق البيع",
+        newTitle: "وافدات جديدة",
+        newSubtitle: "مجموعة Alsa Fragrance الطازجة",
+        newDesc: "استكشف أحدث عطورنا الجذابة التي تم إطلاقها للتو",
+        newCta: "اكتشف الجديد",
+        limitedTitle: "إصدار محدود",
+        limitedSubtitle: "سلسلة Alsa Fragrance الحصرية",
+        limitedDesc: "عطور نادرة متاحة لفترة محدودة فقط",
+        limitedCta: "احصل على المحدود",
+      },
+    },
+    categoryPages: {
+      forHer: {
+        title: "لها",
+        description: "اكتشف مجموعتنا الرائعة من العطور النسائية التي تجسد الأناقة والرقي والجمال الخالد",
+        searchPlaceholder: "البحث عن عطور نسائية...",
+      },
+      forHim: {
+        title: "له",
+        description: "عطور جريئة ومتطورة مصنوعة للرجل العصري الذي يقدر الجودة والتميز",
+        searchPlaceholder: "البحث عن عطور رجالية...",
+      },
+      attars: {
+        title: "مجموعة العطار",
+        description: "عطور تقليدية نقية خالية من الكحول تجسد جوهر الأناقة الخالدة والفخامة الأصيلة",
+        aboutTitle: "حول عطورنا",
+        aboutDescription: "العطور هي زيوت عطرية مركزة مستخرجة من مصادر طبيعية، تُستخدم تقليديًا في ثقافات الشرق الأوسط وجنوب آسيا. تتميز مجموعتنا بعطور أصيلة خالية من الكحول تقدم روائح طويلة الأمد مع ملاحظات عميقة وغنية.",
+        searchPlaceholder: "البحث عن العطور...",
+      },
+      testers: {
+        title: "مجموعة العينات",
+        description: "جرب قبل الشراء مع مجموعتنا المختارة بعناية من عينات العطور وأحجام العينات",
+        infoTitle: "تسمح لك مجموعتنا من العينات بتجربة عطورنا بأحجام أصغر قبل الالتزام بزجاجات كاملة. مثالي لاكتشاف رائحة توقيعك الجديدة أو تجربة عطور متعددة.",
+        infoDescription: "",
+        searchPlaceholder: "البحث عن العينات...",
+        riskFreeTitle: "اختبار خالٍ من المخاطر",
+        riskFreeDesc: "جرب العطور دون الالتزام بزجاجات بحجم كامل",
+        travelTitle: "مثالي للسفر",
+        travelDesc: "أحجام مدمجة مثالية للسفر واللمسات أثناء التنقل",
+        discoverTitle: "اكتشف عطور جديدة",
+        discoverDesc: "استكشف عائلات عطور مختلفة وابحث عن المفضلة لديك",
+      },
+      newArrivals: {
+        title: "وافدات جديدة",
+        description: "اكتشف أحدث إبداعات ALSA FRAGRANCE مع تغليف فاخر وجودة استثنائية",
+        productsAvailable: "منتجات جديدة متاحة",
+        searchPlaceholder: "البحث عن الوافدات الجديدة...",
+        showingProducts: "منتجات وافدات جديدة",
+        latestTitle: "أحدث العطور",
+        latestDesc: "كن من بين أول من يجرب أحدث إبداعات العطور لدينا",
+        premiumTitle: "جودة فاخرة",
+        premiumDesc: "كل وافد جديد مصنوع بأفضل المكونات واهتمام استثنائي بالتفاصيل",
+        exclusiveTitle: "تغليف حصري",
+        exclusiveDesc: "تتميز وافداتنا الجديدة بتغليف فاخر يعكس الفخامة بداخلها",
+      },
+      limitedEdition: {
+        title: "إصدار محدود",
+        description: "زجاجات ALSA FRAGRANCE الحصرية مع عرض هدايا فاخر وعطور نادرة",
+        productsAvailable: "منتجات إصدار محدود متاحة",
+        searchPlaceholder: "البحث عن الإصدار المحدود...",
+        showingProducts: "منتجات إصدار محدود",
+        exclusiveBottlesTitle: "زجاجات حصرية",
+        exclusiveBottlesDesc: "زجاجات ALSA FRAGRANCE إصدار محدود بحرفية فاخرة وتصاميم فريدة",
+        premiumGiftingTitle: "هدايا فاخرة",
+        premiumGiftingDesc: "تغليف أنيق مثالي للمناسبات الخاصة والاحتفالات والهدايا الفاخرة",
+        rareScentsTitle: "عطور نادرة",
+        rareScentsDesc: "عطور فريدة متاحة فقط في مجموعتنا المحدودة - بمجرد نفادها، تنتهي",
+      },
+      common: {
+        sortBy: "ترتيب حسب",
+        nameAZ: "الاسم أ-ي",
+        priceLowHigh: "السعر: منخفض إلى مرتفع",
+        priceHighLow: "السعر: مرتفع إلى منخفض",
+        highestRated: "الأعلى تقييمًا",
+        newestFirst: "الأحدث أولاً",
+        showing: "عرض",
+        of: "من",
+        products: "منتجات",
+        loadingProducts: "جاري تحميل المنتجات...",
+        noProductsFound: "لم يتم العثور على منتجات",
+        clearSearch: "مسح البحث",
+      },
     },
   },
   ur: {
@@ -565,6 +2209,33 @@ export const translations: Record<Language, Translations> = {
       customerService: "کسٹمر سروس",
       newsletter: "نیوز لیٹر",
       subscribe: "سبسکرائب کریں",
+      stayInTheScent: "خوشبو میں رہیں",
+      subscribeDescription: "خصوصی پیشکشوں، نئے آئٹمز اور خوشبو کی تجاویز حاصل کرنے کے لیے سبسکرائب کریں۔",
+      enterEmail: "اپنا ای میل درج کریں",
+      shop: "دکان",
+      company: "کمپنی",
+      contactUs: "ہم سے رابطہ کریں",
+      allProducts: "تمام مصنوعات",
+      womensFragrances: "خواتین کی خوشبو",
+      mensFragrances: "مردوں کی خوشبو",
+      attars: "عطار",
+      testers: "ٹیسٹر",
+      newArrivals: "نئے آئٹمز",
+      limitedEdition: "محدود ایڈیشن",
+      aboutUs: "ہمارے بارے میں",
+      contact: "رابطہ",
+      careers: "کیریئر",
+      press: "پریس",
+      blog: "بلاگ",
+      faq: "FAQ",
+      shippingInfo: "شپنگ کی معلومات",
+      returns: "واپسی",
+      sizeGuide: "سائز گائیڈ",
+      trackOrder: "آرڈر ٹریک کریں",
+      companyDescription: "2018 سے غیر معمولی خوشبو بنانا جو شان و شوکت اور عیش و آرام کو بیان کرتی ہے۔",
+      copyright: "© 2025 Alsa Fragrance. تمام حقوق محفوظ ہیں۔",
+      weAccept: "ہم قبول کرتے ہیں:",
+      designedBy: "ڈیزائن کیا گیا",
     },
     home: {
       discoverCollection: "ہمارے مجموعہ کی دریافت کریں",
@@ -572,6 +2243,18 @@ export const translations: Record<Language, Translations> = {
       newArrivals: "نئے آئٹمز",
       featuredProducts: "نمایاں مصنوعات",
       limitedEdition: "محدود ایڈیشن",
+      signatureCollection: "Alsa دستخط مجموعہ",
+      signatureSubtitle: "ہماری پریمیم خوشبو دریافت کریں",
+      signatureDescription: "ہمارے احتیاط سے منتخب کردہ پریمیم پرفیوم اور عطار کے انتخاب کے ساتھ عیش و آرام کا تجربہ کریں",
+      shopCollection: "مجموعہ خریدیں",
+      limitedEditionTitle: "Alsa محدود ایڈیشن",
+      limitedEditionSubtitle: "پارکھیوں کے لیے خصوصی خوشبو",
+      limitedEditionDescription: "نایاب اور عمدہ خوشبو جو بہترین کی تعریف کرنے والوں کے لیے بنائی گئی ہیں",
+      exploreLimitedEdition: "محدود ایڈیشن دریافت کریں",
+      attarCollection: "Alsa عطار مجموعہ",
+      attarSubtitle: "روایتی عیش و آرام کو دوبارہ بیان",
+      attarDescription: "خالص، الکحل سے پاک خوشبو جو لازوال شان کی روح کو پکڑتی ہیں",
+      discoverAttars: "عطار دریافت کریں",
     },
     shop: {
       title: "دکان",
@@ -591,6 +2274,295 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "MBWay ادائیگی کی ہدایات",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "براہ کرم مندرجہ ذیل MBWay نمبر پر ادائیگی بھیجیں:",
+      cardNumber: "کارڈ نمبر",
+      cardExpiry: "MM/YY",
+      cardCvv: "CVV",
+      secure: "محفوظ",
+      encrypted: "خفیہ کردہ",
+      cardAcceptance: "ہم دنیا بھر میں تمام اہم ڈیبٹ اور کریڈٹ کارڈز قبول کرتے ہیں (ویزا، ماسٹرکارڈ، امریکن ایکسپریس، وغیرہ)۔ آپ کے کارڈ کی تفصیلات محفوظ اور خفیہ کردہ ہیں۔",
+      mbwayPaymentNote: "ایک بار ادائیگی بھیج دی جائے، آپ کا آرڈر پروسیس ہو جائے گا۔ دنیا بھر کے تمام ممالک سے ادائیگیاں قبول کی جاتی ہیں۔",
+      loadingProduct: "پروڈکٹ لوڈ ہو رہا ہے...",
+      save: "بچائیں",
+      new: "نیا",
+      freeShipping: "مفت شپنگ",
+      authentic: "اصلی",
+      dayReturn: "30-دن کی واپسی",
+      fragranceNotes: "خوشبو نوٹس",
+      topNotes: "اوپری نوٹس",
+      middleNotes: "درمیانی نوٹس",
+      baseNotes: "بنیادی نوٹس",
+      productDetails: "پروڈکٹ کی تفصیلات",
+      category: "زمرہ",
+      availableSizes: "دستیاب سائز",
+      stockStatus: "اسٹاک کی حیثیت",
+      sku: "SKU",
+      careInstructions: "دیکھ بھال کی ہدایات",
+      careInstruction1: "سیدھی دھوپ سے دور ٹھنڈی، خشک جگہ پر محفوظ کریں",
+      careInstruction2: "استعمال میں نہ ہونے پر بوتل کو مضبوطی سے بند رکھیں",
+      careInstruction3: "بہترین طوالت کے لیے نبض کے مقامات پر لگائیں",
+      careInstruction4: "زیورات اور ہلکے کپڑوں کے رابطے سے بچیں",
+      careInstruction5: "صرف بیرونی استعمال کے لیے",
+      viewAllProducts: "تمام مصنوعات دیکھیں",
+      featuredProductsDescription: "ہماری سب سے مقبول خوشبو دریافت کریں، جو دنیا بھر کے گاہکوں کی طرف سے پسند کی جاتی ہیں",
+      reviews: "جائزے",
+      customerReviews: "کسٹمر جائزے",
+      basedOnReviews: "{count} جائزوں کی بنیاد پر",
+      verifiedPurchase: "تصدیق شدہ خریداری",
+      helpful: "مددگار",
+      loadMoreReviews: "مزید جائزے لوڈ کریں",
+      youMightAlsoLike: "آپ کو یہ بھی پسند آ سکتا ہے",
+    },
+    about: {
+      ourStory: "ہماری کہانی",
+      ourStoryDescription: "2018 سے غیر معمولی خوشبو بنانا جو شان و شوکت اور عیش و آرام کو بیان کرتی ہے",
+      welcomeToAlsa: "AlsaFragrance میں خوش آمدید",
+      aboutParagraph1: "2018 میں قائم، AlsaFragrance ایک جذبہ منصوبہ کے طور پر شروع ہوا جو معیار اور اصالت کی تعریف کرنے والے سمجھدار گاہکوں کو دنیا کی بہترین خوشبو لانے کے لیے تھا۔ جو ایک چھوٹے سے احتیاط سے منتخب کردہ خوشبو کے مجموعہ کے طور پر شروع ہوا، وہ معاصر پرفیوم سے لے کر روایتی عطار تک سب کچھ پیش کرنے والے ایک جامع خوشبو گھر میں ترقی کر گیا ہے۔",
+      aboutParagraph2: "ہماری سفر اس یقین میں جڑی ہوئی ہے کہ خوشبو صرف ایک خوشبو سے زیادہ ہے – یہ خود اظہار کی ایک شکل، ایک یاد بنانے والا، اور اعتماد بڑھانے والا ہے۔ ہمارے مجموعہ میں ہر پروڈکٹ کو تفصیلات پر باریک بینی سے توجہ کے ساتھ منتخب یا تیار کیا جاتا ہے، یہ یقینی بناتے ہوئے کہ ہر بوتل ایک منفرد کہانی سناتی ہے۔",
+      aboutParagraph3: "آج، ہمیں دنیا بھر کے گاہکوں کی خدمت کرنے پر فخر ہے، مردوں اور خواتین کے لیے پریمیم خوشبو کی ایک وسیع رینج، روایتی الکحل سے پاک عطار، اور آسان ٹیسٹر سائز پیش کرتے ہیں جو آپ کو وعدہ کے بغیر اپنی کامل خوشبو دریافت کرنے کی اجازت دیتے ہیں۔",
+      ourMission: "ہمارا مشن",
+      ourMissionDescription: "معیار، اصالت اور کسٹمر سروس کے اعلیٰ ترین معیارات کو برقرار رکھتے ہوئے سب کے لیے لگژری خوشبو کو قابل رسائی بنانا۔",
+      ourVision: "ہماری وژن",
+      ourVisionDescription: "پریمیم خوشبو کے لیے دنیا کا سب سے قابل اعتماد مقام بننا، ہماری غیر معمولی معیار، متنوع انتخاب، اور ذاتی کسٹمر تجربے کے لیے جانا جاتا ہے۔",
+      ourValues: "ہمارے اقدار",
+      ourValuesDescription: "وہ اصول جو ہم جو کچھ بھی کرتے ہیں اس کی رہنمائی کرتے ہیں",
+      passionForFragrance: "خوشبو کے لیے جذبہ",
+      passionForFragranceDescription: "ہم یقین رکھتے ہیں کہ خوشبو فن کی ایک شکل ہے جو ایک کہانی سناتی ہے اور جذبات کو ابھارتی ہے۔",
+      premiumQuality: "پریمیم معیار",
+      premiumQualityDescription: "ہمارے مجموعہ میں ہر پروڈکٹ معیار اور اصالت کے اعلیٰ ترین معیارات کو پورا کرتا ہے۔",
+      naturalIngredients: "قدرتی اجزاء",
+      naturalIngredientsDescription: "ہم اپنے خصوصی مرکب کے لیے دنیا بھر سے بہترین قدرتی اجزاء حاصل کرتے ہیں۔",
+      customerFirst: "کسٹمر پہلے",
+      customerFirstDescription: "آپ کی تسلی ہماری ترجیح ہے، اور ہم غیر معمولی سروس کے لیے پرعزم ہیں۔",
+      ourJourney: "ہماری سفر",
+      ourJourneyDescription: "ہماری خوشبو کہانی میں اہم سنگ میل",
+      happyCustomers: "خوش گاہک",
+      premiumFragrances: "پریمیم خوشبو",
+      yearsOfExcellence: "عمدگی کے سال",
+      customerSatisfaction: "کسٹمر تسلی",
+      milestone2018: "AlsaFragrance کی بنیاد سب کے لیے لگژری خوشبو لانے کے وژن کے ساتھ رکھی گئی تھی",
+      milestone2019: "12 خصوصی خوشبو کے ساتھ ہمارا پہلا دستخط مجموعہ لانچ کیا",
+      milestone2020: "روایتی عطار اور الکحل سے پاک خوشبو میں توسیع کی",
+      milestone2021: "دنیا بھر میں 10,000 مطمئن گاہکوں تک پہنچے",
+      milestone2022: "خطرہ سے پاک خوشبو دریافت کے لیے ہمارا ٹیسٹر مجموعہ متعارف کرایا",
+      milestone2023: "ہماری پرچم بردار بوتیک کھولی اور پریمیم محدود ایڈیشن لانچ کیے",
+      milestone2024: "50,000 سے زیادہ خوش گاہکوں کے ساتھ 6 سال کی عمدگی کا جشن منایا",
+    },
+    contact: {
+      title: "ہم سے رابطہ کریں",
+      subtitle: "ہم آپ سے سننا پسند کریں گے۔ ہمارے خوشبو ماہرین سے رابطہ کریں۔",
+      sendUsMessage: "ہمیں ایک پیغام بھیجیں",
+      getInTouch: "رابطے میں رہیں",
+      visitOurStore: "ہماری دکان پر جائیں",
+      callUs: "ہمیں کال کریں",
+      emailUs: "ہمیں ای میل کریں",
+      businessHours: "کاروباری اوقات",
+      businessHoursMonFri: "سوموار - جمعہ: صبح 9 بجے - شام 6 بجے",
+      businessHoursSat: "ہفتہ: صبح 10 بجے - دوپہر 4 بجے",
+      businessHoursSun: "اتوار: بند",
+      faq: "اکثر پوچھے جانے والے سوالات",
+      faqDescription: "عام سوالات کے فوری جوابات",
+      shippingTime: "شپنگ میں کتنا وقت لگتا ہے؟",
+      shippingTimeAnswer: "ہم €100 سے زیادہ کے آرڈرز پر مفت معیاری شپنگ (3-5 کاروباری دن) پیش کرتے ہیں۔ ایکسپریس شپنگ (1-2 کاروباری دن) €15 کے لیے دستیاب ہے۔",
+      returnPolicy: "آپ کی واپسی کی پالیسی کیا ہے؟",
+      returnPolicyAnswer: "ہم غیر کھلے آئٹمز کے لیے 30-دن کی واپسی کی پالیسی پیش کرتے ہیں۔ اگر آپ مکمل طور پر مطمئن نہیں ہیں تو کھلے آئٹمز 14 دنوں کے اندر واپس کیے جا سکتے ہیں۔",
+      authenticProducts: "کیا آپ کے پروڈکٹس اصلی ہیں؟",
+      authenticProductsAnswer: "ہاں، ہم 100% اصلی پروڈکٹس کی ضمانت دیتے ہیں۔ ہم اصالت کو یقینی بنانے کے لیے براہ راست مجاز تقسیم کنندگان اور برانڈز کے ساتھ کام کرتے ہیں۔",
+      fragranceConsultations: "کیا آپ خوشبو مشاورت پیش کرتے ہیں؟",
+      fragranceConsultationsAnswer: "ہاں! ہمارے خوشبو ماہرین ذاتی مشاورت کے لیے دستیاب ہیں۔ ورچوئل یا ان-سٹور اپائنٹمنٹ شیڈول کرنے کے لیے ہم سے رابطہ کریں۔",
+      fullName: "پورا نام *",
+      emailAddress: "ای میل پتہ *",
+      subject: "موضوع *",
+      message: "پیغام *",
+      selectSubject: "ایک موضوع منتخب کریں",
+      generalInquiry: "عام استفسار",
+      productQuestion: "پروڈکٹ سوال",
+      orderSupport: "آرڈر سپورٹ",
+      returnsExchanges: "واپسی اور تبادلہ",
+      fragranceConsultation: "خوشبو مشاورت",
+      wholesaleInquiry: "تھوک استفسار",
+      yourFullName: "آپ کا پورا نام",
+      yourEmail: "آپ.کا.ای میل@مثال.com",
+      tellUsHow: "ہمیں بتائیں کہ ہم آپ کی کس طرح مدد کر سکتے ہیں...",
+      sending: "بھیج رہے ہیں...",
+      messageSent: "پیغام بھیج دیا گیا!",
+      sendMessage: "پیغام بھیجیں",
+      tryAgain: "دوبارہ کوشش کریں",
+      thankYouMessage: "شکریہ! آپ کا پیغام fragrancealsa@gmail.com پر بھیج دیا گیا ہے۔ آپ کو 24 گھنٹوں کے اندر جواب ملنا چاہیے۔",
+      errorMessage: "آپ کے ای میل کلائنٹ کو کھولنے میں ایک مسئلہ تھا۔ براہ کرم دوبارہ کوشش کریں یا fragrancealsa@gmail.com پر دستی طور پر ای میل بھیجیں",
+    },
+    components: {
+      categoryShowcase: {
+        title: "مجموعہ کے لحاظ سے خریداری کریں",
+        description: "ہمارے احتیاط سے منتخب کردہ مجموعوں کو دریافت کریں، جو ہر ترجیح اور موقع کے لیے ڈیزائن کیے گئے ہیں",
+        womenName: "خواتین",
+        womenDescription: "خواتین کی خوشبو جو موہ لیتی ہیں اور متاثر کرتی ہیں",
+        menName: "مرد",
+        menDescription: "جدید مرد کے لیے بہادر اور نفیس خوشبو",
+        attarsName: "عطار",
+        attarsDescription: "خالص، الکحل سے پاک روایتی خوشبو",
+        testersName: "ٹیسٹر",
+        testersDescription: "ہمارے ٹیسٹر مجموعہ کے ساتھ خریدنے سے پہلے آزمائیں",
+      },
+      newArrivals: {
+        title: "نئے آئٹمز",
+        description: "پریمیم پیکیجنگ کے ساتھ ہماری تازہ ترین ALSA FRAGRANCE تخلیقات دریافت کریں",
+        viewAll: "تمام نئے آئٹمز دیکھیں",
+      },
+      limitedEdition: {
+        title: "محدود ایڈیشن",
+        description: "پریمیم گفٹنگ پیشکش کے ساتھ خصوصی ALSA FRAGRANCE بوتلیں",
+        exclusiveBottles: "خصوصی بوتلیں",
+        exclusiveBottlesDesc: "پریمیم کاریگری کے ساتھ محدود ایڈیشن ALSA FRAGRANCE بوتلیں",
+        premiumGifting: "پریمیم گفٹنگ",
+        premiumGiftingDesc: "خصوصی مواقع اور تقریبات کے لیے بہترین نفیس پیکیجنگ",
+        rareScents: "نایاب خوشبو",
+        rareScentsDesc: "منفرد خوشبو صرف ہمارے محدود مجموعہ میں دستیاب",
+        viewAll: "تمام محدود ایڈیشن دیکھیں",
+      },
+      testimonials: {
+        title: "ہمارے گاہک کیا کہتے ہیں",
+        description: "ہزاروں مطمئن گاہکوں میں شامل ہوں جنہوں نے ہماری خوشبو کو اپنی روزمرہ کی عادت کا حصہ بنا لیا ہے",
+        purchased: "خریدا گیا",
+        readMore: "مزید جائزے پڑھیں",
+      },
+      craftingProcess: {
+        title: "خوشبو بنانے کا فن",
+        description: "ہر بوتل کے پیچھے محتاط عمل دریافت کریں، جہاں صدیوں پرانی روایت جدید اختراع سے ملتی ہے تاکہ خوشبو بنائی جا سکے جو حواس کو موہ لیتی ہے",
+        step1Title: "اجزاء کا انتخاب",
+        step1Desc: "ہم دنیا بھر سے بہترین خام مال کا ذریعہ کرتے ہیں، بلغاریہ کے گلاب سے لے کر بھارتی چنڈن تک۔",
+        step2Title: "نکالنے اور کشید",
+        step2Desc: "خالص ترین عطر نکالنے کے لیے روایتی طریقوں کو جدید تکنیکوں کے ساتھ ملا کر استعمال کرنا۔",
+        step3Title: "ملاپ کا فن",
+        step3Desc: "ماسٹر پرفیومرز احتیاط سے نوٹس ملاتے ہیں تاکہ ہم آہنگ اور منفرد خوشبو کی ترکیبیں بنائی جا سکیں۔",
+        step4Title: "پرانا ہونا اور پختگی",
+        step4Desc: "خوشبو کو بہترین حالات میں پرانا کیا جاتا ہے تاکہ نوٹس مل سکیں اور پیچیدگی پیدا ہو سکے۔",
+        step5Title: "معیار کی جانچ",
+        step5Desc: "ہر بیچ مستقل مزاجی، دیرپا پن اور حفاظتی معیارات کو یقینی بنانے کے لیے سخت جانچ سے گزرتا ہے۔",
+        step6Title: "بوتل بندی اور پیکیجنگ",
+        step6Desc: "احتیاط سے ہاتھ سے بوتل بندی اور نفیس پیکیجنگ میں پیش کیا گیا جو اندر کی عیش و آرام کو ظاہر کرتا ہے۔",
+      },
+      fragranceNotes: {
+        title: "خوشبو کے نوٹس کو سمجھنا",
+        description: "تین سطحی ساخت کے ذریعے پرفیومری کے فن کو دریافت کریں جو ہر یادگار خوشبو بناتی ہے",
+        topNotes: "اوپری نوٹس",
+        topNotesDesc: "پہلا تاثر جو آپ کے حواس کو موہ لیتا ہے",
+        heartNotes: "دل کے نوٹس",
+        heartNotesDesc: "خوشبو کی روح جو اس کے کردار کو متعین کرتی ہے",
+        baseNotes: "بنیادی نوٹس",
+        baseNotesDesc: "دیرپا بنیاد جو آپ کی جلد پر رہتی ہے",
+        pyramidTitle: "خوشبو کا اہرام",
+        pyramidDescription: "ہر ALSA FRAGRANCE پرفیوم کو اس تین سطحی ساخت کا استعمال کرتے ہوئے احتیاط سے تیار کیا جاتا ہے۔ اوپری نوٹس ابتدائی تاثر بناتے ہیں، 15-30 منٹ تک رہتے ہیں۔ دل کے نوٹس اگلے ابھرتے ہیں، 2-4 گھنٹوں کے لیے مرکزی کردار بناتے ہیں۔ آخر میں، بنیادی نوٹس دیرپا بنیاد فراہم کرتے ہیں جو 6-8 گھنٹے یا اس سے زیادہ رہ سکتے ہیں، آپ کی جلد پر ایک منفرد خوشبو کا سفر بناتے ہیں۔",
+      },
+      perfumeCollection: {
+        title: "دستخط مجموعے",
+        description: "ہر مجموعہ ایک منفرد کہانی سناتا ہے، دنیا بھر کے بہترین اجزاء سے تیار",
+        exploreCollection: "مجموعہ دریافت کریں",
+      },
+      categoryHero: {
+        productsAvailable: "مصنوعات دستیاب",
+        shopNow: "ابھی خریدیں",
+      },
+      categoryGallery: {
+        description: "پریمیم خوشبو کے ہمارے منتخب کردہ مجموعہ کو دریافت کریں، ہر بوتل درستگی اور نزاکت کے ساتھ تیار",
+      },
+      promotionalBanner: {
+        exclusiveTitle: "خصوصی مجموعہ",
+        exclusiveSubtitle: "السا فرگرانس پریمیم سیریز",
+        exclusiveDesc: "نایاب اجزاء سے تیار کردہ ہماری سب سے مطلوب خوشبو دریافت کریں",
+        exclusiveCta: "خصوصی دریافت کریں",
+        signatureTitle: "دستخط خوشبو",
+        signatureSubtitle: "ہاتھ سے بنے السا اوریجنلز",
+        signatureDesc: "ہمارے ماسٹر پرفیومر کی بہترین تخلیقات کا تجربہ کریں",
+        signatureCta: "دستخط خریدیں",
+        premiumTitle: "پریمیم عطار",
+        premiumSubtitle: "روایتی عیش و آرام کو دوبارہ تعریف",
+        premiumDesc: "بہترین قدرتی عطر سے خالص تیل پر مبنی خوشبو",
+        premiumCta: "پریمیم دریافت کریں",
+        saleTitle: "خصوصی فروخت",
+        saleSubtitle: "السا فرگرانس محدود وقت کی پیشکش",
+        saleDesc: "منتخب پریمیم خوشبو پر 40% تک رعایت حاصل کریں",
+        saleCta: "فروخت خریدیں",
+        newTitle: "نئے آئٹمز",
+        newSubtitle: "تازہ السا فرگرانس مجموعہ",
+        newDesc: "ابھی لانچ کی گئی ہماری تازہ ترین موہنی خوشبو دریافت کریں",
+        newCta: "نیا دریافت کریں",
+        limitedTitle: "محدود ایڈیشن",
+        limitedSubtitle: "خصوصی السا فرگرانس سیریز",
+        limitedDesc: "نایاب خوشبو صرف محدود وقت کے لیے دستیاب",
+        limitedCta: "محدود حاصل کریں",
+      },
+    },
+    categoryPages: {
+      forHer: {
+        title: "اس کے لیے",
+        description: "ہماری عمدہ خواتین کی خوشبو کے مجموعہ کو دریافت کریں جو نزاکت، نفاست اور لازوال خوبصورتی کو پکڑتی ہے",
+        searchPlaceholder: "خواتین کی خوشبو تلاش کریں...",
+      },
+      forHim: {
+        title: "اس کے لیے",
+        description: "جدید سججن کے لیے تیار کردہ بہادر اور نفیس خوشبو جو معیار اور امتیاز کی تعریف کرتا ہے",
+        searchPlaceholder: "مردوں کی خوشبو تلاش کریں...",
+      },
+      attars: {
+        title: "عطار مجموعہ",
+        description: "خالص، الکحل سے پاک روایتی خوشبو جو لازوال نزاکت اور مستند عیش و آرام کا جوہر پکڑتی ہے",
+        aboutTitle: "ہمارے عطار کے بارے میں",
+        aboutDescription: "عطار قدرتی ذرائع سے حاصل کردہ مرتکز پرفیوم تیل ہیں، روایتی طور پر مشرق وسطی اور جنوبی ایشیائی ثقافتوں میں استعمال ہوتے ہیں۔ ہمارا مجموعہ مستند، الکحل سے پاک خوشبو پیش کرتا ہے جو گہرے، بھرپور نوٹس کے ساتھ دیرپا خوشبو پیش کرتا ہے۔",
+        searchPlaceholder: "عطار تلاش کریں...",
+      },
+      testers: {
+        title: "ٹیسٹر مجموعہ",
+        description: "ہمارے احتیاط سے منتخب کردہ خوشبو ٹیسٹر اور نمونہ سائز کے ساتھ خریدنے سے پہلے آزمائیں",
+        infoTitle: "ہمارا ٹیسٹر مجموعہ آپ کو مکمل بوتلوں کے لیے عہد کرنے سے پہلے چھوٹے سائز میں ہماری خوشبو کا تجربہ کرنے کی اجازت دیتا ہے۔ اپنی نئی دستخط خوشبو دریافت کرنے یا متعدد خوشبو آزمانے کے لیے بہترین۔",
+        infoDescription: "",
+        searchPlaceholder: "ٹیسٹر تلاش کریں...",
+        riskFreeTitle: "خطرے سے پاک جانچ",
+        riskFreeDesc: "مکمل سائز کی بوتلوں کے لیے عہد کیے بغیر خوشبو آزمائیں",
+        travelTitle: "سفر کے لیے بہترین",
+        travelDesc: "سفر اور چلتے پھرتے ٹچ اپس کے لیے آئیڈیل کمپیکٹ سائز",
+        discoverTitle: "نئی خوشبو دریافت کریں",
+        discoverDesc: "مختلف خوشبو خاندانوں کو دریافت کریں اور اپنے پسندیدہ تلاش کریں",
+      },
+      newArrivals: {
+        title: "نئے آئٹمز",
+        description: "پریمیم پیکیجنگ اور غیر معمولی معیار کے ساتھ ہماری تازہ ترین ALSA FRAGRANCE تخلیقات دریافت کریں",
+        productsAvailable: "نئی مصنوعات دستیاب",
+        searchPlaceholder: "نئے آئٹمز تلاش کریں...",
+        showingProducts: "نئے آئٹمز مصنوعات",
+        latestTitle: "تازہ ترین خوشبو",
+        latestDesc: "ہماری تازہ ترین خوشبو تخلیقات کا تجربہ کرنے والے پہلے لوگوں میں شامل ہوں",
+        premiumTitle: "پریمیم معیار",
+        premiumDesc: "ہر نیا آئٹم بہترین اجزاء اور تفصیلات پر غیر معمولی توجہ کے ساتھ تیار کیا جاتا ہے",
+        exclusiveTitle: "خصوصی پیکیجنگ",
+        exclusiveDesc: "ہمارے نئے آئٹمز میں پریمیم پیکیجنگ ہے جو اندر کی عیش و آرام کو ظاہر کرتی ہے",
+      },
+      limitedEdition: {
+        title: "محدود ایڈیشن",
+        description: "پریمیم گفٹنگ پیشکش اور نایاب خوشبو کے ساتھ خصوصی ALSA FRAGRANCE بوتلیں",
+        productsAvailable: "محدود ایڈیشن مصنوعات دستیاب",
+        searchPlaceholder: "محدود ایڈیشن تلاش کریں...",
+        showingProducts: "محدود ایڈیشن مصنوعات",
+        exclusiveBottlesTitle: "خصوصی بوتلیں",
+        exclusiveBottlesDesc: "پریمیم کاریگری اور منفرد ڈیزائن کے ساتھ محدود ایڈیشن ALSA FRAGRANCE بوتلیں",
+        premiumGiftingTitle: "پریمیم گفٹنگ",
+        premiumGiftingDesc: "خصوصی مواقع، تقریبات اور عیش و آرام کی گفٹنگ کے لیے نفیس پیکیجنگ",
+        rareScentsTitle: "نایاب خوشبو",
+        rareScentsDesc: "منفرد خوشبو صرف ہمارے محدود مجموعہ میں دستیاب - ایک بار ختم ہونے پر، ختم ہو جاتی ہیں",
+      },
+      common: {
+        sortBy: "ترتیب دیں",
+        nameAZ: "نام اے-زیڈ",
+        priceLowHigh: "قیمت: کم سے زیادہ",
+        priceHighLow: "قیمت: زیادہ سے کم",
+        highestRated: "سب سے زیادہ ریٹیڈ",
+        newestFirst: "تازہ ترین پہلے",
+        showing: "دکھا رہے ہیں",
+        of: "کا",
+        products: "مصنوعات",
+        loadingProducts: "مصنوعات لوڈ ہو رہی ہیں...",
+        noProductsFound: "کوئی مصنوعات نہیں ملی",
+        clearSearch: "تلاش صاف کریں",
+      },
     },
   },
 }

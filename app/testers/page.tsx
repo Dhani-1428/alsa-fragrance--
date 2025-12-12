@@ -19,8 +19,10 @@ import { Search, Grid, List, Info } from "lucide-react"
 import { getProductsByCategory, type Product } from "@/lib/products-api"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function TestersPage() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -100,7 +102,7 @@ export default function TestersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                Tester Collection
+                {t.categoryPages.testers.title}
               </motion.h1>
               <motion.p
                 className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance"
@@ -108,7 +110,7 @@ export default function TestersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                Try before you buy with our carefully curated selection of fragrance testers and sample sizes
+                {t.categoryPages.testers.description}
               </motion.p>
               <motion.p
                 className="text-sm text-primary font-medium"
@@ -116,7 +118,7 @@ export default function TestersPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
-                {testerProducts.length} Products Available
+                {testerProducts.length} {t.components.categoryHero.productsAvailable}
               </motion.p>
             </div>
           </div>
@@ -128,8 +130,7 @@ export default function TestersPage() {
             <Alert>
               <Info className="h-4 w-4" />
               <AlertDescription>
-                Our tester collection allows you to experience our fragrances in smaller sizes before committing to full
-                bottles. Perfect for discovering your new signature scent or trying multiple fragrances.
+                {t.categoryPages.testers.infoTitle}
               </AlertDescription>
             </Alert>
           </SlideInLeft>
@@ -139,7 +140,7 @@ export default function TestersPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search testers..."
+                placeholder={t.categoryPages.testers.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -149,14 +150,14 @@ export default function TestersPage() {
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t.categoryPages.common.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">{t.categoryPages.common.nameAZ}</SelectItem>
+                  <SelectItem value="price-low">{t.categoryPages.common.priceLowHigh}</SelectItem>
+                  <SelectItem value="price-high">{t.categoryPages.common.priceHighLow}</SelectItem>
+                  <SelectItem value="rating">{t.categoryPages.common.highestRated}</SelectItem>
+                  <SelectItem value="newest">{t.categoryPages.common.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -184,15 +185,15 @@ export default function TestersPage() {
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
-              Showing {filteredAndSortedProducts.length} of {testerProducts.length} products
+              {t.categoryPages.common.showing} {filteredAndSortedProducts.length} {t.categoryPages.common.of} {testerProducts.length} {t.categoryPages.common.products}
             </p>
           </FadeInUp>
 
           {filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">No products found</p>
+              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">
-                Clear Search
+                {t.categoryPages.common.clearSearch}
               </Button>
             </FadeInUp>
           ) : (
@@ -212,17 +213,17 @@ export default function TestersPage() {
           {/* Benefits Section */}
           <StaggerContainer className="mt-16 grid md:grid-cols-3 gap-6">
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Risk-Free Testing</h3>
-              <p className="text-sm text-muted-foreground">Try fragrances without committing to full-size bottles</p>
+              <h3 className="font-semibold mb-2">{t.categoryPages.testers.riskFreeTitle}</h3>
+              <p className="text-sm text-muted-foreground">{t.categoryPages.testers.riskFreeDesc}</p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Perfect for Travel</h3>
-              <p className="text-sm text-muted-foreground">Compact sizes ideal for travel and on-the-go touch-ups</p>
+              <h3 className="font-semibold mb-2">{t.categoryPages.testers.travelTitle}</h3>
+              <p className="text-sm text-muted-foreground">{t.categoryPages.testers.travelDesc}</p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Discover New Scents</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.testers.discoverTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Explore different fragrance families and find your favorites
+                {t.categoryPages.testers.discoverDesc}
               </p>
             </StaggerItem>
           </StaggerContainer>

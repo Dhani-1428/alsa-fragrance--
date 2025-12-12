@@ -317,7 +317,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                       
                       <div className="space-y-3">
                         <div>
-                          <Label htmlFor="cardNumber" className="text-sm mb-2 block">Card Number</Label>
+                          <Label htmlFor="cardNumber" className="text-sm mb-2 block">{t.pages.cardNumber}</Label>
                           <Input
                             id="cardNumber"
                             type="text"
@@ -334,11 +334,11 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                         
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <Label htmlFor="cardExpiry" className="text-sm mb-2 block">MM/YY</Label>
+                            <Label htmlFor="cardExpiry" className="text-sm mb-2 block">{t.pages.cardExpiry}</Label>
                             <Input
                               id="cardExpiry"
                               type="text"
-                              placeholder="MM/YY"
+                              placeholder={t.pages.cardExpiry}
                               value={cardExpiry}
                               onChange={(e) => {
                                 let value = e.target.value.replace(/\D/g, '')
@@ -353,7 +353,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                           </div>
                           
                           <div>
-                            <Label htmlFor="cardCvv" className="text-sm mb-2 block">CVV</Label>
+                            <Label htmlFor="cardCvv" className="text-sm mb-2 block">{t.pages.cardCvv}</Label>
                             <Input
                               id="cardCvv"
                               type="text"
@@ -403,14 +403,14 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                         </Button>
                       </div>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <span className="font-medium">Secure</span>
+                        <span className="font-medium">{t.pages.secure}</span>
                         <span>•</span>
-                        <span>Encrypted</span>
+                        <span>{t.pages.encrypted}</span>
                       </div>
                     </div>
                     
                     <p className="text-xs text-muted-foreground leading-relaxed">
-                      We accept all major debit and credit cards worldwide (Visa, Mastercard, American Express, etc.). Your card details are secure and encrypted.
+                      {t.pages.cardAcceptance}
                     </p>
                   </div>
                 </CollapsibleContent>
@@ -515,7 +515,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                       </div>
                     </div>
                     <p className="text-xs text-yellow-300/80 leading-relaxed">
-                      Once payment is sent, your order will be processed. Payments accepted from all countries worldwide.
+                      {t.pages.mbwayPaymentNote}
                     </p>
                   </div>
                 </CollapsibleContent>

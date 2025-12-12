@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Menu, Search, ShoppingCart, X, Globe } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useLanguage } from "@/contexts/language-provider"
+import { translations } from "@/lib/i18n/translations"
 import { useAuth } from "@/contexts/auth-provider"
 import { motion, AnimatePresence } from "framer-motion"
 import { searchProducts } from "@/lib/products-main"
@@ -38,7 +39,7 @@ export function Navigation() {
   const [allProducts, setAllProducts] = useState<any[]>([])
   const [mounted, setMounted] = useState(false)
   const { toggleCart, getTotalItems } = useCart()
-  const { language, setLanguage, t } = useLanguage()
+  const { language, setLanguage, t, mounted: languageMounted } = useLanguage()
   const { user, logout } = useAuth()
   const pathname = usePathname()
   const router = useRouter()
@@ -143,21 +144,26 @@ export function Navigation() {
     }
   }
 
-  const mainNavItems = [
-    { name: t.nav.home, href: "/" },
-    { name: t.nav.about, href: "/about" },
-    { name: t.nav.shop, href: "/shop" },
-    { name: t.nav.contact, href: "/contact" },
-  ]
+  // Memoize nav items to prevent hydration mismatch
+  // Always use English translations until language is mounted to match server render
+  const englishTranslations = translations.en
+  const currentTranslations = languageMounted ? t : englishTranslations
+  
+  const mainNavItems = useMemo(() => [
+    { name: currentTranslations.nav.home, href: "/" },
+    { name: currentTranslations.nav.about, href: "/about" },
+    { name: currentTranslations.nav.shop, href: "/shop" },
+    { name: currentTranslations.nav.contact, href: "/contact" },
+  ], [currentTranslations, languageMounted])
 
-  const categoryNavItems = [
-    { name: t.nav.forHer, href: "/women" },
-    { name: t.nav.forHim, href: "/men" },
-    { name: t.nav.attars, href: "/attars" },
-    { name: t.nav.testers, href: "/testers" },
-    { name: t.nav.newArrivals, href: "/new-arrivals" },
-    { name: t.nav.limitedEdition, href: "/limited-edition" },
-  ]
+  const categoryNavItems = useMemo(() => [
+    { name: currentTranslations.nav.forHer, href: "/women" },
+    { name: currentTranslations.nav.forHim, href: "/men" },
+    { name: currentTranslations.nav.attars, href: "/attars" },
+    { name: currentTranslations.nav.testers, href: "/testers" },
+    { name: currentTranslations.nav.newArrivals, href: "/new-arrivals" },
+    { name: currentTranslations.nav.limitedEdition, href: "/limited-edition" },
+  ], [currentTranslations, languageMounted])
 
   const languageNames: Record<string, string> = {
     en: "English",

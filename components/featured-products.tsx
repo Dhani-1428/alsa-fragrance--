@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { getFeaturedProducts } from "@/lib/products-main"
 import { ProductCard } from "@/components/product-card"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import { useLanguage } from "@/contexts/language-provider"
+import Link from "next/link"
 
 const extendedFeaturedProducts = [
   ...getFeaturedProducts(),
@@ -84,6 +86,7 @@ const extendedFeaturedProducts = [
 ]
 
 export function FeaturedProducts() {
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const carouselRef = useRef<NodeJS.Timeout | null>(null)
@@ -124,10 +127,10 @@ export function FeaturedProducts() {
           className="text-center mb-12"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-            Featured Products
+            {t.home.featuredProducts}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Discover our most popular fragrances, loved by customers worldwide
+            {t.pages.featuredProductsDescription}
           </p>
         </motion.div>
 
@@ -195,7 +198,7 @@ export function FeaturedProducts() {
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button size="lg" variant="outline" className="px-8 bg-transparent" asChild>
-              <a href="/shop">View All Products</a>
+              <Link href="/shop">{t.pages.viewAllProducts}</Link>
             </Button>
           </motion.div>
         </motion.div>

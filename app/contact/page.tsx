@@ -6,28 +6,31 @@ import { ContactForm } from "@/components/contact-form"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { MapPin, Phone, Mail, Clock } from "lucide-react"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function ContactPage() {
+  const { t } = useLanguage()
+  
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Visit Our Store",
+      title: t.contact.visitOurStore,
       details: ["Avenida doutor Miguel bombarda", "Loja n'47 queluz", "2745-172"],
     },
     {
       icon: Phone,
-      title: "Call Us",
-      details: ["+351 920062535", "Mon-Fri: 9AM-6PM"],
+      title: t.contact.callUs,
+      details: ["+351 920062535", t.contact.businessHoursMonFri],
     },
     {
       icon: Mail,
-      title: "Email Us",
+      title: t.contact.emailUs,
       details: ["fragrancealsa@gmail.com"],
     },
     {
       icon: Clock,
-      title: "Business Hours",
-      details: ["Monday - Friday: 9AM - 6PM", "Saturday: 10AM - 4PM", "Sunday: Closed"],
+      title: t.contact.businessHours,
+      details: [t.contact.businessHoursMonFri, t.contact.businessHoursSat, t.contact.businessHoursSun],
     },
   ]
 
@@ -59,7 +62,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Contact Us
+              {t.contact.title}
             </motion.h1>
             <motion.p
               className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto text-balance"
@@ -67,7 +70,7 @@ export default function ContactPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              We'd love to hear from you. Get in touch with our fragrance experts.
+              {t.contact.subtitle}
             </motion.p>
           </div>
         </div>
@@ -82,7 +85,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl font-bold mb-6 font-[family-name:var(--font-playfair)]">Send us a Message</h2>
+            <h2 className="text-2xl font-bold mb-6 font-[family-name:var(--font-playfair)]">{t.contact.sendUsMessage}</h2>
             <ContactForm />
           </motion.div>
 
@@ -94,7 +97,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-2xl font-bold mb-6 font-[family-name:var(--font-playfair)]">Get in Touch</h2>
+            <h2 className="text-2xl font-bold mb-6 font-[family-name:var(--font-playfair)]">{t.contact.getInTouch}</h2>
 
             {contactInfo.map((info, index) => (
               <motion.div
@@ -135,32 +138,28 @@ export default function ContactPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-              Frequently Asked Questions
+              {t.contact.faq}
             </h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Quick answers to common questions</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.contact.faqDescription}</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
               {
-                title: "How long does shipping take?",
-                content:
-                  "We offer free standard shipping (3-5 business days) on orders over €100. Express shipping (1-2 business days) is available for €15.",
+                title: t.contact.shippingTime,
+                content: t.contact.shippingTimeAnswer,
               },
               {
-                title: "What is your return policy?",
-                content:
-                  "We offer a 30-day return policy for unopened items. Opened items can be returned within 14 days if you're not completely satisfied.",
+                title: t.contact.returnPolicy,
+                content: t.contact.returnPolicyAnswer,
               },
               {
-                title: "Are your products authentic?",
-                content:
-                  "Yes, we guarantee 100% authentic products. We work directly with authorized distributors and brands to ensure authenticity.",
+                title: t.contact.authenticProducts,
+                content: t.contact.authenticProductsAnswer,
               },
               {
-                title: "Do you offer fragrance consultations?",
-                content:
-                  "Yes! Our fragrance experts are available for personalized consultations. Contact us to schedule a virtual or in-store appointment.",
+                title: t.contact.fragranceConsultations,
+                content: t.contact.fragranceConsultationsAnswer,
               },
             ].map((faq, index) => (
               <motion.div

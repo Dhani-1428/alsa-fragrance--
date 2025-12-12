@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { useState, useEffect } from "react"
+import { useLanguage } from "@/contexts/language-provider"
 
 const testimonials = [
   {
@@ -92,6 +93,7 @@ const testimonials = [
 ]
 
 export function Testimonials() {
+  const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -111,10 +113,10 @@ export function Testimonials() {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-            What Our Customers Say
+            {t.components.testimonials.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Join thousands of satisfied customers who have made our fragrances part of their daily ritual
+            {t.components.testimonials.description}
           </p>
         </div>
 
@@ -164,7 +166,7 @@ export function Testimonials() {
                 <div className="border-t pt-4">
                   <h4 className="font-bold text-sm">{testimonial.name}</h4>
                   <p className="text-xs text-muted-foreground mb-1">{testimonial.location}</p>
-                  <p className="text-xs text-primary font-medium">Purchased: {testimonial.product}</p>
+                  <p className="text-xs text-primary font-medium">{t.components.testimonials.purchased}: {testimonial.product}</p>
                 </div>
               </motion.div>
             ))}
@@ -173,7 +175,7 @@ export function Testimonials() {
 
         <div className="text-center">
           <Button size="lg" variant="outline" className="px-8 bg-transparent">
-            Read More Reviews
+            {t.components.testimonials.readMore}
           </Button>
         </div>
       </div>

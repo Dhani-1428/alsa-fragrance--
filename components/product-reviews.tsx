@@ -1,7 +1,10 @@
+"use client"
+
 import { Star, ThumbsUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
+import { useLanguage } from "@/contexts/language-provider"
 
 interface Review {
   id: number
@@ -56,6 +59,7 @@ const mockReviews: Review[] = [
 ]
 
 export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
+  const { t } = useLanguage()
   const ratingDistribution = [
     { stars: 5, count: 45, percentage: 75 },
     { stars: 4, count: 12, percentage: 20 },
@@ -69,7 +73,7 @@ export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
       {/* Rating Summary */}
       <Card>
         <CardHeader>
-          <CardTitle>Customer Reviews</CardTitle>
+          <CardTitle>{t.pages.customerReviews}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid md:grid-cols-2 gap-6">
@@ -84,7 +88,9 @@ export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
                   />
                 ))}
               </div>
-              <p className="text-muted-foreground">Based on {totalReviews} reviews</p>
+              <p className="text-muted-foreground">
+                {t.pages.basedOnReviews.replace(/\{count\}/g, totalReviews.toString())}
+              </p>
             </div>
 
             {/* Rating Distribution */}
@@ -111,7 +117,7 @@ export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-medium">{review.author}</span>
                     {review.verified && (
-                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Verified Purchase</span>
+                      <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">{t.pages.verifiedPurchase}</span>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
@@ -134,7 +140,7 @@ export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" className="h-8">
                   <ThumbsUp className="h-3 w-3 mr-1" />
-                  Helpful ({review.helpful})
+                  {t.pages.helpful} ({review.helpful})
                 </Button>
               </div>
             </CardContent>
@@ -143,7 +149,7 @@ export function ProductReviews({ rating, totalReviews }: ProductReviewsProps) {
       </div>
 
       <div className="text-center">
-        <Button variant="outline">Load More Reviews</Button>
+        <Button variant="outline">{t.pages.loadMoreReviews}</Button>
       </div>
     </div>
   )

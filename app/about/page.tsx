@@ -7,39 +7,42 @@ import { Badge } from "@/components/ui/badge"
 import { Award, Heart, Leaf, Users } from "lucide-react"
 import { CounterAnimation } from "@/components/counter-animation"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function AboutPage() {
+  const { t } = useLanguage()
+  
   const values = [
     {
       icon: Heart,
-      title: "Passion for Fragrance",
-      description: "We believe that fragrance is an art form that tells a story and evokes emotions.",
+      title: t.about.passionForFragrance,
+      description: t.about.passionForFragranceDescription,
     },
     {
       icon: Award,
-      title: "Premium Quality",
-      description: "Every product in our collection meets the highest standards of quality and authenticity.",
+      title: t.about.premiumQuality,
+      description: t.about.premiumQualityDescription,
     },
     {
       icon: Leaf,
-      title: "Natural Ingredients",
-      description: "We source the finest natural ingredients from around the world for our exclusive blends.",
+      title: t.about.naturalIngredients,
+      description: t.about.naturalIngredientsDescription,
     },
     {
       icon: Users,
-      title: "Customer First",
-      description: "Your satisfaction is our priority, and we're committed to exceptional service.",
+      title: t.about.customerFirst,
+      description: t.about.customerFirstDescription,
     },
   ]
 
   const milestones = [
-    { year: "2018", event: "AlsaFragrance was founded with a vision to bring luxury fragrances to everyone" },
-    { year: "2019", event: "Launched our first signature collection featuring 12 exclusive scents" },
-    { year: "2020", event: "Expanded into traditional attars and alcohol-free fragrances" },
-    { year: "2021", event: "Reached 10,000 satisfied customers worldwide" },
-    { year: "2022", event: "Introduced our tester collection for risk-free fragrance discovery" },
-    { year: "2023", event: "Opened our flagship boutique and launched premium limited editions" },
-    { year: "2024", event: "Celebrating 6 years of excellence with over 50,000 happy customers" },
+    { year: "2018", event: t.about.milestone2018 },
+    { year: "2019", event: t.about.milestone2019 },
+    { year: "2020", event: t.about.milestone2020 },
+    { year: "2021", event: t.about.milestone2021 },
+    { year: "2022", event: t.about.milestone2022 },
+    { year: "2023", event: t.about.milestone2023 },
+    { year: "2024", event: t.about.milestone2024 },
   ]
 
   return (
@@ -70,7 +73,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Our Story
+              {t.about.ourStory}
             </motion.h1>
             <motion.p
               className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto text-balance"
@@ -78,7 +81,7 @@ export default function AboutPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
             >
-              Crafting exceptional fragrances that define elegance and luxury since 2018
+              {t.about.ourStoryDescription}
             </motion.p>
           </div>
         </div>
@@ -94,25 +97,12 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold mb-6 font-[family-name:var(--font-playfair)]">
-              Welcome to AlsaFragrance
+              {t.about.welcomeToAlsa}
             </h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
-              <p>
-                Founded in 2018, AlsaFragrance began as a passion project to bring the world's finest fragrances to
-                discerning customers who appreciate quality and authenticity. What started as a small collection of
-                carefully curated scents has grown into a comprehensive fragrance house offering everything from
-                contemporary perfumes to traditional attars.
-              </p>
-              <p>
-                Our journey is rooted in the belief that fragrance is more than just a scent – it's a form of
-                self-expression, a memory maker, and a confidence booster. Each product in our collection is selected or
-                crafted with meticulous attention to detail, ensuring that every bottle tells a unique story.
-              </p>
-              <p>
-                Today, we're proud to serve customers worldwide, offering an extensive range of premium fragrances for
-                men and women, traditional alcohol-free attars, and convenient tester sizes that allow you to discover
-                your perfect scent without commitment.
-              </p>
+              <p>{t.about.aboutParagraph1}</p>
+              <p>{t.about.aboutParagraph2}</p>
+              <p>{t.about.aboutParagraph3}</p>
             </div>
           </motion.div>
 
@@ -125,20 +115,18 @@ export default function AboutPage() {
           >
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">Our Mission</h3>
+                <h3 className="font-semibold mb-4">{t.about.ourMission}</h3>
                 <p className="text-muted-foreground">
-                  To make luxury fragrances accessible to everyone while maintaining the highest standards of quality,
-                  authenticity, and customer service.
+                  {t.about.ourMissionDescription}
                 </p>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-semibold mb-4">Our Vision</h3>
+                <h3 className="font-semibold mb-4">{t.about.ourVision}</h3>
                 <p className="text-muted-foreground">
-                  To become the world's most trusted destination for premium fragrances, known for our exceptional
-                  quality, diverse selection, and personalized customer experience.
+                  {t.about.ourVisionDescription}
                 </p>
               </CardContent>
             </Card>
@@ -154,9 +142,9 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">Our Values</h2>
+            <h2 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">{t.about.ourValues}</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              The principles that guide everything we do
+              {t.about.ourValuesDescription}
             </p>
           </motion.div>
 
@@ -190,8 +178,8 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">Our Journey</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Key milestones in our fragrance story</p>
+            <h2 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">{t.about.ourJourney}</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">{t.about.ourJourneyDescription}</p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
@@ -264,25 +252,25 @@ export default function AboutPage() {
               <div className="text-3xl font-bold text-primary mb-2">
                 <CounterAnimation end={50000} suffix="+" />
               </div>
-              <p className="text-muted-foreground">Happy Customers</p>
+              <p className="text-muted-foreground">{t.about.happyCustomers}</p>
             </div>
             <div>
               <div className="text-3xl font-bold text-primary mb-2">
                 <CounterAnimation end={200} suffix="+" />
               </div>
-              <p className="text-muted-foreground">Premium Fragrances</p>
+              <p className="text-muted-foreground">{t.about.premiumFragrances}</p>
             </div>
             <div>
               <div className="text-3xl font-bold text-primary mb-2">
                 <CounterAnimation end={6} />
               </div>
-              <p className="text-muted-foreground">Years of Excellence</p>
+              <p className="text-muted-foreground">{t.about.yearsOfExcellence}</p>
             </div>
             <div>
               <div className="text-3xl font-bold text-primary mb-2">
                 <CounterAnimation end={99} suffix="%" />
               </div>
-              <p className="text-muted-foreground">Customer Satisfaction</p>
+              <p className="text-muted-foreground">{t.about.customerSatisfaction}</p>
             </div>
           </div>
         </motion.section>

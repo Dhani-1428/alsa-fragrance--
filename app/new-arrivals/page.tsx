@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input"
 import { Search, Grid, List } from "lucide-react"
 import { getNewArrivals, type Product } from "@/lib/products-api"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function NewArrivalsPage() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -99,7 +101,7 @@ export default function NewArrivalsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                New Arrivals
+                {t.categoryPages.newArrivals.title}
               </motion.h1>
               <motion.p
                 className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance"
@@ -107,7 +109,7 @@ export default function NewArrivalsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                Discover our latest ALSA FRAGRANCE creations with premium packaging and exceptional quality
+                {t.categoryPages.newArrivals.description}
               </motion.p>
               <motion.p
                 className="text-sm text-primary font-medium"
@@ -115,7 +117,7 @@ export default function NewArrivalsPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
-                {newArrivalsProducts.length} New Products Available
+                {newArrivalsProducts.length} {t.categoryPages.newArrivals.productsAvailable}
               </motion.p>
             </div>
           </div>
@@ -127,7 +129,7 @@ export default function NewArrivalsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search new arrivals..."
+                placeholder={t.categoryPages.newArrivals.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -137,14 +139,14 @@ export default function NewArrivalsPage() {
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t.categoryPages.common.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">{t.categoryPages.common.nameAZ}</SelectItem>
+                  <SelectItem value="price-low">{t.categoryPages.common.priceLowHigh}</SelectItem>
+                  <SelectItem value="price-high">{t.categoryPages.common.priceHighLow}</SelectItem>
+                  <SelectItem value="rating">{t.categoryPages.common.highestRated}</SelectItem>
+                  <SelectItem value="newest">{t.categoryPages.common.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -172,19 +174,19 @@ export default function NewArrivalsPage() {
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
-              {loading ? "Loading..." : `Showing ${filteredAndSortedProducts.length} of ${newArrivalsProducts.length} new arrival products`}
+              {loading ? t.common.loading : `${t.categoryPages.common.showing} ${filteredAndSortedProducts.length} ${t.categoryPages.common.of} ${newArrivalsProducts.length} ${t.categoryPages.newArrivals.showingProducts}`}
             </p>
           </FadeInUp>
 
           {loading ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg">Loading products...</p>
+              <p className="text-muted-foreground text-lg">{t.categoryPages.common.loadingProducts}</p>
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">No products found</p>
+              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">
-                Clear Search
+                {t.categoryPages.common.clearSearch}
               </Button>
             </FadeInUp>
           ) : (
@@ -204,21 +206,21 @@ export default function NewArrivalsPage() {
           {/* Features Section */}
           <StaggerContainer className="mt-16 grid md:grid-cols-3 gap-6">
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Latest Fragrances</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.newArrivals.latestTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Be among the first to experience our newest fragrance creations
+                {t.categoryPages.newArrivals.latestDesc}
               </p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Premium Quality</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.newArrivals.premiumTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Each new arrival is crafted with the finest ingredients and exceptional attention to detail
+                {t.categoryPages.newArrivals.premiumDesc}
               </p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Exclusive Packaging</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.newArrivals.exclusiveTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Our new arrivals feature premium packaging that reflects the luxury within
+                {t.categoryPages.newArrivals.exclusiveDesc}
               </p>
             </StaggerItem>
           </StaggerContainer>

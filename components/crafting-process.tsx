@@ -2,53 +2,56 @@
 
 import { motion } from "framer-motion"
 import { Droplet, Sparkles, FlaskConical, Clock, CheckCircle, Package } from "lucide-react"
-
-const processSteps = [
-  {
-    step: "01",
-    title: "Ingredient Selection",
-    description: "We source the finest raw materials from around the world, from Bulgarian roses to Indian sandalwood.",
-    icon: Droplet,
-    image: "/luxury-perfume-ingredients-roses-and-flowers.jpg",
-  },
-  {
-    step: "02",
-    title: "Extraction & Distillation",
-    description: "Using traditional methods combined with modern techniques to extract the purest essences.",
-    icon: FlaskConical,
-    image: "/perfume-distillation-equipment-and-essential-oils.jpg",
-  },
-  {
-    step: "03",
-    title: "Blending Artistry",
-    description: "Master perfumers carefully blend notes to create harmonious and unique fragrance compositions.",
-    icon: Sparkles,
-    image: "/perfumer-blending-fragrances-in-laboratory.jpg",
-  },
-  {
-    step: "04",
-    title: "Aging & Maturation",
-    description: "Fragrances are aged in optimal conditions to allow the notes to marry and develop complexity.",
-    icon: Clock,
-    image: "/perfume-aging-in-glass-bottles-in-cellar.jpg",
-  },
-  {
-    step: "05",
-    title: "Quality Testing",
-    description: "Each batch undergoes rigorous testing to ensure consistency, longevity, and safety standards.",
-    icon: CheckCircle,
-    image: "/perfume-quality-testing-laboratory-equipment.jpg",
-  },
-  {
-    step: "06",
-    title: "Bottling & Packaging",
-    description: "Hand-bottled with care and presented in elegant packaging that reflects the luxury within.",
-    icon: Package,
-    image: "/luxury-perfume-bottles-being-packaged-in-golden-bo.jpg",
-  },
-]
+import { useLanguage } from "@/contexts/language-provider"
+import { useMemo } from "react"
 
 export function CraftingProcess() {
+  const { t } = useLanguage()
+  
+  const processSteps = useMemo(() => [
+    {
+      step: "01",
+      title: t.components.craftingProcess.step1Title,
+      description: t.components.craftingProcess.step1Desc,
+      icon: Droplet,
+      image: "/luxury-perfume-ingredients-roses-and-flowers.jpg",
+    },
+    {
+      step: "02",
+      title: t.components.craftingProcess.step2Title,
+      description: t.components.craftingProcess.step2Desc,
+      icon: FlaskConical,
+      image: "/perfume-distillation-equipment-and-essential-oils.jpg",
+    },
+    {
+      step: "03",
+      title: t.components.craftingProcess.step3Title,
+      description: t.components.craftingProcess.step3Desc,
+      icon: Sparkles,
+      image: "/perfumer-blending-fragrances-in-laboratory.jpg",
+    },
+    {
+      step: "04",
+      title: t.components.craftingProcess.step4Title,
+      description: t.components.craftingProcess.step4Desc,
+      icon: Clock,
+      image: "/perfume-aging-in-glass-bottles-in-cellar.jpg",
+    },
+    {
+      step: "05",
+      title: t.components.craftingProcess.step5Title,
+      description: t.components.craftingProcess.step5Desc,
+      icon: CheckCircle,
+      image: "/perfume-quality-testing-laboratory-equipment.jpg",
+    },
+    {
+      step: "06",
+      title: t.components.craftingProcess.step6Title,
+      description: t.components.craftingProcess.step6Desc,
+      icon: Package,
+      image: "/luxury-perfume-bottles-being-packaged-in-golden-bo.jpg",
+    },
+  ], [t])
   return (
     <section className="py-16 px-4 bg-background">
       <div className="container mx-auto max-w-7xl">
@@ -74,7 +77,7 @@ export function CraftingProcess() {
                   transition={{ duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  The Art of Perfume Making
+                  {t.components.craftingProcess.title}
                 </motion.h2>
                 <motion.p
                   className="text-white/90 text-lg leading-relaxed"
@@ -83,8 +86,7 @@ export function CraftingProcess() {
                   transition={{ delay: 0.2, duration: 0.5 }}
                   viewport={{ once: true }}
                 >
-                  Discover the meticulous process behind every bottle, where centuries-old tradition meets modern
-                  innovation to create fragrances that captivate the senses
+                  {t.components.craftingProcess.description}
                 </motion.p>
               </div>
             </div>

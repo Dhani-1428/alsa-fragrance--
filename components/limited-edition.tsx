@@ -5,28 +5,31 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { Sparkles, Gift, Crown } from "lucide-react"
+import { useLanguage } from "@/contexts/language-provider"
+import { useMemo } from "react"
 
 export function LimitedEdition() {
-  const features = [
+  const { t } = useLanguage()
+  const features = useMemo(() => [
     {
       icon: Crown,
-      title: "Exclusive Bottles",
-      description: "Limited edition ALSA FRAGRANCE bottles with premium craftsmanship",
+      title: t.components.limitedEdition.exclusiveBottles,
+      description: t.components.limitedEdition.exclusiveBottlesDesc,
       image: "/luxury-limited-edition-perfume-bottles-with-golden.jpg",
     },
     {
       icon: Gift,
-      title: "Premium Gifting",
-      description: "Elegant packaging perfect for special occasions and celebrations",
+      title: t.components.limitedEdition.premiumGifting,
+      description: t.components.limitedEdition.premiumGiftingDesc,
       image: "/alsa-fragrance-limited-edition-perfume-bottles-lux.jpg",
     },
     {
       icon: Sparkles,
-      title: "Rare Scents",
-      description: "Unique fragrances available only in our limited collection",
+      title: t.components.limitedEdition.rareScents,
+      description: t.components.limitedEdition.rareScentsDesc,
       image: "/alsa-fragrance-limited-edition-perfume-bottles-pre.jpg",
     },
-  ]
+  ], [t])
 
   return (
     <section className="py-16 px-4 bg-card/30 relative overflow-hidden">
@@ -53,7 +56,7 @@ export function LimitedEdition() {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            Limited Edition
+            {t.components.limitedEdition.title}
           </motion.h2>
           <motion.p
             className="text-muted-foreground text-lg max-w-2xl mx-auto mb-12"
@@ -62,7 +65,7 @@ export function LimitedEdition() {
             transition={{ delay: 0.2, duration: 0.5 }}
             viewport={{ once: true }}
           >
-            Exclusive ALSA FRAGRANCE bottles with premium gifting presentation
+            {t.components.limitedEdition.description}
           </motion.p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -108,7 +111,7 @@ export function LimitedEdition() {
         >
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button size="lg" className="px-8" asChild>
-              <Link href="/limited-edition">View All Limited Edition</Link>
+              <Link href="/limited-edition">{t.components.limitedEdition.viewAll}</Link>
             </Button>
           </motion.div>
         </motion.div>

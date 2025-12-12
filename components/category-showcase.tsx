@@ -1,43 +1,49 @@
+"use client"
+
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-
-const categories = [
-  {
-    name: "Women",
-    href: "/women",
-    image: "/alsa-fragrance-womens-perfume-bottles-elegant-pink.jpg",
-    description: "Feminine fragrances that captivate and inspire",
-  },
-  {
-    name: "Men",
-    href: "/men",
-    image: "/alsa-fragrance-mens-cologne-bottles-sophisticated-.jpg",
-    description: "Bold and sophisticated scents for the modern man",
-  },
-  {
-    name: "Attars",
-    href: "/attars",
-    image: "/alsa-fragrance-traditional-attar-bottles-ornate-go.jpg",
-    description: "Pure, alcohol-free traditional fragrances",
-  },
-  {
-    name: "Testers",
-    href: "/testers",
-    image: "/alsa-fragrance-perfume-tester-bottles-sample-displ.jpg",
-    description: "Try before you buy with our tester collection",
-  },
-]
+import { useLanguage } from "@/contexts/language-provider"
+import { useMemo } from "react"
 
 export function CategoryShowcase() {
+  const { t } = useLanguage()
+  
+  const categories = useMemo(() => [
+    {
+      name: t.components.categoryShowcase.womenName,
+      href: "/women",
+      image: "/alsa-fragrance-womens-perfume-bottles-elegant-pink.jpg",
+      description: t.components.categoryShowcase.womenDescription,
+    },
+    {
+      name: t.components.categoryShowcase.menName,
+      href: "/men",
+      image: "/alsa-fragrance-mens-cologne-bottles-sophisticated-.jpg",
+      description: t.components.categoryShowcase.menDescription,
+    },
+    {
+      name: t.components.categoryShowcase.attarsName,
+      href: "/attars",
+      image: "/alsa-fragrance-traditional-attar-bottles-ornate-go.jpg",
+      description: t.components.categoryShowcase.attarsDescription,
+    },
+    {
+      name: t.components.categoryShowcase.testersName,
+      href: "/testers",
+      image: "/alsa-fragrance-perfume-tester-bottles-sample-displ.jpg",
+      description: t.components.categoryShowcase.testersDescription,
+    },
+  ], [t])
+
   return (
     <section className="py-16 px-4">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-            Shop by Collection
+            {t.components.categoryShowcase.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Explore our carefully curated collections designed for every preference and occasion
+            {t.components.categoryShowcase.description}
           </p>
         </div>
 

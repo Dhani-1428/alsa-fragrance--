@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input"
 import { Search, Grid, List } from "lucide-react"
 import { getLimitedEditionProducts, type Product } from "@/lib/products-api"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function LimitedEditionPage() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -99,7 +101,7 @@ export default function LimitedEditionPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                Limited Edition
+                {t.categoryPages.limitedEdition.title}
               </motion.h1>
               <motion.p
                 className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance"
@@ -107,7 +109,7 @@ export default function LimitedEditionPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                Exclusive ALSA FRAGRANCE bottles with premium gifting presentation and rare fragrances
+                {t.categoryPages.limitedEdition.description}
               </motion.p>
               <motion.p
                 className="text-sm text-primary font-medium"
@@ -115,7 +117,7 @@ export default function LimitedEditionPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
-                {limitedEditionProducts.length} Limited Edition Products Available
+                {limitedEditionProducts.length} {t.categoryPages.limitedEdition.productsAvailable}
               </motion.p>
             </div>
           </div>
@@ -127,7 +129,7 @@ export default function LimitedEditionPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search limited edition..."
+                placeholder={t.categoryPages.limitedEdition.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -137,14 +139,14 @@ export default function LimitedEditionPage() {
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t.categoryPages.common.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">{t.categoryPages.common.nameAZ}</SelectItem>
+                  <SelectItem value="price-low">{t.categoryPages.common.priceLowHigh}</SelectItem>
+                  <SelectItem value="price-high">{t.categoryPages.common.priceHighLow}</SelectItem>
+                  <SelectItem value="rating">{t.categoryPages.common.highestRated}</SelectItem>
+                  <SelectItem value="newest">{t.categoryPages.common.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -172,19 +174,19 @@ export default function LimitedEditionPage() {
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
-              {loading ? "Loading..." : `Showing ${filteredAndSortedProducts.length} of ${limitedEditionProducts.length} limited edition products`}
+              {loading ? t.common.loading : `${t.categoryPages.common.showing} ${filteredAndSortedProducts.length} ${t.categoryPages.common.of} ${limitedEditionProducts.length} ${t.categoryPages.limitedEdition.showingProducts}`}
             </p>
           </FadeInUp>
 
           {loading ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg">Loading products...</p>
+              <p className="text-muted-foreground text-lg">{t.categoryPages.common.loadingProducts}</p>
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">No products found</p>
+              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">
-                Clear Search
+                {t.categoryPages.common.clearSearch}
               </Button>
             </FadeInUp>
           ) : (
@@ -204,21 +206,21 @@ export default function LimitedEditionPage() {
           {/* Features Section */}
           <StaggerContainer className="mt-16 grid md:grid-cols-3 gap-6">
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Exclusive Bottles</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.limitedEdition.exclusiveBottlesTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Limited edition ALSA FRAGRANCE bottles with premium craftsmanship and unique designs
+                {t.categoryPages.limitedEdition.exclusiveBottlesDesc}
               </p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Premium Gifting</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.limitedEdition.premiumGiftingTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Elegant packaging perfect for special occasions, celebrations, and luxury gifting
+                {t.categoryPages.limitedEdition.premiumGiftingDesc}
               </p>
             </StaggerItem>
             <StaggerItem className="text-center p-6 bg-card/30 rounded-lg">
-              <h3 className="font-semibold mb-2">Rare Scents</h3>
+              <h3 className="font-semibold mb-2">{t.categoryPages.limitedEdition.rareScentsTitle}</h3>
               <p className="text-sm text-muted-foreground">
-                Unique fragrances available only in our limited collection - once they're gone, they're gone
+                {t.categoryPages.limitedEdition.rareScentsDesc}
               </p>
             </StaggerItem>
           </StaggerContainer>

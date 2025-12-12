@@ -1,5 +1,7 @@
 "use client"
 
+import { useLanguage } from "@/contexts/language-provider"
+
 interface CategoryHeroProps {
   title: string
   description: string
@@ -8,6 +10,7 @@ interface CategoryHeroProps {
 }
 
 export function CategoryHero({ title, description, image, productCount }: CategoryHeroProps) {
+  const { t } = useLanguage()
   const scrollToProducts = () => {
     window.scrollTo({
       top: window.innerHeight * 0.5, // Scroll past the hero section
@@ -27,13 +30,13 @@ export function CategoryHero({ title, description, image, productCount }: Catego
             {title}
           </h1>
           <p className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance">{description}</p>
-          <p className="text-sm text-primary font-medium">{productCount} Products Available</p>
+          <p className="text-sm text-primary font-medium">{productCount} {t.components.categoryHero.productsAvailable}</p>
 
           <button
             onClick={scrollToProducts}
             className="mt-6 px-8 py-3 bg-primary text-primary-foreground font-semibold rounded-md hover:bg-primary/90 transition-colors duration-200"
           >
-            Shop Now
+            {t.components.categoryHero.shopNow}
           </button>
         </div>
       </div>

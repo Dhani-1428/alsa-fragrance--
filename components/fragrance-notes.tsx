@@ -1,41 +1,44 @@
 "use client"
 
 import { motion } from "framer-motion"
-
-const fragranceNotes = [
-  {
-    category: "Top Notes",
-    description: "The first impression that captivates your senses",
-    notes: ["Bergamot", "Lemon", "Pink Pepper", "Cardamom"],
-    color: "from-primary to-primary/80",
-    image: "/citrus-bergamot-lemon-fresh-ingredients-perfume-to.jpg",
-  },
-  {
-    category: "Heart Notes",
-    description: "The soul of the fragrance that defines its character",
-    notes: ["Rose", "Jasmine", "Lavender", "Geranium"],
-    color: "from-primary/80 to-primary/60",
-    image: "/rose-jasmine-flowers-perfume-heart-notes-floral-bo.jpg",
-  },
-  {
-    category: "Base Notes",
-    description: "The lasting foundation that lingers on your skin",
-    notes: ["Sandalwood", "Vanilla", "Musk", "Amber"],
-    color: "from-primary/60 to-primary/40",
-    image: "/sandalwood-vanilla-amber-warm-ingredients-perfume-.jpg",
-  },
-]
+import { useLanguage } from "@/contexts/language-provider"
+import { useMemo } from "react"
 
 export function FragranceNotes() {
+  const { t } = useLanguage()
+  
+  const fragranceNotes = useMemo(() => [
+    {
+      category: t.components.fragranceNotes.topNotes,
+      description: t.components.fragranceNotes.topNotesDesc,
+      notes: ["Bergamot", "Lemon", "Pink Pepper", "Cardamom"],
+      color: "from-primary to-primary/80",
+      image: "/citrus-bergamot-lemon-fresh-ingredients-perfume-to.jpg",
+    },
+    {
+      category: t.components.fragranceNotes.heartNotes,
+      description: t.components.fragranceNotes.heartNotesDesc,
+      notes: ["Rose", "Jasmine", "Lavender", "Geranium"],
+      color: "from-primary/80 to-primary/60",
+      image: "/rose-jasmine-flowers-perfume-heart-notes-floral-bo.jpg",
+    },
+    {
+      category: t.components.fragranceNotes.baseNotes,
+      description: t.components.fragranceNotes.baseNotesDesc,
+      notes: ["Sandalwood", "Vanilla", "Musk", "Amber"],
+      color: "from-primary/60 to-primary/40",
+      image: "/sandalwood-vanilla-amber-warm-ingredients-perfume-.jpg",
+    },
+  ], [t])
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-background to-card/30">
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 font-[family-name:var(--font-playfair)]">
-            Understanding Fragrance Notes
+            {t.components.fragranceNotes.title}
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Discover the art of perfumery through the three-tier structure that creates every memorable scent
+            {t.components.fragranceNotes.description}
           </p>
         </div>
 
@@ -99,12 +102,9 @@ export function FragranceNotes() {
           className="mt-16 text-center max-w-3xl mx-auto"
         >
           <div className="bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-primary/10">
-            <h3 className="text-2xl font-bold mb-4 font-[family-name:var(--font-playfair)]">The Fragrance Pyramid</h3>
+            <h3 className="text-2xl font-bold mb-4 font-[family-name:var(--font-playfair)]">{t.components.fragranceNotes.pyramidTitle}</h3>
             <p className="text-muted-foreground leading-relaxed">
-              Each ALSA FRAGRANCE perfume is carefully crafted using this three-tier structure. The top notes create the
-              initial impression, lasting 15-30 minutes. Heart notes emerge next, forming the core character for 2-4
-              hours. Finally, base notes provide the lasting foundation that can linger for 6-8 hours or more, creating
-              a unique scent journey on your skin.
+              {t.components.fragranceNotes.pyramidDescription}
             </p>
           </div>
         </motion.div>

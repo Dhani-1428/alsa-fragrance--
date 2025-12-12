@@ -6,11 +6,13 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { CheckoutForm } from "@/components/checkout-form"
 import { useAuth } from "@/contexts/auth-provider"
+import { useLanguage } from "@/contexts/language-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function CheckoutPage() {
   const { user, loading } = useAuth()
+  const { t } = useLanguage()
   const router = useRouter()
   const [isMounted, setIsMounted] = useState(false)
 
@@ -30,7 +32,7 @@ export default function CheckoutPage() {
       <main className="min-h-screen">
         <Navigation />
         <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[60vh]">
-          <p>Loading...</p>
+          <p>{t.common.loading}</p>
         </div>
         <Footer />
       </main>
@@ -44,12 +46,12 @@ export default function CheckoutPage() {
         <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[60vh]">
           <Card className="w-full max-w-md">
             <CardHeader>
-              <CardTitle>Login Required</CardTitle>
-              <CardDescription>Please login to proceed with checkout</CardDescription>
+              <CardTitle>{t.checkout.title}</CardTitle>
+              <CardDescription>{t.pages.selectPaymentMethod}</CardDescription>
             </CardHeader>
             <CardContent>
               <Button onClick={() => router.push("/auth/login?redirect=/checkout")} className="w-full">
-                Go to Login
+                {t.nav.home}
               </Button>
             </CardContent>
           </Card>

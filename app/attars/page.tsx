@@ -18,8 +18,10 @@ import { Input } from "@/components/ui/input"
 import { Search, Grid, List } from "lucide-react"
 import { getProductsByCategory, type Product } from "@/lib/products-api"
 import { motion } from "framer-motion"
+import { useLanguage } from "@/contexts/language-provider"
 
 export default function AttarsPage() {
+  const { t } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -99,7 +101,7 @@ export default function AttarsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
               >
-                Attar Collection
+                {t.categoryPages.attars.title}
               </motion.h1>
               <motion.p
                 className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance"
@@ -107,8 +109,7 @@ export default function AttarsPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
               >
-                Pure, alcohol-free traditional fragrances that capture the essence of timeless elegance and authentic
-                luxury
+                {t.categoryPages.attars.description}
               </motion.p>
               <motion.p
                 className="text-sm text-primary font-medium"
@@ -116,7 +117,7 @@ export default function AttarsPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
               >
-                {attarProducts.length} Products Available
+                {attarProducts.length} {t.components.categoryHero.productsAvailable}
               </motion.p>
             </div>
           </div>
@@ -125,11 +126,9 @@ export default function AttarsPage() {
         <div className="container mx-auto px-4 py-12">
           {/* Info Section */}
           <SlideInLeft className="bg-card/50 rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-3 font-[family-name:var(--font-playfair)]">About Our Attars</h2>
+            <h2 className="text-xl font-semibold mb-3 font-[family-name:var(--font-playfair)]">{t.categoryPages.attars.aboutTitle}</h2>
             <p className="text-muted-foreground">
-              Attars are concentrated perfume oils derived from natural sources, traditionally used in Middle Eastern
-              and South Asian cultures. Our collection features authentic, alcohol-free fragrances that offer
-              long-lasting scents with deep, rich notes.
+              {t.categoryPages.attars.aboutDescription}
             </p>
           </SlideInLeft>
 
@@ -138,7 +137,7 @@ export default function AttarsPage() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search attars..."
+                placeholder={t.categoryPages.attars.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -148,14 +147,14 @@ export default function AttarsPage() {
             <div className="flex gap-2">
               <Select value={sortBy} onValueChange={setSortBy}>
                 <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={t.categoryPages.common.sortBy} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="name">Name A-Z</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="name">{t.categoryPages.common.nameAZ}</SelectItem>
+                  <SelectItem value="price-low">{t.categoryPages.common.priceLowHigh}</SelectItem>
+                  <SelectItem value="price-high">{t.categoryPages.common.priceHighLow}</SelectItem>
+                  <SelectItem value="rating">{t.categoryPages.common.highestRated}</SelectItem>
+                  <SelectItem value="newest">{t.categoryPages.common.newestFirst}</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -183,15 +182,15 @@ export default function AttarsPage() {
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
-              Showing {filteredAndSortedProducts.length} of {attarProducts.length} products
+              {t.categoryPages.common.showing} {filteredAndSortedProducts.length} {t.categoryPages.common.of} {attarProducts.length} {t.categoryPages.common.products}
             </p>
           </FadeInUp>
 
           {filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">No products found</p>
+              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
               <Button onClick={() => setSearchQuery("")} variant="outline">
-                Clear Search
+                {t.categoryPages.common.clearSearch}
               </Button>
             </FadeInUp>
           ) : (

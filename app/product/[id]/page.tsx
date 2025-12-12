@@ -50,7 +50,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       <main className="min-h-screen">
         <Navigation />
         <div className="container mx-auto px-4 py-8">
-          <p>Loading product...</p>
+          <p>{t.pages.loadingProduct}</p>
         </div>
       </main>
     )
@@ -100,12 +100,12 @@ export default function ProductPage({ params }: ProductPageProps) {
               )}
               {product.isNew && (
                 <Badge variant="secondary" className="bg-primary text-primary-foreground">
-                  New
+                  {t.pages.new}
                 </Badge>
               )}
               {!product.inStock && (
                 <Badge variant="secondary" className="bg-gray-500 text-white">
-                  Out of Stock
+                  {t.product.outOfStock}
                 </Badge>
               )}
             </div>
@@ -126,7 +126,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     />
                   ))}
                   <span className="ml-2 text-sm text-muted-foreground">
-                    {product.rating} ({product.reviews} reviews)
+                    {product.rating} ({product.reviews} {t.pages.reviews})
                   </span>
                 </div>
               </div>
@@ -140,7 +140,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               )}
               {product.originalPrice && (
                 <Badge variant="destructive" className="text-xs">
-                  Save €{(product.originalPrice - product.price).toFixed(2)}
+                  {t.pages.save} €{(product.originalPrice - product.price).toFixed(2)}
                 </Badge>
               )}
             </div>
@@ -158,15 +158,15 @@ export default function ProductPage({ params }: ProductPageProps) {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t">
               <div className="text-center">
                 <Truck className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-xs text-muted-foreground">Free Shipping</p>
+                <p className="text-xs text-muted-foreground">{t.pages.freeShipping}</p>
               </div>
               <div className="text-center">
                 <Shield className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-xs text-muted-foreground">Authentic</p>
+                <p className="text-xs text-muted-foreground">{t.pages.authentic}</p>
               </div>
               <div className="text-center">
                 <RotateCcw className="h-6 w-6 mx-auto mb-2 text-primary" />
-                <p className="text-xs text-muted-foreground">30-Day Return</p>
+                <p className="text-xs text-muted-foreground">{t.pages.dayReturn}</p>
               </div>
             </div>
           </div>
@@ -177,21 +177,21 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Fragrance Notes */}
           <Card>
             <CardHeader>
-              <CardTitle>Fragrance Notes</CardTitle>
+              <CardTitle>{t.pages.fragranceNotes}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h4 className="font-medium text-sm mb-2">Top Notes</h4>
+                <h4 className="font-medium text-sm mb-2">{t.pages.topNotes}</h4>
                 <p className="text-sm text-muted-foreground">{product.notes.top.join(", ")}</p>
               </div>
               <Separator />
               <div>
-                <h4 className="font-medium text-sm mb-2">Middle Notes</h4>
+                <h4 className="font-medium text-sm mb-2">{t.pages.middleNotes}</h4>
                 <p className="text-sm text-muted-foreground">{product.notes.middle.join(", ")}</p>
               </div>
               <Separator />
               <div>
-                <h4 className="font-medium text-sm mb-2">Base Notes</h4>
+                <h4 className="font-medium text-sm mb-2">{t.pages.baseNotes}</h4>
                 <p className="text-sm text-muted-foreground">{product.notes.base.join(", ")}</p>
               </div>
             </CardContent>
@@ -200,25 +200,25 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Product Details */}
           <Card>
             <CardHeader>
-              <CardTitle>Product Details</CardTitle>
+              <CardTitle>{t.pages.productDetails}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Category</span>
+                <span className="text-sm text-muted-foreground">{t.pages.category}</span>
                 <span className="text-sm capitalize">{product.category}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Available Sizes</span>
+                <span className="text-sm text-muted-foreground">{t.pages.availableSizes}</span>
                 <span className="text-sm">{product.size.join(", ")}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">Stock Status</span>
+                <span className="text-sm text-muted-foreground">{t.pages.stockStatus}</span>
                 <span className={`text-sm ${product.inStock ? "text-green-600" : "text-red-600"}`}>
                   {product.inStock ? t.product.inStock : t.product.outOfStock}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-muted-foreground">SKU</span>
+                <span className="text-sm text-muted-foreground">{t.pages.sku}</span>
                 <span className="text-sm">AF-{product.id.toString().padStart(4, "0")}</span>
               </div>
             </CardContent>
@@ -227,14 +227,14 @@ export default function ProductPage({ params }: ProductPageProps) {
           {/* Care Instructions */}
           <Card>
             <CardHeader>
-              <CardTitle>Care Instructions</CardTitle>
+              <CardTitle>{t.pages.careInstructions}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <p>• Store in a cool, dry place away from direct sunlight</p>
-              <p>• Keep bottle tightly closed when not in use</p>
-              <p>• Apply to pulse points for best longevity</p>
-              <p>• Avoid contact with jewelry and light fabrics</p>
-              <p>• For external use only</p>
+              <p>• {t.pages.careInstruction1}</p>
+              <p>• {t.pages.careInstruction2}</p>
+              <p>• {t.pages.careInstruction3}</p>
+              <p>• {t.pages.careInstruction4}</p>
+              <p>• {t.pages.careInstruction5}</p>
             </CardContent>
           </Card>
         </div>
