@@ -14,9 +14,34 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    await connectDB()
+    // Connect to database
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      console.error('Database connection error:', dbError)
+      return NextResponse.json(
+        { 
+          error: 'Database connection failed', 
+          details: process.env.NODE_ENV === 'development' ? dbError?.message : undefined 
+        },
+        { status: 500 }
+      )
+    }
 
-    const user = await User.findOne({ email: email.toLowerCase() })
+    // Find user
+    let user
+    try {
+      user = await User.findOne({ email: email.toLowerCase().trim() })
+    } catch (findError: any) {
+      console.error('Error finding user:', findError)
+      return NextResponse.json(
+        { 
+          error: 'Failed to query user', 
+          details: process.env.NODE_ENV === 'development' ? findError?.message : undefined 
+        },
+        { status: 500 }
+      )
+    }
 
     if (!user) {
       return NextResponse.json(
@@ -25,7 +50,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const isValidPassword = await bcrypt.compare(password, user.password)
+    // Verify password
+    let isValidPassword = false
+    try {
+      isValidPassword = await bcrypt.compare(password, user.password)
+    } catch (bcryptError: any) {
+      console.error('Password comparison error:', bcryptError)
+      return NextResponse.json(
+        { 
+          error: 'Failed to verify password', 
+          details: process.env.NODE_ENV === 'development' ? bcryptError?.message : undefined 
+        },
+        { status: 500 }
+      )
+    }
 
     if (!isValidPassword) {
       return NextResponse.json(
@@ -44,9 +82,12 @@ export async function POST(request: NextRequest) {
       },
     })
   } catch (error: any) {
-    console.error('Error during login:', error)
+    console.error('Unexpected error during login:', error)
     return NextResponse.json(
-      { error: error?.message || 'Failed to login', details: process.env.NODE_ENV === 'development' ? error?.stack : undefined },
+      { 
+        error: error?.message || 'Failed to login', 
+        details: process.env.NODE_ENV === 'development' ? error?.stack : undefined 
+      },
       { status: 500 }
     )
   }

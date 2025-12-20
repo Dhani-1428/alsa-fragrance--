@@ -23,13 +23,25 @@ export default function AdminLoginPage() {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: email.trim(), password }),
       })
 
-      const data = await response.json()
+      let data
+      try {
+        data = await response.json()
+      } catch (parseError) {
+        throw new Error("Invalid response from server. Please try again.")
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || "Login failed")
+        const errorMessage = data.error || "Login failed"
+        const errorDetails = data.details ? ` (${data.details})` : ""
+        throw new Error(errorMessage + errorDetails)
+      }
+
+      // Check if user data exists
+      if (!data.user) {
+        throw new Error("Invalid response from server. User data not found.")
       }
 
       // Check if user is admin
@@ -42,7 +54,8 @@ export default function AdminLoginPage() {
       toast.success("Admin login successful!")
       router.push("/admin/dashboard")
     } catch (error: any) {
-      toast.error(error.message || "Login failed")
+      console.error("Login error:", error)
+      toast.error(error.message || "Login failed. Please check your credentials and try again.")
     } finally {
       setLoading(false)
     }
@@ -64,7 +77,7 @@ export default function AdminLoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@example.com"
+                placeholder="admin@alsafragrance.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -84,6 +97,14 @@ export default function AdminLoginPage() {
               {loading ? "Logging in..." : "Login"}
             </Button>
           </form>
+          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
+            <p className="text-xs text-blue-800 dark:text-blue-300">
+              <strong>Need to create an admin user?</strong> Run: <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">npm run db:create-admin</code>
+            </p>
+            <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
+              Default credentials: admin@alsafragrance.com / admin123
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
