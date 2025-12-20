@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "db:create-admin": "tsx scripts/create-admin.ts",
+    "db:check-admin": "tsx scripts/check-admin.ts",
     "db:migrate-to-mongodb": "tsx scripts/migrate-to-mongodb.ts",
     "test:backend": "tsx scripts/test-backend.ts",
     "test:simple": "tsx scripts/test-backend-simple.ts",

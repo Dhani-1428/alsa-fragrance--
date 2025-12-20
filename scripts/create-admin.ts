@@ -16,9 +16,27 @@ async function main() {
     const existingUser = await User.findOne({ email: email.toLowerCase() })
 
     if (existingUser) {
-      console.log('Admin user already exists!')
-      console.log('Email:', email)
-      console.log('To reset password, delete the user first or update manually.')
+      console.log('⚠️  Admin user already exists!')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📧 Email:', existingUser.email)
+      console.log('👤 Name:', existingUser.name || 'N/A')
+      console.log('🔐 Role:', existingUser.role)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('Resetting password to default: admin123')
+      
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(password, 10)
+      
+      // Update password
+      existingUser.password = hashedPassword
+      existingUser.role = 'admin' // Ensure role is admin
+      await existingUser.save()
+      
+      console.log('✅ Admin password reset successfully!')
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
+      console.log('📧 Email:', email)
+      console.log('🔑 Password:', password)
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       return
     }
 

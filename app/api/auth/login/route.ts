@@ -30,8 +30,17 @@ export async function POST(request: NextRequest) {
 
     // Find user
     let user
+    const searchEmail = email.toLowerCase().trim()
     try {
-      user = await User.findOne({ email: email.toLowerCase().trim() })
+      user = await User.findOne({ email: searchEmail })
+      
+      // Debug logging in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Login attempt:', { email: searchEmail, userFound: !!user })
+        if (user) {
+          console.log('User found:', { email: user.email, role: user.role, hasPassword: !!user.password })
+        }
+      }
     } catch (findError: any) {
       console.error('Error finding user:', findError)
       return NextResponse.json(
@@ -44,6 +53,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (!user) {
+      // In development, provide more helpful error
+      if (process.env.NODE_ENV === 'development') {
+        console.log('User not found for email:', searchEmail)
+        // Check if any users exist
+        const userCount = await User.countDocuments()
+        console.log('Total users in database:', userCount)
+      }
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
@@ -54,6 +70,11 @@ export async function POST(request: NextRequest) {
     let isValidPassword = false
     try {
       isValidPassword = await bcrypt.compare(password, user.password)
+      
+      // Debug logging in development
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Password comparison result:', isValidPassword)
+      }
     } catch (bcryptError: any) {
       console.error('Password comparison error:', bcryptError)
       return NextResponse.json(
@@ -66,6 +87,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (!isValidPassword) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Password mismatch for user:', user.email)
+      }
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
