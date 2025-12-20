@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { setAuthToken } from "@/lib/auth"
+import { setAuthToken, getAuthToken } from "@/lib/auth"
 import { toast } from "sonner"
 
 export default function AdminLoginPage() {
@@ -14,16 +14,32 @@ export default function AdminLoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError("")
     setLoading(true)
+
+    // Basic validation
+    const trimmedEmail = email.trim()
+    if (!trimmedEmail) {
+      setError("Email is required")
+      setLoading(false)
+      return
+    }
+
+    if (!password) {
+      setError("Password is required")
+      setLoading(false)
+      return
+    }
 
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), password }),
+        body: JSON.stringify({ email: trimmedEmail, password }),
       })
 
       let data
@@ -51,11 +67,25 @@ export default function AdminLoginPage() {
 
       // Store auth token (in production, use proper session management)
       setAuthToken(JSON.stringify(data.user))
+      
+      // Verify token was set
+      const token = getAuthToken()
+      if (!token) {
+        throw new Error("Failed to save authentication. Please try again.")
+      }
+
       toast.success("Admin login successful!")
-      router.push("/admin/dashboard")
+      
+      // Use replace instead of push to avoid back button issues
+      // Small delay to ensure toast is visible
+      setTimeout(() => {
+        router.replace("/admin/dashboard")
+      }, 100)
     } catch (error: any) {
       console.error("Login error:", error)
-      toast.error(error.message || "Login failed. Please check your credentials and try again.")
+      const errorMessage = error.message || "Login failed. Please check your credentials and try again."
+      setError(errorMessage)
+      toast.error(errorMessage)
     } finally {
       setLoading(false)
     }
@@ -72,6 +102,11 @@ export default function AdminLoginPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -79,8 +114,13 @@ export default function AdminLoginPage() {
                 type="email"
                 placeholder="admin@alsafragrance.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  setError("")
+                }}
+                disabled={loading}
                 required
+                autoComplete="email"
               />
             </div>
             <div className="space-y-2">
@@ -89,8 +129,13 @@ export default function AdminLoginPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  setError("")
+                }}
+                disabled={loading}
                 required
+                autoComplete="current-password"
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
