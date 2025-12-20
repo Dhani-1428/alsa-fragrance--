@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import Product from '@/lib/models/Product'
+import connectDB from '@/lib/mysql'
+import Product from '@/lib/models-mysql/Product'
 
 // GET all products
 export async function GET(request: NextRequest) {
@@ -17,12 +17,12 @@ export async function GET(request: NextRequest) {
     if (onSale === 'true') filter.isSale = true
     if (isNew === 'true') filter.isNew = true
 
-    const products = await Product.find(filter).sort({ createdAt: -1 })
+    const products = await Product.find(filter)
 
     // Transform products to match frontend format
     const transformedProducts = products.map((product) => {
       return {
-        id: product._id.toString(),
+        id: product.id?.toString() || '',
         name: product.name,
         category: product.category,
         price: product.price,
@@ -145,8 +145,8 @@ export async function POST(request: NextRequest) {
     })
 
     return NextResponse.json({
-      id: product._id.toString(),
-      ...product.toObject(),
+      id: product.id?.toString() || '',
+      ...product,
     }, { status: 201 })
   } catch (error: any) {
     console.error('Error creating product:', error)
@@ -172,17 +172,8 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Handle MongoDB validation errors
-    if (error.name === 'ValidationError') {
-      const validationErrors = Object.values(error.errors || {}).map((err: any) => err.message).join(', ')
-      return NextResponse.json(
-        { error: `Validation error: ${validationErrors}` },
-        { status: 400 }
-      )
-    }
-    
     // Handle duplicate key errors
-    if (error.code === 11000) {
+    if (error.code === 'ER_DUP_ENTRY') {
       return NextResponse.json(
         { error: 'A product with this name already exists' },
         { status: 409 }

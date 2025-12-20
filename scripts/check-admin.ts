@@ -1,5 +1,5 @@
-import connectDB from '../lib/mongodb'
-import User from '../lib/models/User'
+import connectDB, { query } from '../lib/mysql'
+import User from '../lib/models-mysql/User'
 import bcrypt from 'bcryptjs'
 
 async function main() {
@@ -7,9 +7,9 @@ async function main() {
   const password = 'admin123'
 
   try {
-    // Connect to MongoDB
+    // Connect to MySQL
     await connectDB()
-    console.log('✅ Connected to MongoDB Atlas\n')
+    console.log('✅ Connected to MySQL\n')
 
     // Check if admin exists
     const adminUser = await User.findOne({ email: email.toLowerCase() })
@@ -48,7 +48,7 @@ async function main() {
     // List all users
     console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
     console.log('All users in database:')
-    const allUsers = await User.find({}).select('email role name createdAt')
+    const allUsers: any[] = await query('SELECT email, role, name, createdAt FROM users ORDER BY createdAt DESC')
     console.log(`Total users: ${allUsers.length}`)
     allUsers.forEach((user, index) => {
       console.log(`${index + 1}. ${user.email} (${user.role}) - ${user.name || 'No name'}`)

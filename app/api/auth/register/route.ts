@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import User from '@/lib/models/User'
-import bcrypt from 'bcryptjs'
+import connectDB from '@/lib/mysql'
+import User from '@/lib/models-mysql/User'
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,16 +26,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
-
     // Get role from request body, default to 'client'
     const role = body.role || 'client'
 
-    // Create user
+    // Create user (password is hashed inside createUser)
     const user = await User.create({
       email: email.toLowerCase(),
-      password: hashedPassword,
+      password: password,
       name: name || undefined,
       role: role,
     })
@@ -44,7 +40,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         user: {
-          id: user._id.toString(),
+          id: user.id?.toString() || '',
           email: user.email,
           name: user.name,
           role: user.role,

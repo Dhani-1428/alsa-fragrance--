@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
-import { createOrder } from "@/lib/orders"
+import { createOrder } from "@/lib/orders-mysql"
 
 export const runtime = "nodejs"
 

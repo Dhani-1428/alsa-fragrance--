@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import Product from '@/lib/models/Product'
+import connectDB from '@/lib/mysql'
+import Product from '@/lib/models-mysql/Product'
 
 // GET single product
 export async function GET(
@@ -12,7 +12,8 @@ export async function GET(
     
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
-    const product = await Product.findById(resolvedParams.id)
+    const productId = parseInt(resolvedParams.id)
+    const product = await Product.findById(productId)
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
@@ -20,7 +21,7 @@ export async function GET(
 
     // Transform product to match frontend format
     const transformedProduct = {
-      id: product._id.toString(),
+      id: product.id?.toString() || '',
       name: product.name,
       category: product.category,
       price: product.price,
@@ -48,21 +49,11 @@ export async function GET(
   } catch (error: any) {
     console.error('Error fetching product:', error)
     
-    // Handle MongoDB connection errors
-    if (error.message && error.message.includes('IP')) {
+    // Handle MySQL connection errors
+    if (error.message && (error.message.includes('ECONNREFUSED') || error.message.includes('MySQL'))) {
       return NextResponse.json(
         { 
-          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
-          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
-        },
-        { status: 503 }
-      )
-    }
-    
-    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
-      return NextResponse.json(
-        { 
-          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          error: 'MySQL connection failed. Please check your database configuration.',
           details: error.message
         },
         { status: 503 }
@@ -125,38 +116,25 @@ export async function PUT(
     if (isSale !== undefined) updateData.isSale = isSale
     if (badge !== undefined) updateData.badge = badge || null
 
-    const product = await Product.findByIdAndUpdate(
-      resolvedParams.id,
-      updateData,
-      { new: true, runValidators: true }
-    )
+    const productId = parseInt(resolvedParams.id)
+    const product = await Product.findByIdAndUpdate(productId, updateData)
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
     return NextResponse.json({
-      id: product._id.toString(),
-      ...product.toObject(),
+      id: product.id?.toString() || '',
+      ...product,
     })
   } catch (error: any) {
     console.error('Error updating product:', error)
     
-    // Handle MongoDB connection errors
-    if (error.message && error.message.includes('IP')) {
+    // Handle MySQL connection errors
+    if (error.message && (error.message.includes('ECONNREFUSED') || error.message.includes('MySQL'))) {
       return NextResponse.json(
         { 
-          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
-          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
-        },
-        { status: 503 }
-      )
-    }
-    
-    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
-      return NextResponse.json(
-        { 
-          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          error: 'MySQL connection failed. Please check your database configuration.',
           details: error.message
         },
         { status: 503 }
@@ -178,7 +156,8 @@ export async function DELETE(
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
 
-    const deletedProduct = await Product.findByIdAndDelete(resolvedParams.id)
+    const productId = parseInt(resolvedParams.id)
+    const deletedProduct = await Product.findByIdAndDelete(productId)
 
     if (!deletedProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
@@ -191,21 +170,11 @@ export async function DELETE(
   } catch (error: any) {
     console.error('Error deleting product:', error)
     
-    // Handle MongoDB connection errors
-    if (error.message && error.message.includes('IP')) {
+    // Handle MySQL connection errors
+    if (error.message && (error.message.includes('ECONNREFUSED') || error.message.includes('MySQL'))) {
       return NextResponse.json(
         { 
-          error: 'MongoDB connection failed: Your IP address is not whitelisted. Please add your IP to MongoDB Atlas IP whitelist.',
-          details: 'Visit https://www.mongodb.com/docs/atlas/security-whitelist/ for instructions.'
-        },
-        { status: 503 }
-      )
-    }
-    
-    if (error.name === 'MongoServerError' || error.message?.includes('MongoDB') || error.message?.includes('Atlas')) {
-      return NextResponse.json(
-        { 
-          error: 'Database connection error. Please check your MongoDB Atlas configuration and IP whitelist settings.',
+          error: 'MySQL connection failed. Please check your database configuration.',
           details: error.message
         },
         { status: 503 }

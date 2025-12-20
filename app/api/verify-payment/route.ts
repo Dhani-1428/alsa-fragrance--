@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import nodemailer from "nodemailer"
-import { getPendingOrders, confirmOrder, getOrderById, getOrderByOrderNumber, getOrderByEmailAndStatus } from "@/lib/orders"
+import { getPendingOrders, confirmOrder, getOrderById, getOrderByOrderNumber, getOrderByEmailAndStatus } from "@/lib/orders-mysql"
 
 export const runtime = "nodejs"
 

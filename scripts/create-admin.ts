@@ -1,6 +1,5 @@
-import connectDB from '../lib/mongodb'
-import User from '../lib/models/User'
-import bcrypt from 'bcryptjs'
+import connectDB from '../lib/mysql'
+import User from '../lib/models-mysql/User'
 
 async function main() {
   const email = 'admin@alsafragrance.com'
@@ -8,9 +7,9 @@ async function main() {
   const name = 'Admin User'
 
   try {
-    // Connect to MongoDB
+    // Connect to MySQL
     await connectDB()
-    console.log('✅ Connected to MongoDB Atlas')
+    console.log('✅ Connected to MySQL')
 
     // Check if admin already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() })
@@ -24,13 +23,13 @@ async function main() {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('Resetting password to default: admin123')
       
-      // Hash new password
-      const hashedPassword = await bcrypt.hash(password, 10)
+      // Update password (password is hashed inside updateUserPassword)
+      await User.updateUserPassword(existingUser.id!, password)
       
-      // Update password
-      existingUser.password = hashedPassword
-      existingUser.role = 'admin' // Ensure role is admin
-      await existingUser.save()
+      // Update role if needed
+      if (existingUser.role !== 'admin') {
+        await User.findByIdAndUpdate(existingUser.id!, { role: 'admin' })
+      }
       
       console.log('✅ Admin password reset successfully!')
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
@@ -40,13 +39,10 @@ async function main() {
       return
     }
 
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    // Create admin user with explicit admin role
+    // Create admin user with explicit admin role (password is hashed inside createUser)
     const user = await User.create({
       email: email.toLowerCase(),
-      password: hashedPassword,
+      password: password,
       name,
       role: 'admin', // Explicitly set to admin
     })

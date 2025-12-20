@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllOrders, type Order } from '@/lib/orders'
+import { getAllOrders, type Order } from '@/lib/orders-mysql'
 
 // GET all orders (admin only)
 // Note: In production, add proper server-side authentication (JWT, session, etc.)

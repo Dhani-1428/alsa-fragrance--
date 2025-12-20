@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import connectDB from '@/lib/mongodb'
-import User from '@/lib/models/User'
+import connectDB from '@/lib/mysql'
+import User from '@/lib/models-mysql/User'
 import bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -56,9 +56,6 @@ export async function POST(request: NextRequest) {
       // In development, provide more helpful error
       if (process.env.NODE_ENV === 'development') {
         console.log('User not found for email:', searchEmail)
-        // Check if any users exist
-        const userCount = await User.countDocuments()
-        console.log('Total users in database:', userCount)
       }
       return NextResponse.json(
         { error: 'Invalid email or password' },
@@ -99,7 +96,7 @@ export async function POST(request: NextRequest) {
     // Return user info (in production, use JWT tokens)
     return NextResponse.json({
       user: {
-        id: user._id.toString(),
+        id: user.id?.toString() || '',
         email: user.email,
         name: user.name,
         role: user.role,
