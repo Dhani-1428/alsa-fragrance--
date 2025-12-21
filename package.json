@@ -93,5 +93,11 @@
     "tsx": "^4.20.6",
     "tw-animate-css": "1.3.3",
     "typescript": "^5"
+  },
+  "overrides": {
+    "@stripe/react-stripe-js": {
+      "react": "^19.2.1",
+      "react-dom": "^19.2.1"
+    }
   }
 }
