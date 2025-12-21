@@ -11,6 +11,7 @@
     "db:check-admin": "tsx scripts/check-admin.ts",
     "db:create-mysql-schema": "tsx scripts/create-mysql-schema.ts",
     "db:migrate-to-mysql": "tsx scripts/migrate-mongodb-to-mysql.ts",
+    "db:test-mysql": "tsx scripts/test-mysql-connection.ts",
     "db:migrate-to-mongodb": "tsx scripts/migrate-to-mongodb.ts",
     "test:backend": "tsx scripts/test-backend.ts",
     "test:simple": "tsx scripts/test-backend-simple.ts",
