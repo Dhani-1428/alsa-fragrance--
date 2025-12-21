@@ -1,5 +1,8 @@
-import connectDB as connectMongo from '../lib/mongodb'
-import connectDB as connectMySQL, { query } from '../lib/mysql'
+import 'dotenv/config'
+
+import connectMongo from '../lib/mongodb'
+import connectMySQL, { query } from '../lib/mysql'
+
 import User from '../lib/models/User'
 import Product from '../lib/models/Product'
 import Order from '../lib/models/Order'
@@ -199,4 +202,3 @@ async function main() {
 }
 
 main()
-
