@@ -29,7 +29,7 @@ const MYSQL_CONFIG = {
   connectionLimit: 10,
   queueLimit: 0,
   connectTimeout: 10000, // 10 seconds
-  ssl: process.env.MYSQL_SSL === 'true' ? {
+  ssl: process.env.MYSQL_SSL === 'true' || process.env.MYSQL_SSL === 'REQUIRED' ? {
     rejectUnauthorized: false
   } : false,
 }
