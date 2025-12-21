@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
 import Product from '@/lib/models-mysql/Product'
+import { handleDatabaseError } from '@/lib/db-error-handler'
 
 // GET single product
 export async function GET(
@@ -8,7 +9,11 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
     
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
@@ -70,7 +75,11 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
     
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
@@ -151,7 +160,11 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
     
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
@@ -165,7 +178,7 @@ export async function DELETE(
 
     return NextResponse.json({ 
       message: 'Product deleted successfully', 
-      id: deletedProduct._id.toString() 
+      id: deletedProduct.id?.toString() || '' 
     })
   } catch (error: any) {
     console.error('Error deleting product:', error)

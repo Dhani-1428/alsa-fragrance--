@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
 import User from '@/lib/models-mysql/User'
+import { handleDatabaseError } from '@/lib/db-error-handler'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,7 +15,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email: email.toLowerCase() })

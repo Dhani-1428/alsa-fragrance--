@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
 import Product from '@/lib/models-mysql/Product'
+import { handleDatabaseError } from '@/lib/db-error-handler'
 
 // GET all products
 export async function GET(request: NextRequest) {
   try {
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
     
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
@@ -82,7 +87,11 @@ export async function GET(request: NextRequest) {
 // POST create new product
 export async function POST(request: NextRequest) {
   try {
-    await connectDB()
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
     
     const body = await request.json()
     const {
