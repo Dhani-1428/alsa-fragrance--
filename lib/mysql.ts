@@ -29,6 +29,9 @@ const MYSQL_CONFIG = {
   connectionLimit: 10,
   queueLimit: 0,
   connectTimeout: 10000, // 10 seconds
+  ssl: process.env.MYSQL_SSL === 'true' ? {
+    rejectUnauthorized: false
+  } : false,
 }
 
 let pool: mysql.Pool | null = null

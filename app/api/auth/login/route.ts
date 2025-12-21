@@ -19,10 +19,30 @@ export async function POST(request: NextRequest) {
       await connectDB()
     } catch (dbError: any) {
       console.error('Database connection error:', dbError)
+      
+      // Check if environment variables are missing
+      const missingVars = []
+      if (!process.env.MYSQL_HOST) missingVars.push('MYSQL_HOST')
+      if (!process.env.MYSQL_USER) missingVars.push('MYSQL_USER')
+      if (!process.env.MYSQL_PASSWORD) missingVars.push('MYSQL_PASSWORD')
+      if (!process.env.MYSQL_DATABASE) missingVars.push('MYSQL_DATABASE')
+      
+      if (missingVars.length > 0) {
+        return NextResponse.json(
+          { 
+            error: 'Database configuration missing', 
+            details: `Missing environment variables: ${missingVars.join(', ')}. Please configure MySQL settings in Vercel.`
+          },
+          { status: 500 }
+        )
+      }
+      
       return NextResponse.json(
         { 
           error: 'Database connection failed', 
-          details: process.env.NODE_ENV === 'development' ? dbError?.message : undefined 
+          details: process.env.NODE_ENV === 'development' || process.env.VERCEL_ENV === 'development' 
+            ? dbError?.message 
+            : 'Please check your database configuration and ensure it is accessible from Vercel servers.'
         },
         { status: 500 }
       )
