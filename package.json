@@ -99,8 +99,16 @@
   },
   "overrides": {
     "@stripe/react-stripe-js": {
-      "react": "^19.2.1",
-      "react-dom": "^19.2.1"
+      "react": "$react",
+      "react-dom": "$react-dom"
+    },
+    "vaul": {
+      "react": "$react",
+      "react-dom": "$react-dom"
     }
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   }
 }
