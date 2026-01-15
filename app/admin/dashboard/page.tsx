@@ -608,7 +608,7 @@ export default function AdminDashboard() {
                       </div>
                       <Input
                         type="text"
-                        placeholder="Paste image URL here (e.g., https://example.com/image.jpg)"
+                        placeholder="Enter image path (e.g., /products/alsa-for-men.jpg) or external URL"
                         value={formData.image}
                         onChange={(e) => {
                           setFormData({ ...formData, image: e.target.value })
@@ -645,7 +645,7 @@ export default function AdminDashboard() {
                     <Label className="text-white">Additional Images</Label>
                     <Input
                       type="text"
-                      placeholder="Paste image URLs separated by commas (e.g., https://example.com/img1.jpg, https://example.com/img2.jpg)"
+                      placeholder="Enter image paths separated by commas (e.g., /products/img1.jpg, /products/img2.jpg)"
                       value={formData.images}
                       onChange={(e) => setFormData({ ...formData, images: e.target.value })}
                       className="bg-gray-800 border-gray-600 text-white"
