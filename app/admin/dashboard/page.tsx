@@ -600,10 +600,11 @@ export default function AdminDashboard() {
                     <div className="space-y-2">
                       <div className="text-xs text-blue-400 bg-blue-900/20 border border-blue-500/50 p-2 rounded space-y-1">
                         <p><strong>📸 How to Add Images:</strong></p>
-                        <p>1. Upload images to <strong>Cloudinary</strong> (free): <a href="https://cloudinary.com" target="_blank" rel="noopener noreferrer" className="underline">cloudinary.com</a></p>
-                        <p>2. Or use <strong>Imgur</strong> (free): <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline">imgur.com/upload</a></p>
-                        <p>3. Copy the image URL and paste it below</p>
-                        <p className="text-yellow-400">⚠️ File uploads don't work on Vercel - use direct URLs instead</p>
+                        <p><strong>Option 1 (Recommended):</strong> Use images from <code className="bg-gray-800 px-1 rounded">/products/</code> folder</p>
+                        <p className="ml-2">• Add images to <code className="bg-gray-800 px-1 rounded">public/products/</code> folder</p>
+                        <p className="ml-2">• Use URL: <code className="bg-gray-800 px-1 rounded">/products/your-image.jpg</code></p>
+                        <p className="mt-2"><strong>Option 2:</strong> Use external URLs (Cloudinary, Imgur, etc.)</p>
+                        <p className="text-yellow-400 mt-1">⚠️ File uploads don't work on Vercel - use image paths or external URLs</p>
                       </div>
                       <Input
                         type="text"
