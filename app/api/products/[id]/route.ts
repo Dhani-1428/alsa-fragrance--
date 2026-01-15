@@ -171,17 +171,27 @@ export async function DELETE(
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
 
-    const productId = parseInt(resolvedParams.id)
+    const productIdStr = resolvedParams.id
+    const productId = parseInt(productIdStr)
+    
+    // Validate product ID
+    if (isNaN(productId) || productId <= 0) {
+      console.error('Invalid product ID:', productIdStr)
+      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
+    }
+
     const { deleteProduct, findProductById } = await import('@/lib/models-mysql/Product')
     
     // Check if product exists before deleting
     const existingProduct = await findProductById(productId)
     if (!existingProduct) {
+      console.error('Product not found with ID:', productId)
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
     const deleted = await deleteProduct(productId)
     if (!deleted) {
+      console.error('Failed to delete product with ID:', productId)
       return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
     }
 
