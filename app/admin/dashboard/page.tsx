@@ -193,12 +193,23 @@ export default function AdminDashboard() {
       const uploadFormData = new FormData()
       uploadFormData.append('file', file)
 
-      const response = await fetch('/api/upload', {
+      // Try Cloudinary upload first
+      let response = await fetch('/api/upload-cloudinary', {
         method: 'POST',
         body: uploadFormData,
       })
 
-      const data = await response.json()
+      let data = await response.json()
+
+      // If Cloudinary is not configured, try local upload
+      if (!response.ok && data.error?.includes('Cloudinary is not configured')) {
+        console.warn('Cloudinary not configured, trying local upload...')
+        response = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        })
+        data = await response.json()
+      }
 
       if (!response.ok || !data.success) {
         const errorMessage = data.error || data.details || 'Failed to upload image'
@@ -235,39 +246,46 @@ export default function AdminDashboard() {
       let mainImageUrl = formData.image
       let additionalImageUrls: string[] = []
 
-      // Upload main image if a new file is selected (only works in local dev)
+      // Upload main image if a new file is selected
       if (mainImageFile) {
         try {
           mainImageUrl = await uploadImage(mainImageFile)
+          toast.success("Image uploaded successfully!")
         } catch (uploadError: any) {
-          // If upload fails (serverless environment), use the URL from the text input if provided
-          if (formData.image && formData.image.trim().startsWith('http')) {
+          // If upload fails, use the URL from the text input if provided
+          if (formData.image && formData.image.trim()) {
             mainImageUrl = formData.image.trim()
             console.warn('File upload failed, using provided URL:', mainImageUrl)
+            toast.warning("Upload failed, using provided URL")
           } else {
-            throw new Error(uploadError.message || "Failed to upload image. Please use a direct image URL instead.")
+            throw new Error(uploadError.message || "Failed to upload image. Please provide an image URL or try again.")
           }
         }
+      } else if (formData.image && formData.image.trim()) {
+        // Use URL from text input if no file selected
+        mainImageUrl = formData.image.trim()
       } else if (!editingProduct && !mainImageUrl) {
-        throw new Error("Main image is required. Please provide an image URL.")
+        throw new Error("Main image is required. Please upload an image or provide an image URL.")
       }
 
-      // Upload additional images if new files are selected (only works in local dev)
+      // Upload additional images if new files are selected
       if (additionalImageFiles.length > 0) {
         try {
           const uploadPromises = additionalImageFiles.map(file => uploadImage(file))
           additionalImageUrls = await Promise.all(uploadPromises)
+          toast.success(`${additionalImageUrls.length} additional image(s) uploaded successfully!`)
         } catch (uploadError: any) {
           // If upload fails, use URLs from text input if provided
           if (formData.images && formData.images.trim()) {
             additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
             console.warn('File upload failed, using provided URLs:', additionalImageUrls)
+            toast.warning("Upload failed, using provided URLs")
           } else {
             console.warn('Additional image upload failed, but continuing without them')
             additionalImageUrls = []
           }
         }
-      } else if (formData.images) {
+      } else if (formData.images && formData.images.trim()) {
         // Use existing URLs if no new files
         additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
       }
@@ -598,13 +616,20 @@ export default function AdminDashboard() {
                   <div className="space-y-2">
                     <Label className="text-white">Main Image {!editingProduct && <span className="text-red-400">*</span>}</Label>
                     <div className="space-y-2">
-                      <div className="text-xs text-blue-400 bg-blue-900/20 border border-blue-500/50 p-2 rounded space-y-1">
-                        <p><strong>📸 How to Add Images:</strong></p>
-                        <p><strong>Option 1 (Recommended):</strong> Use images from <code className="bg-gray-800 px-1 rounded">/products/</code> folder</p>
-                        <p className="ml-2">• Add images to <code className="bg-gray-800 px-1 rounded">public/products/</code> folder</p>
-                        <p className="ml-2">• Use URL: <code className="bg-gray-800 px-1 rounded">/products/your-image.jpg</code></p>
-                        <p className="mt-2"><strong>Option 2:</strong> Use external URLs (Cloudinary, Imgur, etc.)</p>
-                        <p className="text-yellow-400 mt-1">⚠️ File uploads don't work on Vercel - use image paths or external URLs</p>
+                      <div className="text-xs text-green-400 bg-green-900/20 border border-green-500/50 p-2 rounded space-y-1">
+                        <p><strong>📸 Upload Image:</strong></p>
+                        <p>• Click "Choose File" below to upload directly</p>
+                        <p>• Images will be uploaded to Cloudinary (if configured) or saved locally</p>
+                        <p className="text-yellow-400 mt-1">💡 Tip: You can also paste an image URL in the text field below</p>
+                      </div>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleMainImageChange}
+                        className="bg-gray-800 border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-gray-200"
+                      />
+                      <div className="text-xs text-gray-400 mt-2">
+                        Or enter image URL/path manually:
                       </div>
                       <Input
                         type="text"
@@ -615,16 +640,6 @@ export default function AdminDashboard() {
                           setMainImagePreview(e.target.value)
                         }}
                         className="bg-gray-800 border-gray-600 text-white"
-                        required={!editingProduct}
-                      />
-                      <div className="text-xs text-gray-400">
-                        Or upload a file (works only in local development):
-                      </div>
-                      <Input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleMainImageChange}
-                        className="bg-gray-800 border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-gray-200"
                       />
                     </div>
                     {(mainImagePreview || formData.image) && (
@@ -644,21 +659,21 @@ export default function AdminDashboard() {
                   <div className="space-y-2">
                     <Label className="text-white">Additional Images</Label>
                     <Input
-                      type="text"
-                      placeholder="Enter image paths separated by commas (e.g., /products/img1.jpg, /products/img2.jpg)"
-                      value={formData.images}
-                      onChange={(e) => setFormData({ ...formData, images: e.target.value })}
-                      className="bg-gray-800 border-gray-600 text-white"
-                    />
-                    <div className="text-xs text-gray-400">
-                      Or upload files (works only in local development):
-                    </div>
-                    <Input
                       type="file"
                       accept="image/*"
                       multiple
                       onChange={handleAdditionalImagesChange}
                       className="bg-gray-800 border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-gray-200"
+                    />
+                    <div className="text-xs text-gray-400 mt-2">
+                      Or enter image URLs/paths separated by commas:
+                    </div>
+                    <Input
+                      type="text"
+                      placeholder="Enter image paths separated by commas (e.g., /products/img1.jpg, /products/img2.jpg)"
+                      value={formData.images}
+                      onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+                      className="bg-gray-800 border-gray-600 text-white"
                     />
                     {(additionalImagePreviews.length > 0 || (formData.images && formData.images.trim())) && (
                       <div className="mt-2 flex flex-wrap gap-2">
