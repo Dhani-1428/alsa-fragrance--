@@ -189,21 +189,32 @@ export default function AdminDashboard() {
   }
 
   const uploadImage = async (file: File): Promise<string> => {
-    const uploadFormData = new FormData()
-    uploadFormData.append('file', file)
+    try {
+      const uploadFormData = new FormData()
+      uploadFormData.append('file', file)
 
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: uploadFormData,
-    })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: uploadFormData,
+      })
 
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Failed to upload image')
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        const errorMessage = data.error || data.details || 'Failed to upload image'
+        console.error('Upload error:', errorMessage, data)
+        throw new Error(errorMessage)
+      }
+
+      if (!data.url) {
+        throw new Error('Upload succeeded but no URL returned')
+      }
+
+      return data.url
+    } catch (error: any) {
+      console.error('Upload image error:', error)
+      throw error
     }
-
-    const data = await response.json()
-    return data.url
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

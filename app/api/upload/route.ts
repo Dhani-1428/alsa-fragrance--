@@ -50,11 +50,28 @@ export async function POST(request: NextRequest) {
     // Return the public URL path
     const publicUrl = `/uploads/${filename}`
 
-    return NextResponse.json({ url: publicUrl, filename })
-  } catch (error) {
+    return NextResponse.json({ success: true, url: publicUrl, filename })
+  } catch (error: any) {
     console.error('Error uploading file:', error)
+    
+    // Provide more specific error messages
+    let errorMessage = 'Failed to upload file'
+    if (error.code === 'EACCES' || error.code === 'EPERM') {
+      errorMessage = 'Permission denied. Cannot write to uploads directory.'
+    } else if (error.code === 'ENOSPC') {
+      errorMessage = 'No space left on device.'
+    } else if (error.code === 'ENOENT') {
+      errorMessage = 'Uploads directory could not be created.'
+    } else if (error.message) {
+      errorMessage = error.message
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to upload file' },
+      { 
+        success: false,
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
