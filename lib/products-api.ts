@@ -23,13 +23,14 @@ export interface Product {
 
 let productsCache: Product[] | null = null
 let cacheTimestamp: number = 0
-const CACHE_DURATION = 60000 // 1 minute cache
+const CACHE_DURATION = 0 // No cache - always fetch fresh data
 
 // Fetch all products from API
 export async function fetchProducts(): Promise<Product[]> {
   try {
     const response = await fetch("/api/products", {
       cache: "no-store",
+      next: { revalidate: 0 }, // Disable Next.js caching
     })
     if (!response.ok) {
       throw new Error("Failed to fetch products")
@@ -42,14 +43,11 @@ export async function fetchProducts(): Promise<Product[]> {
   }
 }
 
-// Get products with caching
+// Get products with caching (disabled - always fresh)
 export async function getProducts(): Promise<Product[]> {
-  const now = Date.now()
-  if (productsCache && now - cacheTimestamp < CACHE_DURATION) {
-    return productsCache
-  }
+  // Always fetch fresh data (no cache)
   productsCache = await fetchProducts()
-  cacheTimestamp = now
+  cacheTimestamp = Date.now()
   return productsCache
 }
 
