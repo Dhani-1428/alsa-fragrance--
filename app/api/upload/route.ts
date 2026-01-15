@@ -5,6 +5,21 @@ import path from 'path'
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if we're in a serverless environment (Vercel, etc.)
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME
+    
+    if (isServerless) {
+      return NextResponse.json(
+        { 
+          success: false,
+          error: 'File uploads are not supported in serverless environments. Please use direct image URLs instead.',
+          serverless: true,
+          instructions: 'Instead of uploading, paste the direct image URL in the image field (e.g., https://example.com/image.jpg)'
+        },
+        { status: 400 }
+      )
+    }
+
     const formData = await request.formData()
     const file = formData.get('file') as File
 
@@ -62,6 +77,8 @@ export async function POST(request: NextRequest) {
       errorMessage = 'No space left on device.'
     } else if (error.code === 'ENOENT') {
       errorMessage = 'Uploads directory could not be created.'
+    } else if (error.code === 'EROFS') {
+      errorMessage = 'File system is read-only. This is a serverless environment (Vercel). Please use direct image URLs instead of uploading files. Paste the image URL directly in the image field.'
     } else if (error.message) {
       errorMessage = error.message
     }

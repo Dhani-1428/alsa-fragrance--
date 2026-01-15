@@ -235,17 +235,38 @@ export default function AdminDashboard() {
       let mainImageUrl = formData.image
       let additionalImageUrls: string[] = []
 
-      // Upload main image if a new file is selected
+      // Upload main image if a new file is selected (only works in local dev)
       if (mainImageFile) {
-        mainImageUrl = await uploadImage(mainImageFile)
+        try {
+          mainImageUrl = await uploadImage(mainImageFile)
+        } catch (uploadError: any) {
+          // If upload fails (serverless environment), use the URL from the text input if provided
+          if (formData.image && formData.image.trim().startsWith('http')) {
+            mainImageUrl = formData.image.trim()
+            console.warn('File upload failed, using provided URL:', mainImageUrl)
+          } else {
+            throw new Error(uploadError.message || "Failed to upload image. Please use a direct image URL instead.")
+          }
+        }
       } else if (!editingProduct && !mainImageUrl) {
-        throw new Error("Main image is required")
+        throw new Error("Main image is required. Please provide an image URL.")
       }
 
-      // Upload additional images if new files are selected
+      // Upload additional images if new files are selected (only works in local dev)
       if (additionalImageFiles.length > 0) {
-        const uploadPromises = additionalImageFiles.map(file => uploadImage(file))
-        additionalImageUrls = await Promise.all(uploadPromises)
+        try {
+          const uploadPromises = additionalImageFiles.map(file => uploadImage(file))
+          additionalImageUrls = await Promise.all(uploadPromises)
+        } catch (uploadError: any) {
+          // If upload fails, use URLs from text input if provided
+          if (formData.images && formData.images.trim()) {
+            additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
+            console.warn('File upload failed, using provided URLs:', additionalImageUrls)
+          } else {
+            console.warn('Additional image upload failed, but continuing without them')
+            additionalImageUrls = []
+          }
+        }
       } else if (formData.images) {
         // Use existing URLs if no new files
         additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
@@ -576,29 +597,58 @@ export default function AdminDashboard() {
 
                   <div className="space-y-2">
                     <Label className="text-white">Main Image {!editingProduct && <span className="text-red-400">*</span>}</Label>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleMainImageChange}
-                      className="bg-gray-800 border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-gray-200"
-                      required={!editingProduct}
-                    />
+                    <div className="space-y-2">
+                      <p className="text-xs text-yellow-400 bg-yellow-900/20 border border-yellow-500/50 p-2 rounded">
+                        ⚠️ <strong>Note:</strong> File uploads don't work in serverless environments (Vercel). 
+                        Please paste the direct image URL below instead of uploading a file.
+                      </p>
+                      <Input
+                        type="text"
+                        placeholder="Paste image URL here (e.g., https://example.com/image.jpg)"
+                        value={formData.image}
+                        onChange={(e) => {
+                          setFormData({ ...formData, image: e.target.value })
+                          setMainImagePreview(e.target.value)
+                        }}
+                        className="bg-gray-800 border-gray-600 text-white"
+                        required={!editingProduct}
+                      />
+                      <div className="text-xs text-gray-400">
+                        Or upload a file (works only in local development):
+                      </div>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleMainImageChange}
+                        className="bg-gray-800 border-gray-600 text-white file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-white file:text-black hover:file:bg-gray-200"
+                      />
+                    </div>
                     {(mainImagePreview || formData.image) && (
                       <div className="mt-2">
                         <img
                           src={mainImagePreview || formData.image}
                           alt="Main product preview"
                           className="w-32 h-32 object-cover rounded border border-gray-600"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.jpg'
+                          }}
                         />
                       </div>
-                    )}
-                    {!mainImageFile && formData.image && (
-                      <p className="text-xs text-gray-400 mt-1">Current: {formData.image}</p>
                     )}
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-white">Additional Images</Label>
+                    <Input
+                      type="text"
+                      placeholder="Paste image URLs separated by commas (e.g., https://example.com/img1.jpg, https://example.com/img2.jpg)"
+                      value={formData.images}
+                      onChange={(e) => setFormData({ ...formData, images: e.target.value })}
+                      className="bg-gray-800 border-gray-600 text-white"
+                    />
+                    <div className="text-xs text-gray-400">
+                      Or upload files (works only in local development):
+                    </div>
                     <Input
                       type="file"
                       accept="image/*"
