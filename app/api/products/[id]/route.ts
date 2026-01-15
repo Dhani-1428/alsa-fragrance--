@@ -18,7 +18,8 @@ export async function GET(
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
     const productId = parseInt(resolvedParams.id)
-    const product = await Product.findById(productId)
+    const { findProductById } = await import('@/lib/models-mysql/Product')
+    const product = await findProductById(productId)
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
@@ -126,7 +127,8 @@ export async function PUT(
     if (badge !== undefined) updateData.badge = badge || null
 
     const productId = parseInt(resolvedParams.id)
-    const product = await Product.findByIdAndUpdate(productId, updateData)
+    const { updateProduct } = await import('@/lib/models-mysql/Product')
+    const product = await updateProduct(productId, updateData)
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
@@ -170,15 +172,22 @@ export async function DELETE(
     const resolvedParams = params instanceof Promise ? await params : params
 
     const productId = parseInt(resolvedParams.id)
-    const deletedProduct = await Product.findByIdAndDelete(productId)
-
-    if (!deletedProduct) {
+    const { deleteProduct, findProductById } = await import('@/lib/models-mysql/Product')
+    
+    // Check if product exists before deleting
+    const existingProduct = await findProductById(productId)
+    if (!existingProduct) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+    }
+
+    const deleted = await deleteProduct(productId)
+    if (!deleted) {
+      return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
     }
 
     return NextResponse.json({ 
       message: 'Product deleted successfully', 
-      id: deletedProduct.id?.toString() || '' 
+      id: existingProduct.id?.toString() || '' 
     })
   } catch (error: any) {
     console.error('Error deleting product:', error)

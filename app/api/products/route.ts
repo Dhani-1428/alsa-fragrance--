@@ -23,9 +23,18 @@ export async function GET(request: NextRequest) {
     if (isNew === 'true') filter.isNew = true
 
     const products = await Product.find(filter)
+    
+    // Apply additional filters that aren't handled by the model
+    let filteredProducts = products
+    if (onSale === 'true') {
+      filteredProducts = filteredProducts.filter(p => p.isSale === true)
+    }
+    if (isNew === 'true') {
+      filteredProducts = filteredProducts.filter(p => p.isNew === true)
+    }
 
     // Transform products to match frontend format
-    const transformedProducts = products.map((product) => {
+    const transformedProducts = filteredProducts.map((product) => {
       return {
         id: product.id?.toString() || '',
         name: product.name,
@@ -131,7 +140,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Product description is required' }, { status: 400 })
     }
 
-    const product = await Product.create({
+    const { createProduct } = await import('@/lib/models-mysql/Product')
+    const product = await createProduct({
       name: name.trim(),
       category: category.trim(),
       price: parseFloat(price),
