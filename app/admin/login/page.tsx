@@ -112,7 +112,7 @@ export default function AdminLoginPage() {
               <Input
                 id="email"
                 type="email"
-                placeholder="admin@alsafragrance.com"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value)
@@ -145,9 +145,6 @@ export default function AdminLoginPage() {
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md">
             <p className="text-xs text-blue-800 dark:text-blue-300">
               <strong>Need to create an admin user?</strong> Run: <code className="bg-blue-100 dark:bg-blue-900 px-1 rounded">npm run db:create-admin</code>
-            </p>
-            <p className="text-xs text-blue-700 dark:text-blue-400 mt-1">
-              Default credentials: admin@alsafragrance.com / admin123
             </p>
           </div>
         </CardContent>
