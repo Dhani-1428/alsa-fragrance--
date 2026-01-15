@@ -34,28 +34,17 @@ export async function createUser(userData: {
   role?: 'client' | 'admin'
 }): Promise<IUser> {
   const hashedPassword = await bcrypt.hash(userData.password, 10)
-  
-  // Get the next available id
-  const maxIdResult: any[] = await query(`SELECT COALESCE(MAX(CAST(id AS UNSIGNED)), 0) as maxId FROM users WHERE id REGEXP '^[0-9]+$'`)
-  let nextId = 1
-  if (Array.isArray(maxIdResult) && maxIdResult[0]?.maxId) {
-    const maxId = parseInt(maxIdResult[0].maxId) || 0
-    nextId = maxId + 1
-  }
-  
   const result: any = await query(
-    `INSERT INTO users (id, email, password, name, role, tenantId) VALUES (?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
     [
-      nextId,
       userData.email.toLowerCase().trim(),
       hashedPassword,
       userData.name || null,
       userData.role || 'client',
-      nextId, // Use same id as tenantId
     ]
   )
   
-  const newUser = await findUserById(nextId)
+  const newUser = await findUserById(result.insertId)
   if (!newUser) {
     throw new Error('Failed to create user')
   }

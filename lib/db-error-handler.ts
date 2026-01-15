@@ -11,24 +11,12 @@ export function handleDatabaseError(error: any) {
   if (!process.env.MYSQL_DATABASE) missingVars.push('MYSQL_DATABASE')
   
   if (missingVars.length > 0) {
-    // Log available env vars for debugging (without sensitive data)
-    const availableVars = Object.keys(process.env)
-      .filter(k => k.startsWith('MYSQL'))
-      .map(k => `${k}=${k.includes('PASSWORD') ? '***' : (process.env[k] ? 'SET' : 'NOT SET')}`)
-    
-    console.error('Missing MySQL env vars:', missingVars)
-    console.error('Available MySQL env vars:', availableVars)
-    
     return NextResponse.json(
       { 
         error: 'Database configuration missing', 
         details: `Missing environment variables: ${missingVars.join(', ')}. ` +
                  `Please add these in Vercel: Settings → Environment Variables → Production → Add: ` +
-                 `MYSQL_HOST, MYSQL_PORT (optional, default: 3306), MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_SSL (optional)`,
-        debug: process.env.NODE_ENV === 'development' ? {
-          missing: missingVars,
-          available: availableVars
-        } : undefined
+                 `MYSQL_HOST, MYSQL_PORT (optional, default: 3306), MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE`
       },
       { status: 500 }
     )

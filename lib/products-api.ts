@@ -23,7 +23,7 @@ export interface Product {
 
 let productsCache: Product[] | null = null
 let cacheTimestamp: number = 0
-const CACHE_DURATION = 0 // No cache - always fetch fresh data
+const CACHE_DURATION = 60000 // 1 minute cache
 
 // Fetch all products from API
 export async function fetchProducts(): Promise<Product[]> {
@@ -44,9 +44,12 @@ export async function fetchProducts(): Promise<Product[]> {
 
 // Get products with caching
 export async function getProducts(): Promise<Product[]> {
-  // Always fetch fresh data from API (no cache)
+  const now = Date.now()
+  if (productsCache && now - cacheTimestamp < CACHE_DURATION) {
+    return productsCache
+  }
   productsCache = await fetchProducts()
-  cacheTimestamp = Date.now()
+  cacheTimestamp = now
   return productsCache
 }
 

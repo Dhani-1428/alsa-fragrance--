@@ -944,102 +944,66 @@ export default function AdminDashboard() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-6">
-                  {/* Order Information */}
-                  <div className="bg-gray-800 border border-gray-700 p-5 rounded-lg">
-                    <h3 className="text-lg font-bold text-white mb-4 pb-2 border-b border-gray-700">Order Information</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Order Number</p>
-                        <p className="text-white font-mono text-base">{selectedOrder.orderNumber}</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="font-semibold text-white mb-2">Customer Information</h3>
+                      <div className="bg-gray-800 p-4 rounded-lg space-y-1 text-sm">
+                        <p className="text-white"><strong>Name:</strong> {selectedOrder.billingInfo.fullName}</p>
+                        <p className="text-gray-300"><strong>Email:</strong> {selectedOrder.billingInfo.email}</p>
+                        <p className="text-gray-300"><strong>Phone:</strong> {selectedOrder.billingInfo.phone}</p>
                       </div>
-                      <div>
-                        <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Status</p>
-                        <span className={`inline-block px-3 py-1.5 rounded-full text-xs font-bold ${
-                          selectedOrder.status === "confirmed" 
-                            ? "bg-green-500/30 text-green-300 border border-green-500/50" 
-                            : selectedOrder.status === "pending"
-                            ? "bg-yellow-500/30 text-yellow-300 border border-yellow-500/50"
-                            : "bg-red-500/30 text-red-300 border border-red-500/50"
-                        }`}>
-                          {selectedOrder.status.toUpperCase()}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Payment Method</p>
-                        <p className="text-white font-medium text-base">{selectedOrder.paymentMethod}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Order Date</p>
-                        <p className="text-white text-base">{new Date(selectedOrder.createdAt).toLocaleString()}</p>
-                      </div>
-                      {selectedOrder.confirmedAt && (
-                        <div>
-                          <p className="text-gray-400 text-xs uppercase tracking-wide mb-1">Confirmed At</p>
-                          <p className="text-white text-base">{new Date(selectedOrder.confirmedAt).toLocaleString()}</p>
-                        </div>
-                      )}
                     </div>
-                  </div>
-
-                  {/* Billing Information */}
-                  <div className="bg-gray-800 border border-gray-700 p-5 rounded-lg">
-                    <h3 className="text-lg font-bold text-white mb-4 pb-2 border-b border-gray-700">Billing Information</h3>
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Full Name</p>
-                          <p className="text-white font-semibold text-base">{selectedOrder.billingInfo.fullName}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Email Address</p>
-                          <p className="text-white text-base break-all">{selectedOrder.billingInfo.email}</p>
-                        </div>
-                        <div>
-                          <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Phone Number</p>
-                          <p className="text-white font-semibold text-base">{selectedOrder.billingInfo.phone}</p>
-                        </div>
-                      </div>
-                      <div className="space-y-4">
-                        <div>
-                          <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Delivery Address</p>
-                          <div className="text-white text-base leading-relaxed">
-                            <p className="font-semibold mb-1">{selectedOrder.billingInfo.address}</p>
-                            <p className="text-gray-200">{selectedOrder.billingInfo.city}, {selectedOrder.billingInfo.postalCode}</p>
-                            <p className="text-gray-200">{selectedOrder.billingInfo.country}</p>
-                          </div>
-                        </div>
-                        {selectedOrder.billingInfo.additionalNotes && (
-                          <div>
-                            <p className="text-gray-400 text-xs uppercase tracking-wide mb-2">Additional Notes</p>
-                            <p className="text-white text-sm italic bg-gray-900/50 p-2 rounded border border-gray-700">{selectedOrder.billingInfo.additionalNotes}</p>
-                          </div>
+                    <div>
+                      <h3 className="font-semibold text-white mb-2">Order Information</h3>
+                      <div className="bg-gray-800 p-4 rounded-lg space-y-1 text-sm">
+                        <p className="text-white"><strong>Status:</strong> 
+                          <span className={`ml-2 px-2 py-1 rounded text-xs ${
+                            selectedOrder.status === "confirmed" 
+                              ? "bg-green-500/20 text-green-400" 
+                              : "bg-yellow-500/20 text-yellow-400"
+                          }`}>
+                            {selectedOrder.status}
+                          </span>
+                        </p>
+                        <p className="text-gray-300"><strong>Payment:</strong> {selectedOrder.paymentMethod}</p>
+                        <p className="text-gray-300"><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                        {selectedOrder.confirmedAt && (
+                          <p className="text-gray-300"><strong>Confirmed:</strong> {new Date(selectedOrder.confirmedAt).toLocaleString()}</p>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Order Items */}
-                  <div className="bg-gray-800 border border-gray-700 p-5 rounded-lg">
-                    <h3 className="text-lg font-bold text-white mb-4 pb-2 border-b border-gray-700">Order Items</h3>
-                    <div className="overflow-hidden rounded-lg border border-gray-700">
+                  <div>
+                    <h3 className="font-semibold text-white mb-2">Delivery Address</h3>
+                    <div className="bg-gray-800 p-4 rounded-lg text-sm">
+                      <p className="text-white">{selectedOrder.billingInfo.address}</p>
+                      <p className="text-gray-300">{selectedOrder.billingInfo.city}, {selectedOrder.billingInfo.postalCode}</p>
+                      <p className="text-gray-300">{selectedOrder.billingInfo.country}</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-white mb-2">Order Items</h3>
+                    <div className="bg-gray-800 rounded-lg overflow-hidden">
                       <Table>
                         <TableHeader>
-                          <TableRow className="border-gray-700 bg-gray-900/50">
-                            <TableHead className="text-white font-semibold">Product</TableHead>
-                            <TableHead className="text-white font-semibold">Size</TableHead>
-                            <TableHead className="text-white font-semibold text-center">Qty</TableHead>
-                            <TableHead className="text-white font-semibold text-right">Price</TableHead>
-                            <TableHead className="text-white font-semibold text-right">Total</TableHead>
+                          <TableRow className="border-gray-700">
+                            <TableHead className="text-white">Product</TableHead>
+                            <TableHead className="text-white">Size</TableHead>
+                            <TableHead className="text-white">Qty</TableHead>
+                            <TableHead className="text-white">Price</TableHead>
+                            <TableHead className="text-white">Total</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {selectedOrder.cartItems.map((item, idx) => (
-                            <TableRow key={idx} className="border-gray-700 hover:bg-gray-900/30">
-                              <TableCell className="text-white font-medium">{item.product.name}</TableCell>
-                              <TableCell className="text-gray-200">{item.size}</TableCell>
-                              <TableCell className="text-gray-200 text-center">{item.quantity}</TableCell>
-                              <TableCell className="text-gray-200 text-right">€{item.product.price.toFixed(2)}</TableCell>
-                              <TableCell className="text-white font-semibold text-right">€{(item.product.price * item.quantity).toFixed(2)}</TableCell>
+                            <TableRow key={idx} className="border-gray-700">
+                              <TableCell className="text-white">{item.product.name}</TableCell>
+                              <TableCell className="text-gray-300">{item.size}</TableCell>
+                              <TableCell className="text-gray-300">{item.quantity}</TableCell>
+                              <TableCell className="text-gray-300">€{item.product.price.toFixed(2)}</TableCell>
+                              <TableCell className="text-white">€{(item.product.price * item.quantity).toFixed(2)}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -1047,26 +1011,22 @@ export default function AdminDashboard() {
                     </div>
                   </div>
 
-                  {/* Order Summary */}
-                  <div className="bg-gray-800 border border-gray-700 p-5 rounded-lg">
-                    <h3 className="text-lg font-bold text-white mb-4 pb-2 border-b border-gray-700">Order Summary</h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-300 font-medium">Subtotal:</span>
-                        <span className="text-white font-semibold text-base">€{selectedOrder.subtotal.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-300 font-medium">Shipping:</span>
-                        <span className="text-white font-semibold text-base">€{selectedOrder.shipping.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-2">
-                        <span className="text-gray-300 font-medium">Tax:</span>
-                        <span className="text-white font-semibold text-base">€{selectedOrder.tax.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between items-center pt-4 mt-4 border-t-2 border-gray-600">
-                        <span className="text-white text-xl font-bold">Grand Total:</span>
-                        <span className="text-white text-2xl font-bold">€{selectedOrder.grandTotal.toFixed(2)}</span>
-                      </div>
+                  <div className="bg-gray-800 p-4 rounded-lg">
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Subtotal:</span>
+                      <span className="text-white">€{selectedOrder.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Shipping:</span>
+                      <span className="text-white">€{selectedOrder.shipping.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm mb-2">
+                      <span className="text-gray-300">Tax:</span>
+                      <span className="text-white">€{selectedOrder.tax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-700">
+                      <span className="text-white">Total:</span>
+                      <span className="text-white">€{selectedOrder.grandTotal.toFixed(2)}</span>
                     </div>
                   </div>
 

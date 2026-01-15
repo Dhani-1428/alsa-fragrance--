@@ -7,15 +7,14 @@ function validateConfig() {
   const missing = required.filter(key => !process.env[key])
   
   if (missing.length > 0) {
-    // Log which variables are missing for debugging
-    console.error('Missing MySQL environment variables:', missing)
-    console.error('Available env vars:', Object.keys(process.env).filter(k => k.startsWith('MYSQL')))
-    
     throw new Error(
       `Missing required MySQL environment variables: ${missing.join(', ')}\n` +
-      `Please set them in Vercel: Settings → Environment Variables → Production\n` +
-      `Required: MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE\n` +
-      `Optional: MYSQL_PORT (default: 3306), MYSQL_SSL (default: false)`
+      `Please set them in your .env file:\n` +
+      `MYSQL_HOST=your_host\n` +
+      `MYSQL_PORT=3306\n` +
+      `MYSQL_USER=your_user\n` +
+      `MYSQL_PASSWORD=your_password\n` +
+      `MYSQL_DATABASE=your_database`
     )
   }
 }
