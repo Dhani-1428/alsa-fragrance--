@@ -174,27 +174,39 @@ export async function DELETE(
     const productIdStr = resolvedParams.id
     const productId = parseInt(productIdStr)
     
+    console.log('DELETE request - Product ID string:', productIdStr, 'Parsed ID:', productId)
+    
     // Validate product ID
     if (isNaN(productId) || productId <= 0) {
-      console.error('Invalid product ID:', productIdStr)
-      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
+      console.error('Invalid product ID:', productIdStr, 'Parsed as:', productId)
+      return NextResponse.json({ error: `Invalid product ID: ${productIdStr}` }, { status: 400 })
     }
 
     const { deleteProduct, findProductById } = await import('@/lib/models-mysql/Product')
     
     // Check if product exists before deleting
+    console.log('Looking for product with ID:', productId)
     const existingProduct = await findProductById(productId)
+    console.log('Product lookup result:', existingProduct ? `Found: ${existingProduct.name}` : 'Not found')
+    
     if (!existingProduct) {
-      console.error('Product not found with ID:', productId)
-      return NextResponse.json({ error: 'Product not found' }, { status: 404 })
+      console.error('Product not found with ID:', productId, 'Type:', typeof productId)
+      // Try to find all products to debug
+      const { findAllProducts } = await import('@/lib/models-mysql/Product')
+      const allProducts = await findAllProducts()
+      console.log('Total products in database:', allProducts.length)
+      console.log('Product IDs in database:', allProducts.map(p => ({ id: p.id, type: typeof p.id })))
+      return NextResponse.json({ error: `Product not found with ID: ${productId}` }, { status: 404 })
     }
 
+    console.log('Deleting product:', existingProduct.id, existingProduct.name)
     const deleted = await deleteProduct(productId)
     if (!deleted) {
       console.error('Failed to delete product with ID:', productId)
       return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
     }
 
+    console.log('Product deleted successfully:', productId)
     return NextResponse.json({ 
       message: 'Product deleted successfully', 
       id: existingProduct.id?.toString() || '' 
