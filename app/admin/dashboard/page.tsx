@@ -598,10 +598,13 @@ export default function AdminDashboard() {
                   <div className="space-y-2">
                     <Label className="text-white">Main Image {!editingProduct && <span className="text-red-400">*</span>}</Label>
                     <div className="space-y-2">
-                      <p className="text-xs text-yellow-400 bg-yellow-900/20 border border-yellow-500/50 p-2 rounded">
-                        ⚠️ <strong>Note:</strong> File uploads don't work in serverless environments (Vercel). 
-                        Please paste the direct image URL below instead of uploading a file.
-                      </p>
+                      <div className="text-xs text-blue-400 bg-blue-900/20 border border-blue-500/50 p-2 rounded space-y-1">
+                        <p><strong>📸 How to Add Images:</strong></p>
+                        <p>1. Upload images to <strong>Cloudinary</strong> (free): <a href="https://cloudinary.com" target="_blank" rel="noopener noreferrer" className="underline">cloudinary.com</a></p>
+                        <p>2. Or use <strong>Imgur</strong> (free): <a href="https://imgur.com/upload" target="_blank" rel="noopener noreferrer" className="underline">imgur.com/upload</a></p>
+                        <p>3. Copy the image URL and paste it below</p>
+                        <p className="text-yellow-400">⚠️ File uploads don't work on Vercel - use direct URLs instead</p>
+                      </div>
                       <Input
                         type="text"
                         placeholder="Paste image URL here (e.g., https://example.com/image.jpg)"
