@@ -193,26 +193,20 @@ export default function AdminDashboard() {
       const uploadFormData = new FormData()
       uploadFormData.append('file', file)
 
-      // Try Cloudinary upload first
-      let response = await fetch('/api/upload-cloudinary', {
+      // Always try Cloudinary upload first (works in serverless environments)
+      const response = await fetch('/api/upload-cloudinary', {
         method: 'POST',
         body: uploadFormData,
       })
 
-      let data = await response.json()
-
-      // If Cloudinary is not configured, try local upload
-      if (!response.ok && data.error?.includes('Cloudinary is not configured')) {
-        console.warn('Cloudinary not configured, trying local upload...')
-        response = await fetch('/api/upload', {
-          method: 'POST',
-          body: uploadFormData,
-        })
-        data = await response.json()
-      }
+      const data = await response.json()
 
       if (!response.ok || !data.success) {
-        const errorMessage = data.error || data.details || 'Failed to upload image'
+        // If Cloudinary is not configured, provide helpful error
+        if (data.error?.includes('Cloudinary is not configured')) {
+          throw new Error('Cloudinary is not configured. Please add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your environment variables.')
+        }
+        const errorMessage = data.error || data.details || 'Failed to upload image to Cloudinary'
         console.error('Upload error:', errorMessage, data)
         throw new Error(errorMessage)
       }
@@ -221,6 +215,8 @@ export default function AdminDashboard() {
         throw new Error('Upload succeeded but no URL returned')
       }
 
+      // Return Cloudinary URL
+      console.log('Image uploaded to Cloudinary:', data.url)
       return data.url
     } catch (error: any) {
       console.error('Upload image error:', error)
@@ -246,19 +242,22 @@ export default function AdminDashboard() {
       let mainImageUrl = formData.image
       let additionalImageUrls: string[] = []
 
-      // Upload main image if a new file is selected
+      // Upload main image to Cloudinary if a new file is selected
       if (mainImageFile) {
         try {
+          // Upload to Cloudinary first
           mainImageUrl = await uploadImage(mainImageFile)
-          toast.success("Image uploaded successfully!")
+          // Update the form data with the Cloudinary URL
+          setFormData({ ...formData, image: mainImageUrl })
+          toast.success("Image uploaded to Cloudinary successfully!")
         } catch (uploadError: any) {
           // If upload fails, use the URL from the text input if provided
           if (formData.image && formData.image.trim()) {
             mainImageUrl = formData.image.trim()
-            console.warn('File upload failed, using provided URL:', mainImageUrl)
-            toast.warning("Upload failed, using provided URL")
+            console.warn('Cloudinary upload failed, using provided URL:', mainImageUrl)
+            toast.warning("Cloudinary upload failed, using provided URL")
           } else {
-            throw new Error(uploadError.message || "Failed to upload image. Please provide an image URL or try again.")
+            throw new Error(uploadError.message || "Failed to upload image to Cloudinary. Please configure Cloudinary or provide an image URL.")
           }
         }
       } else if (formData.image && formData.image.trim()) {
@@ -268,18 +267,21 @@ export default function AdminDashboard() {
         throw new Error("Main image is required. Please upload an image or provide an image URL.")
       }
 
-      // Upload additional images if new files are selected
+      // Upload additional images to Cloudinary if new files are selected
       if (additionalImageFiles.length > 0) {
         try {
+          // Upload all additional images to Cloudinary
           const uploadPromises = additionalImageFiles.map(file => uploadImage(file))
           additionalImageUrls = await Promise.all(uploadPromises)
-          toast.success(`${additionalImageUrls.length} additional image(s) uploaded successfully!`)
+          // Update the form data with Cloudinary URLs
+          setFormData({ ...formData, images: additionalImageUrls.join(', ') })
+          toast.success(`${additionalImageUrls.length} additional image(s) uploaded to Cloudinary successfully!`)
         } catch (uploadError: any) {
           // If upload fails, use URLs from text input if provided
           if (formData.images && formData.images.trim()) {
             additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
-            console.warn('File upload failed, using provided URLs:', additionalImageUrls)
-            toast.warning("Upload failed, using provided URLs")
+            console.warn('Cloudinary upload failed, using provided URLs:', additionalImageUrls)
+            toast.warning("Cloudinary upload failed, using provided URLs")
           } else {
             console.warn('Additional image upload failed, but continuing without them')
             additionalImageUrls = []
