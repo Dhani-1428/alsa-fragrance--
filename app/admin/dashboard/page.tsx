@@ -430,22 +430,36 @@ export default function AdminDashboard() {
     setAdditionalImagePreviews([])
   }
 
-  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMainImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
       setMainImageFile(file)
+      // Show preview immediately
       const reader = new FileReader()
       reader.onloadend = () => {
         setMainImagePreview(reader.result as string)
       }
       reader.readAsDataURL(file)
+      
+      // Upload to Cloudinary immediately and update the form field
+      try {
+        const cloudinaryUrl = await uploadImage(file)
+        setFormData({ ...formData, image: cloudinaryUrl })
+        setMainImagePreview(cloudinaryUrl)
+        toast.success("Image uploaded to Cloudinary!")
+      } catch (error: any) {
+        console.error('Auto-upload failed:', error)
+        toast.error(error.message || "Failed to upload. You can still provide a URL manually.")
+        // Keep the local preview, user can still submit with manual URL
+      }
     }
   }
 
-  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAdditionalImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (files.length > 0) {
       setAdditionalImageFiles(files)
+      // Show previews immediately
       const previews: string[] = []
       files.forEach((file) => {
         const reader = new FileReader()
@@ -457,6 +471,19 @@ export default function AdminDashboard() {
         }
         reader.readAsDataURL(file)
       })
+      
+      // Upload to Cloudinary immediately and update the form field
+      try {
+        const uploadPromises = files.map(file => uploadImage(file))
+        const cloudinaryUrls = await Promise.all(uploadPromises)
+        setFormData({ ...formData, images: cloudinaryUrls.join(', ') })
+        setAdditionalImagePreviews(cloudinaryUrls)
+        toast.success(`${cloudinaryUrls.length} image(s) uploaded to Cloudinary!`)
+      } catch (error: any) {
+        console.error('Auto-upload failed:', error)
+        toast.error(error.message || "Failed to upload. You can still provide URLs manually.")
+        // Keep the local previews, user can still submit with manual URLs
+      }
     }
   }
 
