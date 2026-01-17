@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { notFound } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { ProductGallery } from "@/components/product-gallery"
 import { ProductReviews } from "@/components/product-reviews"
@@ -32,21 +31,20 @@ export default function ProductPage({ params }: ProductPageProps) {
       try {
         // Parse ID - handle both string and number
         const productId = typeof params.id === 'string' ? parseInt(params.id) : params.id
-        if (isNaN(productId)) {
+        if (isNaN(productId) || productId <= 0) {
           console.error("Invalid product ID:", params.id)
-          notFound()
+          setLoading(false)
           return
         }
         const prod = await getProductById(productId)
         if (!prod) {
           console.error("Product not found with ID:", productId)
-          notFound()
+          setLoading(false)
           return
         }
         setProduct(prod)
       } catch (error) {
         console.error("Error loading product:", error)
-        notFound()
       } finally {
         setLoading(false)
       }
@@ -66,7 +64,25 @@ export default function ProductPage({ params }: ProductPageProps) {
   }
 
   if (!product) {
-    return null
+    return (
+      <main className="min-h-screen">
+        <Navigation />
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-4xl font-bold mb-4 font-[family-name:var(--font-playfair)]">Product Not Found</h1>
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            The product you're looking for doesn't exist or has been removed.
+          </p>
+          <div className="flex gap-4 justify-center">
+            <Button asChild>
+              <Link href="/shop">Browse All Products</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <Link href="/">Go Home</Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   // Create multiple images for gallery (using the same image for demo)
