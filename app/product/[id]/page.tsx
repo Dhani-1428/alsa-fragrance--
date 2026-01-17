@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { notFound } from "next/navigation"
 import { Navigation } from "@/components/navigation"
 import { ProductGallery } from "@/components/product-gallery"
 import { ProductReviews } from "@/components/product-reviews"
@@ -33,19 +34,19 @@ export default function ProductPage({ params }: ProductPageProps) {
         const productId = typeof params.id === 'string' ? parseInt(params.id) : params.id
         if (isNaN(productId)) {
           console.error("Invalid product ID:", params.id)
-          router.push("/404")
+          notFound()
           return
         }
         const prod = await getProductById(productId)
         if (!prod) {
           console.error("Product not found with ID:", productId)
-          router.push("/404")
+          notFound()
           return
         }
         setProduct(prod)
       } catch (error) {
         console.error("Error loading product:", error)
-        router.push("/404")
+        notFound()
       } finally {
         setLoading(false)
       }
