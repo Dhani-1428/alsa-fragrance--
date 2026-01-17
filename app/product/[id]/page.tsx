@@ -17,43 +17,50 @@ import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
 
 interface ProductPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }> | { id: string }
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
   const router = useRouter()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
+  const [productId, setProductId] = useState<string | null>(null)
   const { t } = useLanguage()
+
+  // Resolve params (can be Promise in Next.js 15+)
+  useEffect(() => {
+    async function resolveParams() {
+      try {
+        const resolvedParams = params instanceof Promise ? await params : params
+        const id = String(resolvedParams?.id || '').trim()
+        setProductId(id)
+      } catch (error) {
+        console.error("Error resolving params:", error)
+        setLoading(false)
+      }
+    }
+    resolveParams()
+  }, [params])
 
   useEffect(() => {
     async function loadProduct() {
+      if (!productId) return
+
       try {
-        console.log("Loading product with params.id:", params.id, "Type:", typeof params.id)
+        setLoading(true)
         
-        // Parse ID - handle both string and number
-        const productIdStr = String(params.id || '').trim()
-        if (!productIdStr) {
-          console.error("Empty product ID")
+        // Parse ID
+        const parsedId = parseInt(productId, 10)
+        if (isNaN(parsedId) || parsedId <= 0) {
+          console.error("Invalid product ID:", productId)
           setLoading(false)
           return
         }
         
-        const productId = parseInt(productIdStr, 10)
-        if (isNaN(productId) || productId <= 0) {
-          console.error("Invalid product ID:", params.id, "Parsed as:", productId)
-          setLoading(false)
-          return
-        }
-        
-        console.log("Fetching product with ID:", productId)
-        const prod = await getProductById(productId)
-        console.log("Product fetch result:", prod ? "Found" : "Not found", prod)
+        const prod = await getProductById(parsedId)
         
         if (!prod) {
-          console.error("Product not found with ID:", productId)
+          console.error("Product not found with ID:", parsedId)
           setLoading(false)
           return
         }
@@ -64,8 +71,11 @@ export default function ProductPage({ params }: ProductPageProps) {
         setLoading(false)
       }
     }
-    loadProduct()
-  }, [params.id, router])
+    
+    if (productId) {
+      loadProduct()
+    }
+  }, [productId])
 
   if (loading) {
     return (

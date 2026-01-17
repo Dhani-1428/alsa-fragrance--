@@ -74,12 +74,15 @@ export async function getProductById(id: number | string): Promise<Product | und
       return undefined
     }
     
-    console.log("Fetching product from API with ID:", productId)
     const response = await fetch(`/api/products/${productId}`, {
       cache: "no-store",
     })
     
     if (!response.ok) {
+      if (response.status === 404) {
+        console.warn("Product not found with ID:", productId)
+        return undefined
+      }
       console.error("API response not OK:", response.status, response.statusText)
       const errorData = await response.json().catch(() => ({}))
       console.error("Error data:", errorData)
@@ -87,7 +90,6 @@ export async function getProductById(id: number | string): Promise<Product | und
     }
     
     const product = await response.json()
-    console.log("Product fetched successfully:", product?.id, product?.name)
     return product
   } catch (error) {
     console.error("Error fetching product:", error)
