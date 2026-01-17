@@ -1,5 +1,5 @@
 export interface Product {
-  id: number
+  id: number | string // Can be number or string (API returns string)
   name: string
   category: "women" | "men" | "attars" | "testers" | "accessories"
   price: number
@@ -28,14 +28,21 @@ const CACHE_DURATION = 0 // No cache - always fetch fresh data
 // Fetch all products from API
 export async function fetchProducts(): Promise<Product[]> {
   try {
+    console.log("Fetching products from API...")
     const response = await fetch("/api/products", {
       cache: "no-store",
       next: { revalidate: 0 }, // Disable Next.js caching
     })
     if (!response.ok) {
-      throw new Error("Failed to fetch products")
+      console.error("API response not OK:", response.status, response.statusText)
+      throw new Error(`Failed to fetch products: ${response.status} ${response.statusText}`)
     }
-    return await response.json()
+    const products = await response.json()
+    console.log("Products fetched successfully:", products.length, "products")
+    if (products.length > 0) {
+      console.log("First product sample:", { id: products[0].id, name: products[0].name })
+    }
+    return products
   } catch (error) {
     console.error("Error fetching products:", error)
     // Fallback to empty array if API fails

@@ -22,14 +22,24 @@ export function FeaturedProducts() {
     async function fetchFeaturedProducts() {
       try {
         setLoading(true)
+        console.log("FeaturedProducts: Fetching products...")
         const products = await getProducts()
+        console.log("FeaturedProducts: Received products:", products.length)
+        
         // Filter out products without valid IDs and get first 5
         const validProducts = products.filter(p => {
           const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
-          return id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
+          const isValid = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
+          if (!isValid) {
+            console.warn("FeaturedProducts: Invalid product ID:", p.id, "Product:", p.name)
+          }
+          return isValid
         })
-        console.log("Featured products - Total:", products.length, "Valid:", validProducts.length)
-        setFeaturedProducts(validProducts.slice(0, 5))
+        
+        console.log("FeaturedProducts - Total:", products.length, "Valid:", validProducts.length)
+        const featured = validProducts.slice(0, 5)
+        console.log("FeaturedProducts: Setting featured products:", featured.length, featured.map(p => ({ id: p.id, name: p.name })))
+        setFeaturedProducts(featured)
       } catch (error) {
         console.error("Error fetching featured products:", error)
         setFeaturedProducts([])
