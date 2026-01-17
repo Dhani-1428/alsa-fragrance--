@@ -37,8 +37,15 @@ export function FeaturedProducts() {
         })
         
         console.log("FeaturedProducts - Total:", products.length, "Valid:", validProducts.length)
+        
+        // Show up to 5 products, or all valid products if less than 5
         const featured = validProducts.slice(0, 5)
         console.log("FeaturedProducts: Setting featured products:", featured.length, featured.map(p => ({ id: p.id, name: p.name })))
+        
+        if (featured.length === 0 && products.length > 0) {
+          console.warn("FeaturedProducts: No valid products found, but products exist. Showing first product for debugging:", products[0])
+        }
+        
         setFeaturedProducts(featured)
       } catch (error) {
         console.error("Error fetching featured products:", error)
