@@ -31,10 +31,10 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
     const favorite = isFavorite(product.id)
     if (!favorite) {
       addToWishlist(product)
-      toast.success("Product added to wishlist!")
+      toast.success(t.wishlist.added)
     } else {
       removeFromWishlist(product.id)
-      toast.info("Product removed from wishlist")
+      toast.info(t.wishlist.removed)
     }
   }
 
@@ -104,7 +104,7 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
           size="lg" 
           onClick={handleWishlist}
           className={favorite ? "text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950" : ""}
-          title={favorite ? "Remove from wishlist" : "Add to wishlist"}
+          title={favorite ? t.wishlist.removeFromWishlist : t.wishlist.addToWishlist}
         >
           <Heart className={`h-4 w-4 ${favorite ? "fill-red-500" : ""}`} />
         </Button>

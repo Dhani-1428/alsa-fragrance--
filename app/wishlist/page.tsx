@@ -33,8 +33,8 @@ export default function WishlistPage() {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center max-w-md mx-auto">
             <Heart className="h-16 w-16 text-muted-foreground mx-auto mb-6" />
-            <h1 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">Your wishlist is empty</h1>
-            <p className="text-muted-foreground mb-8">Start adding your favorite products to your wishlist</p>
+            <h1 className="text-3xl font-bold mb-4 font-[family-name:var(--font-playfair)]">{t.wishlist.empty}</h1>
+            <p className="text-muted-foreground mb-8">{t.wishlist.emptyDescription}</p>
             <Button size="lg" asChild>
               <Link href="/shop">{t.pages.startShopping}</Link>
             </Button>
@@ -52,10 +52,10 @@ export default function WishlistPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold font-[family-name:var(--font-playfair)]">
-            Wishlist ({getTotalItems()} {getTotalItems() === 1 ? 'item' : 'items'})
+            {t.wishlist.title} ({getTotalItems()} {getTotalItems() === 1 ? t.wishlist.item : t.wishlist.items})
           </h1>
           <Button variant="outline" onClick={clearWishlist}>
-            Clear Wishlist
+            {t.wishlist.clearWishlist}
           </Button>
         </div>
 
@@ -78,7 +78,7 @@ export default function WishlistPage() {
                       size="sm"
                       className="absolute top-2 right-2 h-8 w-8 p-0 bg-white/90 hover:bg-white text-red-500 hover:text-red-600"
                       onClick={() => removeItem(product.id)}
-                      title="Remove from wishlist"
+                      title={t.wishlist.removeFromWishlist}
                     >
                       <X className="h-4 w-4" />
                     </Button>

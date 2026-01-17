@@ -49,6 +49,19 @@ export interface Translations {
     freeShipping: string
     items: string
   }
+  // Wishlist
+  wishlist: {
+    title: string
+    empty: string
+    emptyDescription: string
+    clearWishlist: string
+    removeFromWishlist: string
+    addToWishlist: string
+    item: string
+    items: string
+    added: string
+    removed: string
+  }
   // Checkout
   checkout: {
     title: string
@@ -485,6 +498,18 @@ export const translations: Record<Language, Translations> = {
       freeShipping: "Free Shipping",
       items: "items",
     },
+    wishlist: {
+      title: "Wishlist",
+      empty: "Your wishlist is empty",
+      emptyDescription: "Start adding your favorite products to your wishlist",
+      clearWishlist: "Clear Wishlist",
+      removeFromWishlist: "Remove from wishlist",
+      addToWishlist: "Add to wishlist",
+      item: "item",
+      items: "items",
+      added: "Product added to wishlist!",
+      removed: "Product removed from wishlist",
+    },
     checkout: {
       title: "Checkout",
       billingInfo: "Billing Information",
@@ -909,6 +934,18 @@ export const translations: Record<Language, Translations> = {
       proceedToCheckout: "Prosseguir para o Checkout",
       freeShipping: "Portes Grátis",
       items: "itens",
+    },
+    wishlist: {
+      title: "Lista de Desejos",
+      empty: "A sua lista de desejos está vazia",
+      emptyDescription: "Comece a adicionar os seus produtos favoritos à sua lista de desejos",
+      clearWishlist: "Limpar Lista de Desejos",
+      removeFromWishlist: "Remover da lista de desejos",
+      addToWishlist: "Adicionar à lista de desejos",
+      item: "item",
+      items: "itens",
+      added: "Produto adicionado à lista de desejos!",
+      removed: "Produto removido da lista de desejos",
     },
     checkout: {
       title: "Checkout",
@@ -1335,6 +1372,18 @@ export const translations: Record<Language, Translations> = {
       freeShipping: "मुफ्त शिपिंग",
       items: "वस्तुएं",
     },
+    wishlist: {
+      title: "इच्छा सूची",
+      empty: "आपकी इच्छा सूची खाली है",
+      emptyDescription: "अपनी इच्छा सूची में अपने पसंदीदा उत्पादों को जोड़ना शुरू करें",
+      clearWishlist: "इच्छा सूची साफ करें",
+      removeFromWishlist: "इच्छा सूची से हटाएं",
+      addToWishlist: "इच्छा सूची में जोड़ें",
+      item: "वस्तु",
+      items: "वस्तुएं",
+      added: "उत्पाद इच्छा सूची में जोड़ा गया!",
+      removed: "उत्पाद इच्छा सूची से हटा दिया गया",
+    },
     checkout: {
       title: "चेकआउट",
       billingInfo: "बिलिंग जानकारी",
@@ -1760,6 +1809,18 @@ export const translations: Record<Language, Translations> = {
       freeShipping: "شحن مجاني",
       items: "عناصر",
     },
+    wishlist: {
+      title: "قائمة الأمنيات",
+      empty: "قائمة أمنياتك فارغة",
+      emptyDescription: "ابدأ بإضافة منتجاتك المفضلة إلى قائمة أمنياتك",
+      clearWishlist: "مسح قائمة الأمنيات",
+      removeFromWishlist: "إزالة من قائمة الأمنيات",
+      addToWishlist: "إضافة إلى قائمة الأمنيات",
+      item: "عنصر",
+      items: "عناصر",
+      added: "تم إضافة المنتج إلى قائمة الأمنيات!",
+      removed: "تمت إزالة المنتج من قائمة الأمنيات",
+    },
     checkout: {
       title: "الدفع",
       billingInfo: "معلومات الفوترة",
@@ -2184,6 +2245,18 @@ export const translations: Record<Language, Translations> = {
       proceedToCheckout: "چیک آؤٹ پر جائیں",
       freeShipping: "مفت شپنگ",
       items: "اشیاء",
+    },
+    wishlist: {
+      title: "خواہشات کی فہرست",
+      empty: "آپ کی خواہشات کی فہرست خالی ہے",
+      emptyDescription: "اپنی خواہشات کی فہرست میں اپنے پسندیدہ مصنوعات شامل کرنا شروع کریں",
+      clearWishlist: "خواہشات کی فہرست صاف کریں",
+      removeFromWishlist: "خواہشات کی فہرست سے ہٹائیں",
+      addToWishlist: "خواہشات کی فہرست میں شامل کریں",
+      item: "شے",
+      items: "اشیاء",
+      added: "مصنوعات خواہشات کی فہرست میں شامل کر دی گئی!",
+      removed: "مصنوعات خواہشات کی فہرست سے ہٹا دی گئی",
     },
     checkout: {
       title: "چیک آؤٹ",
