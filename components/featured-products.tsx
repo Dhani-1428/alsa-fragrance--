@@ -116,19 +116,23 @@ export function FeaturedProducts() {
                   <p className="text-muted-foreground">No featured products available.</p>
                 </div>
               ) : (
-                featuredProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    className="flex-shrink-0"
-                    style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <ProductCard product={product} />
-                  </motion.div>
-                ))
+                featuredProducts.map((product, index) => {
+                  // Ensure product has valid ID for key
+                  const productKey = typeof product.id === 'string' ? product.id : String(product.id || index)
+                  return (
+                    <motion.div
+                      key={productKey}
+                      className="flex-shrink-0"
+                      style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <ProductCard product={product} />
+                    </motion.div>
+                  )
+                })
               )}
             </motion.div>
           </div>
