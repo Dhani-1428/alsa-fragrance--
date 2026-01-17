@@ -13,7 +13,9 @@ interface AddToCartFormProps {
 }
 
 export function AddToCartForm({ product }: AddToCartFormProps) {
-  const [selectedSize, setSelectedSize] = useState(product.size[0])
+  const [selectedSize, setSelectedSize] = useState(
+    product.size && product.size.length > 0 ? product.size[0] : ""
+  )
   const { addItem, openCart } = useCart()
   const { t } = useLanguage()
 

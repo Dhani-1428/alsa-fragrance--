@@ -251,7 +251,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">{t.pages.availableSizes}</span>
-                <span className="text-sm">{product.size.join(", ")}</span>
+                <span className="text-sm">{product.size && product.size.length > 0 ? product.size.join(", ") : "N/A"}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">{t.pages.stockStatus}</span>
@@ -261,7 +261,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">{t.pages.sku}</span>
-                <span className="text-sm">AF-{product.id.toString().padStart(4, "0")}</span>
+                <span className="text-sm">AF-{String(product.id || "").padStart(4, "0")}</span>
               </div>
             </CardContent>
           </Card>
