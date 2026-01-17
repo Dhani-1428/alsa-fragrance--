@@ -17,15 +17,12 @@ export async function GET(request: NextRequest) {
     const onSale = searchParams.get('onSale')
     const isNew = searchParams.get('isNew')
 
-    const filter: any = {}
-    if (category) filter.category = category
-    if (onSale === 'true') filter.isSale = true
-    if (isNew === 'true') filter.isNew = true
-
-    const products = await Product.find(filter)
+    // Use the MySQL model function instead of Product.find()
+    const { findAllProducts } = await import('@/lib/models-mysql/Product')
+    const allProducts = await findAllProducts({ category: category || undefined })
     
-    // Apply additional filters that aren't handled by the model
-    let filteredProducts = products
+    // Apply additional filters
+    let filteredProducts = allProducts
     if (onSale === 'true') {
       filteredProducts = filteredProducts.filter(p => p.isSale === true)
     }
