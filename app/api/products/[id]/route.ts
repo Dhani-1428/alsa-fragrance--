@@ -17,9 +17,24 @@ export async function GET(
     
     // Handle both async and sync params (Next.js 15+ uses Promise)
     const resolvedParams = params instanceof Promise ? await params : params
-    const productId = parseInt(resolvedParams.id)
+    const productIdStr = String(resolvedParams.id || '').trim()
+    
+    if (!productIdStr) {
+      console.error("Empty product ID in API request")
+      return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
+    }
+    
+    const productId = parseInt(productIdStr, 10)
+    if (isNaN(productId) || productId <= 0) {
+      console.error("Invalid product ID in API request:", resolvedParams.id, "Parsed as:", productId)
+      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
+    }
+    
+    console.log("API: Looking for product with ID:", productId)
     const { findProductById } = await import('@/lib/models-mysql/Product')
     const product = await findProductById(productId)
+    
+    console.log("API: Product lookup result:", product ? `Found: ${product.name}` : "Not found")
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })

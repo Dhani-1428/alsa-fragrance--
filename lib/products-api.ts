@@ -58,15 +58,30 @@ export async function getProductsByCategory(category: string): Promise<Product[]
 }
 
 // Get product by ID
-export async function getProductById(id: number): Promise<Product | undefined> {
+export async function getProductById(id: number | string): Promise<Product | undefined> {
   try {
-    const response = await fetch(`/api/products/${id}`, {
-      cache: "no-store",
-    })
-    if (!response.ok) {
+    // Ensure ID is a number for the API call
+    const productId = typeof id === 'string' ? parseInt(id, 10) : id
+    if (isNaN(productId) || productId <= 0) {
+      console.error("Invalid product ID provided to getProductById:", id)
       return undefined
     }
-    return await response.json()
+    
+    console.log("Fetching product from API with ID:", productId)
+    const response = await fetch(`/api/products/${productId}`, {
+      cache: "no-store",
+    })
+    
+    if (!response.ok) {
+      console.error("API response not OK:", response.status, response.statusText)
+      const errorData = await response.json().catch(() => ({}))
+      console.error("Error data:", errorData)
+      return undefined
+    }
+    
+    const product = await response.json()
+    console.log("Product fetched successfully:", product?.id, product?.name)
+    return product
   } catch (error) {
     console.error("Error fetching product:", error)
     return undefined

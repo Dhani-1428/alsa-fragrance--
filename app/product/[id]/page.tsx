@@ -31,14 +31,27 @@ export default function ProductPage({ params }: ProductPageProps) {
   useEffect(() => {
     async function loadProduct() {
       try {
+        console.log("Loading product with params.id:", params.id, "Type:", typeof params.id)
+        
         // Parse ID - handle both string and number
-        const productId = typeof params.id === 'string' ? parseInt(params.id) : params.id
-        if (isNaN(productId) || productId <= 0) {
-          console.error("Invalid product ID:", params.id)
+        const productIdStr = String(params.id || '').trim()
+        if (!productIdStr) {
+          console.error("Empty product ID")
           setLoading(false)
           return
         }
+        
+        const productId = parseInt(productIdStr, 10)
+        if (isNaN(productId) || productId <= 0) {
+          console.error("Invalid product ID:", params.id, "Parsed as:", productId)
+          setLoading(false)
+          return
+        }
+        
+        console.log("Fetching product with ID:", productId)
         const prod = await getProductById(productId)
+        console.log("Product fetch result:", prod ? "Found" : "Not found", prod)
+        
         if (!prod) {
           console.error("Product not found with ID:", productId)
           setLoading(false)
