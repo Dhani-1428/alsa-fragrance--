@@ -37,15 +37,8 @@ export function FeaturedProducts() {
         })
         
         console.log("FeaturedProducts - Total:", products.length, "Valid:", validProducts.length)
-        
-        // Show up to 5 products, or all valid products if less than 5
         const featured = validProducts.slice(0, 5)
         console.log("FeaturedProducts: Setting featured products:", featured.length, featured.map(p => ({ id: p.id, name: p.name })))
-        
-        if (featured.length === 0 && products.length > 0) {
-          console.warn("FeaturedProducts: No valid products found, but products exist. Showing first product for debugging:", products[0])
-        }
-        
         setFeaturedProducts(featured)
       } catch (error) {
         console.error("Error fetching featured products:", error)
@@ -116,23 +109,19 @@ export function FeaturedProducts() {
                   <p className="text-muted-foreground">No featured products available.</p>
                 </div>
               ) : (
-                featuredProducts.map((product, index) => {
-                  // Ensure product has valid ID for key
-                  const productKey = typeof product.id === 'string' ? product.id : String(product.id || index)
-                  return (
-                    <motion.div
-                      key={productKey}
-                      className="flex-shrink-0"
-                      style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <ProductCard product={product} />
-                    </motion.div>
-                  )
-                })
+                featuredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    className="flex-shrink-0"
+                    style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))
               )}
             </motion.div>
           </div>
