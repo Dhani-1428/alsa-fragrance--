@@ -29,33 +29,35 @@ export async function GET(request: NextRequest) {
       filteredProducts = filteredProducts.filter(p => p.isNew === true)
     }
 
-    // Transform products to match frontend format
-    const transformedProducts = filteredProducts.map((product) => {
-      return {
-        id: product.id?.toString() || '',
-        name: product.name,
-        category: product.category,
-        price: product.price,
-        originalPrice: product.originalPrice || product.price,
-        salePrice: product.salePrice || undefined,
-        salePercent: product.salePercent || undefined,
-        rating: product.rating,
-        reviews: product.reviews,
-        image: product.image,
-        images: product.images || [],
-        description: product.description,
-        notes: {
-          top: product.notesTop || [],
-          middle: product.notesMiddle || [],
-          base: product.notesBase || [],
-        },
-        size: product.size || [],
-        inStock: product.inStock,
-        isNew: product.isNew,
-        isSale: product.isSale,
-        badge: product.badge,
-      }
-    })
+    // Transform products to match frontend format - filter out products without valid IDs
+    const transformedProducts = filteredProducts
+      .filter((product) => product.id != null && product.id !== undefined && product.id > 0)
+      .map((product) => {
+        return {
+          id: product.id!.toString(), // Safe to use ! here since we filtered
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          originalPrice: product.originalPrice || product.price,
+          salePrice: product.salePrice || undefined,
+          salePercent: product.salePercent || undefined,
+          rating: product.rating,
+          reviews: product.reviews,
+          image: product.image,
+          images: product.images || [],
+          description: product.description,
+          notes: {
+            top: product.notesTop || [],
+            middle: product.notesMiddle || [],
+            base: product.notesBase || [],
+          },
+          size: product.size || [],
+          inStock: product.inStock,
+          isNew: product.isNew,
+          isSale: product.isSale,
+          badge: product.badge,
+        }
+      })
 
     return NextResponse.json(transformedProducts)
   } catch (error: any) {
