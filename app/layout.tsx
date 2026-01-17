@@ -7,8 +7,6 @@ import { CartProvider } from "@/lib/cart-context"
 import { WishlistProvider } from "@/lib/wishlist-context"
 import { LanguageProvider } from "@/contexts/language-provider"
 import { AuthProvider } from "@/contexts/auth-provider"
-import { CartDrawer } from "@/components/cart-drawer"
-import { WishlistDrawer } from "@/components/wishlist-drawer"
 import { WhatsAppWidget } from "@/components/whatsapp-widget"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import { BackToTop } from "@/components/back-to-top"
@@ -79,8 +77,6 @@ export default function RootLayout({
               <WishlistProvider>
                 <ScrollToTop />
                 <Suspense fallback={null}>{children}</Suspense>
-                <CartDrawer />
-                <WishlistDrawer />
                 <BackToTop />
                 <WhatsAppWidget />
               </WishlistProvider>

@@ -11,6 +11,7 @@ import { useLanguage } from "@/contexts/language-provider"
 import { useAuth } from "@/contexts/auth-provider"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Footer } from "@/components/footer"
 
 export default function CartPage() {
   const { state, removeItem, updateQuantity, clearCart, getTotalItems, getTotalPrice } = useCart()
@@ -45,6 +46,7 @@ export default function CartPage() {
             </Button>
           </div>
         </div>
+        <Footer />
       </main>
     )
   }
@@ -202,6 +204,8 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </main>
   )
 }

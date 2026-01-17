@@ -39,12 +39,20 @@ export function Navigation() {
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1)
   const [allProducts, setAllProducts] = useState<any[]>([])
   const [mounted, setMounted] = useState(false)
-  const { toggleCart, getTotalItems } = useCart()
-  const { toggleWishlist, getTotalItems: getWishlistItems } = useWishlist()
+  const { getTotalItems } = useCart()
+  const { getTotalItems: getWishlistItems } = useWishlist()
   const { language, setLanguage, t, mounted: languageMounted } = useLanguage()
   const { user, logout } = useAuth()
   const pathname = usePathname()
   const router = useRouter()
+
+  const handleCartClick = () => {
+    router.push("/cart")
+  }
+
+  const handleWishlistClick = () => {
+    router.push("/wishlist")
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -388,7 +396,7 @@ export function Navigation() {
                   variant="ghost"
                   size="icon"
                   className="relative hover:bg-gold/10 hover:text-gold transition-colors"
-                  onClick={toggleWishlist}
+                  onClick={handleWishlistClick}
                 >
                   <Heart className="h-5 w-5" />
                   <AnimatePresence>
@@ -414,7 +422,7 @@ export function Navigation() {
                   variant="ghost"
                   size="icon"
                   className="relative hover:bg-gold/10 hover:text-gold transition-colors"
-                  onClick={toggleCart}
+                  onClick={handleCartClick}
                 >
                   <ShoppingCart className="h-5 w-5" />
                   <AnimatePresence>

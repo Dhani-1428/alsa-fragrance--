@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Truck, Shield, RotateCcw } from "lucide-react"
 import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
+import { Footer } from "@/components/footer"
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -302,6 +303,8 @@ export default function ProductPage({ params }: ProductPageProps) {
 
       {/* Related Products */}
       <RelatedProducts currentProduct={product} />
+
+      <Footer />
     </main>
   )
 }
