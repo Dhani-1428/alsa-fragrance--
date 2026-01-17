@@ -100,8 +100,10 @@ export default function ProductPage({ params }: ProductPageProps) {
     )
   }
 
-  // Create multiple images for gallery (using the same image for demo)
-  const galleryImages = [product.image, product.image, product.image]
+  // Use product images for gallery - main image plus additional images
+  const galleryImages = product.images && product.images.length > 0 
+    ? [product.image, ...product.images].filter(img => img && img.trim())
+    : [product.image]
 
   return (
     <main className="min-h-screen">

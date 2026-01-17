@@ -24,22 +24,24 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
 
   return (
     <div className="space-y-4">
-      {/* Size Selection */}
-      <div>
-        <label className="block text-sm font-medium mb-2">{t.product.size}</label>
-        <Select value={selectedSize} onValueChange={setSelectedSize}>
-          <SelectTrigger className="w-full">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {product.size.map((size) => (
-              <SelectItem key={size} value={size}>
-                {size}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Size Selection - only show if sizes are available */}
+      {product.size && product.size.length > 0 && (
+        <div>
+          <label className="block text-sm font-medium mb-2">{t.product.size}</label>
+          <Select value={selectedSize} onValueChange={setSelectedSize}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {product.size.map((size) => (
+                <SelectItem key={size} value={size}>
+                  {size}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Add to Cart */}
       <div className="flex gap-3">
