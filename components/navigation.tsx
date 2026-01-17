@@ -10,8 +10,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Menu, Search, ShoppingCart, X, Globe } from "lucide-react"
+import { Menu, Search, ShoppingCart, X, Globe, Heart } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
+import { useWishlist } from "@/lib/wishlist-context"
 import { useLanguage } from "@/contexts/language-provider"
 import { translations } from "@/lib/i18n/translations"
 import { useAuth } from "@/contexts/auth-provider"
@@ -39,6 +40,7 @@ export function Navigation() {
   const [allProducts, setAllProducts] = useState<any[]>([])
   const [mounted, setMounted] = useState(false)
   const { toggleCart, getTotalItems } = useCart()
+  const { toggleWishlist, getTotalItems: getWishlistItems } = useWishlist()
   const { language, setLanguage, t, mounted: languageMounted } = useLanguage()
   const { user, logout } = useAuth()
   const pathname = usePathname()
@@ -380,6 +382,33 @@ export function Navigation() {
                 <div className="w-[73px] h-[36px]"></div>
               )}
 
+              {/* Wishlist Icon */}
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative hover:bg-gold/10 hover:text-gold transition-colors"
+                  onClick={toggleWishlist}
+                >
+                  <Heart className="h-5 w-5" />
+                  <AnimatePresence>
+                    {getWishlistItems() > 0 && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0 }}
+                        className="absolute -top-2 -right-2"
+                      >
+                        <Badge className="h-5 w-5 rounded-full p-0 text-xs bg-gold text-black font-bold">
+                          {getWishlistItems()}
+                        </Badge>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Button>
+              </motion.div>
+
+              {/* Cart Icon */}
               <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   variant="ghost"

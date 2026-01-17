@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, Heart, Share2 } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
+import { useWishlist } from "@/lib/wishlist-context"
 import { useLanguage } from "@/contexts/language-provider"
 import { toast } from "sonner"
 import type { Product } from "@/lib/products-api"
@@ -17,22 +18,9 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   const [selectedSize, setSelectedSize] = useState(
     product.size && product.size.length > 0 ? product.size[0] : ""
   )
-  const [isFavorite, setIsFavorite] = useState(false)
   const { addItem, openCart } = useCart()
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isFavorite } = useWishlist()
   const { t } = useLanguage()
-
-  // Load favorite state from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-        const productId = typeof product.id === 'string' ? parseInt(product.id, 10) : product.id
-        setIsFavorite(favorites.includes(productId))
-      } catch (error) {
-        console.error("Error loading favorites:", error)
-      }
-    }
-  }, [product.id])
 
   const handleAddToCart = () => {
     addItem(product, selectedSize, 1)
@@ -40,25 +28,17 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   }
 
   const handleWishlist = () => {
-    setIsFavorite(!isFavorite)
-    if (!isFavorite) {
+    const favorite = isFavorite(product.id)
+    if (!favorite) {
+      addToWishlist(product)
       toast.success("Product added to wishlist!")
-      // Store in localStorage
-      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-      const productId = typeof product.id === 'string' ? parseInt(product.id, 10) : product.id
-      if (!favorites.includes(productId)) {
-        favorites.push(productId)
-        localStorage.setItem("favorites", JSON.stringify(favorites))
-      }
     } else {
+      removeFromWishlist(product.id)
       toast.info("Product removed from wishlist")
-      // Remove from localStorage
-      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-      const productId = typeof product.id === 'string' ? parseInt(product.id, 10) : product.id
-      const updatedFavorites = favorites.filter((id: number) => id !== productId)
-      localStorage.setItem("favorites", JSON.stringify(updatedFavorites))
     }
   }
+
+  const favorite = isFavorite(product.id)
 
   const handleShare = async () => {
     const productId = typeof product.id === 'string' ? product.id : String(product.id)
@@ -123,10 +103,10 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
           variant="outline" 
           size="lg" 
           onClick={handleWishlist}
-          className={isFavorite ? "text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950" : ""}
-          title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
+          className={favorite ? "text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950" : ""}
+          title={favorite ? "Remove from wishlist" : "Add to wishlist"}
         >
-          <Heart className={`h-4 w-4 ${isFavorite ? "fill-red-500" : ""}`} />
+          <Heart className={`h-4 w-4 ${favorite ? "fill-red-500" : ""}`} />
         </Button>
         <Button 
           variant="outline" 
