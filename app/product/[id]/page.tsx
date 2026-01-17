@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Navigation } from "@/components/navigation"
@@ -17,7 +17,7 @@ import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
 
 interface ProductPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
@@ -25,14 +25,17 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
   const { t } = useLanguage()
+  
+  // Unwrap params Promise using React.use() (Next.js 16+)
+  const resolvedParams = use(params)
 
   useEffect(() => {
     async function loadProduct() {
       try {
         setLoading(true)
         
-        // Get product ID from params
-        const productIdStr = String(params?.id || '').trim()
+        // Get product ID from resolved params
+        const productIdStr = String(resolvedParams?.id || '').trim()
         if (!productIdStr) {
           console.error("Empty product ID")
           setLoading(false)
@@ -68,12 +71,12 @@ export default function ProductPage({ params }: ProductPageProps) {
       }
     }
     
-    if (params?.id) {
+    if (resolvedParams?.id) {
       loadProduct()
     } else {
       setLoading(false)
     }
-  }, [params?.id])
+  }, [resolvedParams?.id])
 
   if (loading) {
     return (
