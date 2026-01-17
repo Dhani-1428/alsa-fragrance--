@@ -23,12 +23,12 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   return (
     <div className="space-y-4">
-      {/* Main Image */}
-      <div className="relative aspect-square overflow-hidden rounded-lg bg-card">
+      {/* Main Image - Reduced size for better design */}
+      <div className="relative aspect-square max-w-md mx-auto overflow-hidden rounded-xl bg-card shadow-lg">
         <img
           src={images[currentImage] || "/premium-perfume-bottle-product-view.jpg"}
           alt={`${productName} - Image ${currentImage + 1}`}
-          className={`w-full h-full object-cover transition-transform duration-300 ${
+          className={`w-full h-full object-contain transition-transform duration-300 ${
             isZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
           }`}
           onClick={() => setIsZoomed(!isZoomed)}

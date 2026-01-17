@@ -118,98 +118,101 @@ export default function ProductPage({ params }: ProductPageProps) {
     : [product.image]
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
-          <a href="/" className="hover:text-foreground">
+        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-6">
+          <Link href="/" className="hover:text-foreground transition-colors">
             {t.nav.home}
-          </a>
+          </Link>
           <span>/</span>
-          <a href="/shop" className="hover:text-foreground">
+          <Link href="/shop" className="hover:text-foreground transition-colors">
             {t.nav.shop}
-          </a>
+          </Link>
           <span>/</span>
-          <a href={`/${product.category}`} className="hover:text-foreground capitalize">
+          <Link href={`/${product.category}`} className="hover:text-foreground capitalize transition-colors">
             {product.category}
-          </a>
+          </Link>
           <span>/</span>
           <span className="text-foreground">{product.name}</span>
         </nav>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
           {/* Product Gallery */}
-          <div>
+          <div className="flex items-center justify-center">
             <ProductGallery images={galleryImages} productName={product.name} />
           </div>
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:space-y-8">
             {/* Badges */}
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {product.badge && (
-                <Badge variant={product.badge === "Sale" ? "destructive" : "default"}>{product.badge}</Badge>
+                <Badge variant={product.badge === "Sale" ? "destructive" : "default"} className="text-sm px-3 py-1">
+                  {product.badge}
+                </Badge>
               )}
               {product.isNew && (
-                <Badge variant="secondary" className="bg-primary text-primary-foreground">
+                <Badge variant="secondary" className="bg-primary text-primary-foreground text-sm px-3 py-1">
                   {t.pages.new}
                 </Badge>
               )}
               {!product.inStock && (
-                <Badge variant="secondary" className="bg-gray-500 text-white">
+                <Badge variant="secondary" className="bg-gray-500 text-white text-sm px-3 py-1">
                   {t.product.outOfStock}
                 </Badge>
               )}
             </div>
 
             {/* Title and Rating */}
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2 font-[family-name:var(--font-playfair)]">
+            <div className="space-y-3">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-[family-name:var(--font-playfair)] text-foreground">
                 {product.name}
               </h1>
-              <div className="flex items-center gap-4 mb-4">
+              <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-4 w-4 ${
+                      className={`h-5 w-5 ${
                         i < Math.floor(product.rating) ? "fill-primary text-primary" : "text-gray-300"
                       }`}
                     />
                   ))}
-                  <span className="ml-2 text-sm text-muted-foreground">
-                    {product.rating} ({product.reviews} {t.pages.reviews})
+                  <span className="ml-2 text-base text-muted-foreground">
+                    <span className="font-semibold">{product.rating}</span> ({product.reviews} {t.pages.reviews})
                   </span>
                 </div>
               </div>
             </div>
 
             {/* Price */}
-            <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-primary">€{product.price.toFixed(2)}</span>
+            <div className="flex items-center gap-4 pb-4 border-b">
+              <span className="text-4xl lg:text-5xl font-bold text-primary">€{product.price.toFixed(2)}</span>
               {product.originalPrice && (
-                <span className="text-xl text-muted-foreground line-through">€{product.originalPrice.toFixed(2)}</span>
-              )}
-              {product.originalPrice && (
-                <Badge variant="destructive" className="text-xs">
-                  {t.pages.save} €{(product.originalPrice - product.price).toFixed(2)}
-                </Badge>
+                <>
+                  <span className="text-2xl text-muted-foreground line-through">€{product.originalPrice.toFixed(2)}</span>
+                  <Badge variant="destructive" className="text-sm px-3 py-1">
+                    {t.pages.save} €{(product.originalPrice - product.price).toFixed(2)}
+                  </Badge>
+                </>
               )}
             </div>
 
             {/* Description */}
-            <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+            <div className="py-4">
+              <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
+            </div>
 
-            {/* Size Selection */}
-            <div>
-              <label className="block text-sm font-medium mb-2">{t.product.size}</label>
+            {/* Size Selection and Add to Cart */}
+            <div className="pt-4">
               <AddToCartForm product={product} />
             </div>
 
             {/* Features */}
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t">
+            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-border/50">
               <div className="text-center">
                 <Truck className="h-6 w-6 mx-auto mb-2 text-primary" />
                 <p className="text-xs text-muted-foreground">{t.pages.freeShipping}</p>
@@ -227,11 +230,11 @@ export default function ProductPage({ params }: ProductPageProps) {
         </div>
 
         {/* Product Details Tabs */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid lg:grid-cols-3 gap-6 mb-16">
           {/* Fragrance Notes */}
-          <Card>
+          <Card className="border-border/50 shadow-sm">
             <CardHeader>
-              <CardTitle>{t.pages.fragranceNotes}</CardTitle>
+              <CardTitle className="text-xl">{t.pages.fragranceNotes}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -252,9 +255,9 @@ export default function ProductPage({ params }: ProductPageProps) {
           </Card>
 
           {/* Product Details */}
-          <Card>
+          <Card className="border-border/50 shadow-sm">
             <CardHeader>
-              <CardTitle>{t.pages.productDetails}</CardTitle>
+              <CardTitle className="text-xl">{t.pages.productDetails}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
@@ -279,9 +282,9 @@ export default function ProductPage({ params }: ProductPageProps) {
           </Card>
 
           {/* Care Instructions */}
-          <Card>
+          <Card className="border-border/50 shadow-sm">
             <CardHeader>
-              <CardTitle>{t.pages.careInstructions}</CardTitle>
+              <CardTitle className="text-xl">{t.pages.careInstructions}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               <p>• {t.pages.careInstruction1}</p>
