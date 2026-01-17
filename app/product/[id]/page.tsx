@@ -17,53 +17,45 @@ import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
 
 interface ProductPageProps {
-  params: Promise<{ id: string }> | { id: string }
+  params: { id: string }
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
   const router = useRouter()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
-  const [productId, setProductId] = useState<string | null>(null)
   const { t } = useLanguage()
-
-  // Resolve params (can be Promise in Next.js 15+)
-  useEffect(() => {
-    async function resolveParams() {
-      try {
-        const resolvedParams = params instanceof Promise ? await params : params
-        const id = String(resolvedParams?.id || '').trim()
-        setProductId(id)
-      } catch (error) {
-        console.error("Error resolving params:", error)
-        setLoading(false)
-      }
-    }
-    resolveParams()
-  }, [params])
 
   useEffect(() => {
     async function loadProduct() {
-      if (!productId) return
-
       try {
         setLoading(true)
         
-        // Parse ID
-        const parsedId = parseInt(productId, 10)
-        if (isNaN(parsedId) || parsedId <= 0) {
-          console.error("Invalid product ID:", productId)
+        // Get product ID from params
+        const productIdStr = String(params?.id || '').trim()
+        if (!productIdStr) {
+          console.error("Empty product ID")
           setLoading(false)
           return
         }
         
-        const prod = await getProductById(parsedId)
+        // Parse ID
+        const productId = parseInt(productIdStr, 10)
+        if (isNaN(productId) || productId <= 0) {
+          console.error("Invalid product ID:", productIdStr)
+          setLoading(false)
+          return
+        }
+        
+        // Fetch product from API
+        const prod = await getProductById(productId)
         
         if (!prod) {
-          console.error("Product not found with ID:", parsedId)
+          console.error("Product not found with ID:", productId)
           setLoading(false)
           return
         }
+        
         setProduct(prod)
       } catch (error) {
         console.error("Error loading product:", error)
@@ -72,10 +64,12 @@ export default function ProductPage({ params }: ProductPageProps) {
       }
     }
     
-    if (productId) {
+    if (params?.id) {
       loadProduct()
+    } else {
+      setLoading(false)
     }
-  }, [productId])
+  }, [params?.id])
 
   if (loading) {
     return (
