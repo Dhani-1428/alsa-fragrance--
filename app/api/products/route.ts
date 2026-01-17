@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
-import Product from '@/lib/models-mysql/Product'
 import { handleDatabaseError } from '@/lib/db-error-handler'
 
 // GET all products
