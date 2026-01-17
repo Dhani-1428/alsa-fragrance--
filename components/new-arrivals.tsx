@@ -19,12 +19,18 @@ export function NewArrivals() {
       try {
         setLoading(true)
         const products = await getNewArrivals()
+        // Filter out products without valid IDs
+        const validProducts = products.filter(p => {
+          const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
+          return id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
+        })
         // Get 5 newest products (sorted by ID descending, which represents newest)
-        const sortedProducts = products.sort((a, b) => {
-          const idA = typeof a.id === 'string' ? parseInt(a.id) : a.id
-          const idB = typeof b.id === 'string' ? parseInt(b.id) : b.id
+        const sortedProducts = validProducts.sort((a, b) => {
+          const idA = typeof a.id === 'string' ? parseInt(a.id, 10) : (a.id || 0)
+          const idB = typeof b.id === 'string' ? parseInt(b.id, 10) : (b.id || 0)
           return idB - idA
         })
+        console.log("New arrivals - Total:", products.length, "Valid:", validProducts.length)
         setNewProducts(sortedProducts.slice(0, 5))
       } catch (error) {
         console.error("Error fetching new arrivals:", error)

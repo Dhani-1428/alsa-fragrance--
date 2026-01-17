@@ -15,8 +15,14 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { t } = useLanguage()
-  // Ensure ID is converted to string for the URL
-  const productId = typeof product.id === 'string' ? product.id : product.id?.toString() || ''
+  // Ensure ID is converted to string for the URL and validate it
+  let productId = typeof product.id === 'string' ? product.id.trim() : String(product.id || '').trim()
+  
+  // Validate product ID - if invalid, don't render the card or show error
+  if (!productId || isNaN(parseInt(productId, 10)) || parseInt(productId, 10) <= 0) {
+    console.error("ProductCard: Invalid product ID:", product.id, "Product:", product.name)
+    return null // Don't render products with invalid IDs
+  }
   
   return (
     <Card className="group overflow-hidden border-0 bg-card hover:shadow-xl transition-all duration-300">

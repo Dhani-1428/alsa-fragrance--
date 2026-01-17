@@ -23,8 +23,13 @@ export function FeaturedProducts() {
       try {
         setLoading(true)
         const products = await getProducts()
-        // Get first 5 products from database
-        setFeaturedProducts(products.slice(0, 5))
+        // Filter out products without valid IDs and get first 5
+        const validProducts = products.filter(p => {
+          const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
+          return id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
+        })
+        console.log("Featured products - Total:", products.length, "Valid:", validProducts.length)
+        setFeaturedProducts(validProducts.slice(0, 5))
       } catch (error) {
         console.error("Error fetching featured products:", error)
         setFeaturedProducts([])
