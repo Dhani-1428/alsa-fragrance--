@@ -8,12 +8,14 @@ import { useWishlist } from "@/lib/wishlist-context"
 import { useCart } from "@/lib/cart-context"
 import { useLanguage } from "@/contexts/language-provider"
 import { Footer } from "@/components/footer"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 
 export default function WishlistPage() {
   const { state, removeItem, clearWishlist, getTotalItems } = useWishlist()
-  const { addItem, openCart } = useCart()
+  const { addItem } = useCart()
   const { t } = useLanguage()
+  const router = useRouter()
 
   const formatPrice = (price: number) => `€${price.toFixed(2)}`
 
@@ -21,7 +23,7 @@ export default function WishlistPage() {
     // Use first available size or empty string
     const size = product.size && product.size.length > 0 ? product.size[0] : ""
     addItem(product, size, 1)
-    openCart()
+    router.push("/cart")
   }
 
   if (state.items.length === 0) {
