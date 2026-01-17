@@ -3,96 +3,40 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { getFeaturedProducts } from "@/lib/products-main"
 import { ProductCard } from "@/components/product-card"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useLanguage } from "@/contexts/language-provider"
 import Link from "next/link"
-
-const extendedFeaturedProducts = [
-  ...getFeaturedProducts(),
-  {
-    id: 41,
-    name: "Alsa Fragrance - Sapphire Dreams",
-    category: "women" as const,
-    price: 129.99,
-    rating: 4.8,
-    reviews: 145,
-    image: "/luxury-blue-sapphire-perfume-bottle-with-alsa-frag.jpg",
-    description: "A precious fragrance as rare and beautiful as a sapphire gemstone.",
-    notes: {
-      top: ["Blue Lotus", "Bergamot", "Aquatic Notes"],
-      middle: ["Sapphire Accord", "Iris", "Violet"],
-      base: ["Blue Musk", "Crystal Amber", "Precious Woods"],
-    },
-    size: ["30ml", "50ml", "100ml"],
-    inStock: true,
-    badge: "Precious",
-  },
-  {
-    id: 42,
-    name: "Alsa Fragrance - Titan Force",
-    category: "men" as const,
-    price: 139.99,
-    rating: 4.9,
-    reviews: 178,
-    image: "/powerful-titanium-cologne-bottle-with-alsa-fragran.jpg",
-    description: "A powerful masculine fragrance with the strength of titans.",
-    notes: {
-      top: ["Metallic Notes", "Bergamot", "Black Pepper"],
-      middle: ["Titan Accord", "Leather", "Spices"],
-      base: ["Titanium Woods", "Amber", "Dark Musk"],
-    },
-    size: ["50ml", "100ml"],
-    inStock: true,
-    badge: "Powerful",
-  },
-  {
-    id: 43,
-    name: "Alsa Fragrance - Ruby Passion",
-    category: "women" as const,
-    price: 149.99,
-    rating: 4.7,
-    reviews: 167,
-    image: "/red-ruby-perfume-bottle-with-alsa-fragrance-logo-e.jpg",
-    description: "A passionate fragrance that burns with the intensity of rubies.",
-    notes: {
-      top: ["Red Berries", "Pink Pepper", "Mandarin"],
-      middle: ["Ruby Rose", "Passion Flower", "Red Orchid"],
-      base: ["Ruby Amber", "Patchouli", "Vanilla"],
-    },
-    size: ["30ml", "50ml", "100ml"],
-    inStock: true,
-    badge: "Passionate",
-  },
-  {
-    id: 44,
-    name: "Alsa Fragrance - Platinum Ice",
-    category: "men" as const,
-    price: 154.99,
-    rating: 4.8,
-    reviews: 134,
-    image: "/platinum-silver-cologne-bottle-with-alsa-fragrance.jpg",
-    description: "A cool, sophisticated fragrance as precious as platinum.",
-    notes: {
-      top: ["Icy Mint", "Frozen Citrus", "Cool Air"],
-      middle: ["Platinum Accord", "Arctic Sage", "Silver Birch"],
-      base: ["Frozen Woods", "Cool Musk", "Platinum Amber"],
-    },
-    size: ["50ml", "100ml"],
-    inStock: true,
-    badge: "Cool",
-  },
-]
+import { getProducts } from "@/lib/products-api"
+import type { Product } from "@/lib/products-api"
 
 export function FeaturedProducts() {
   const { t } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const carouselRef = useRef<NodeJS.Timeout | null>(null)
 
+  useEffect(() => {
+    async function fetchFeaturedProducts() {
+      try {
+        setLoading(true)
+        const products = await getProducts()
+        // Get first 5 products from database
+        setFeaturedProducts(products.slice(0, 5))
+      } catch (error) {
+        console.error("Error fetching featured products:", error)
+        setFeaturedProducts([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchFeaturedProducts()
+  }, [])
+
   const itemsPerView = 4
-  const maxIndex = Math.max(0, extendedFeaturedProducts.length - itemsPerView)
+  const maxIndex = Math.max(0, featuredProducts.length - itemsPerView)
 
   useEffect(() => {
     if (!isHovered) {
@@ -141,19 +85,29 @@ export function FeaturedProducts() {
               animate={{ x: `-${currentIndex * (100 / itemsPerView)}%` }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              {extendedFeaturedProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  className="flex-shrink-0"
-                  style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
+              {loading ? (
+                <div className="flex items-center justify-center w-full py-12">
+                  <p className="text-muted-foreground">Loading featured products...</p>
+                </div>
+              ) : featuredProducts.length === 0 ? (
+                <div className="flex items-center justify-center w-full py-12">
+                  <p className="text-muted-foreground">No featured products available.</p>
+                </div>
+              ) : (
+                featuredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    className="flex-shrink-0"
+                    style={{ width: `calc(${100 / itemsPerView}% - ${((itemsPerView - 1) * 24) / itemsPerView}px)` }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <ProductCard product={product} />
+                  </motion.div>
+                ))
+              )}
             </motion.div>
           </div>
 

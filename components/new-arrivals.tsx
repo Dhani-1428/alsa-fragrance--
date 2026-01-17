@@ -1,15 +1,40 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { getNewArrivals } from "@/lib/products-main"
+import { getNewArrivals } from "@/lib/products-api"
 import { ProductCard } from "@/components/product-card"
 import { useLanguage } from "@/contexts/language-provider"
+import type { Product } from "@/lib/products-api"
 
 export function NewArrivals() {
   const { t } = useLanguage()
-  const newProducts = getNewArrivals()
+  const [newProducts, setNewProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchNewArrivals() {
+      try {
+        setLoading(true)
+        const products = await getNewArrivals()
+        // Get 5 newest products (sorted by ID descending, which represents newest)
+        const sortedProducts = products.sort((a, b) => {
+          const idA = typeof a.id === 'string' ? parseInt(a.id) : a.id
+          const idB = typeof b.id === 'string' ? parseInt(b.id) : b.id
+          return idB - idA
+        })
+        setNewProducts(sortedProducts.slice(0, 5))
+      } catch (error) {
+        console.error("Error fetching new arrivals:", error)
+        setNewProducts([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchNewArrivals()
+  }, [])
 
   return (
     <section className="py-16 px-4 bg-background relative overflow-hidden">
@@ -53,18 +78,28 @@ export function NewArrivals() {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {newProducts.slice(0, 8).map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: index * 0.08 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -8, scale: 1.03 }}
-            >
-              <ProductCard product={product} />
-            </motion.div>
-          ))}
+          {loading ? (
+            <div className="col-span-full flex items-center justify-center py-12">
+              <p className="text-muted-foreground">Loading new arrivals...</p>
+            </div>
+          ) : newProducts.length === 0 ? (
+            <div className="col-span-full flex items-center justify-center py-12">
+              <p className="text-muted-foreground">No new arrivals available.</p>
+            </div>
+          ) : (
+            newProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.6, delay: index * 0.08 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -8, scale: 1.03 }}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))
+          )}
         </div>
 
         <motion.div
