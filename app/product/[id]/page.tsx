@@ -51,11 +51,15 @@ export default function ProductPage({ params }: ProductPageProps) {
         const prod = await getProductById(productId)
         
         if (!prod) {
-          console.error("Product not found with ID:", productId)
+          console.error("Product not found with ID:", productId, "- This might mean:")
+          console.error("1. Product doesn't exist in database")
+          console.error("2. API returned 404")
+          console.error("3. Product ID mismatch")
           setLoading(false)
           return
         }
         
+        console.log("Product loaded successfully:", prod.name, "ID:", prod.id)
         setProduct(prod)
       } catch (error) {
         console.error("Error loading product:", error)
