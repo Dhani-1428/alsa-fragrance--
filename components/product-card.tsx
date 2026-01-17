@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Star, Eye } from "lucide-react"
-import type { Product } from "@/lib/products-main"
+import type { Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
 import { AddToCartButton } from "@/components/add-to-cart-button"
 
@@ -15,11 +15,14 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { t } = useLanguage()
+  // Ensure ID is converted to string for the URL
+  const productId = typeof product.id === 'string' ? product.id : product.id?.toString() || ''
+  
   return (
     <Card className="group overflow-hidden border-0 bg-card hover:shadow-xl transition-all duration-300">
       <CardContent className="p-0">
         <div className="relative overflow-hidden aspect-square">
-          <Link href={`/product/${product.id}`}>
+          <Link href={`/product/${productId}`}>
             <img
               src={product.image || "/premium-perfume-bottle-elegant-design.jpg"}
               alt={product.name}
@@ -46,8 +49,8 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <AddToCartButton product={product} size={product.size[0]} />
-            <Link href={`/product/${product.id}`}>
+            <AddToCartButton product={product} size={product.size && product.size.length > 0 ? product.size[0] : ''} />
+            <Link href={`/product/${productId}`}>
               <Button size="icon" variant="secondary" className="bg-white/90 hover:bg-white text-black">
                 <Eye className="h-4 w-4" />
               </Button>
@@ -71,7 +74,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <p className="text-xs text-muted-foreground mb-1 capitalize">{product.category}</p>
-          <Link href={`/product/${product.id}`}>
+          <Link href={`/product/${productId}`}>
             <h3 className="font-semibold mb-2 text-sm hover:text-primary transition-colors">{product.name}</h3>
           </Link>
 

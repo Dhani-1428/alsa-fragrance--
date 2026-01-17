@@ -29,8 +29,16 @@ export default function ProductPage({ params }: ProductPageProps) {
   useEffect(() => {
     async function loadProduct() {
       try {
-        const prod = await getProductById(Number.parseInt(params.id))
+        // Parse ID - handle both string and number
+        const productId = typeof params.id === 'string' ? parseInt(params.id) : params.id
+        if (isNaN(productId)) {
+          console.error("Invalid product ID:", params.id)
+          router.push("/404")
+          return
+        }
+        const prod = await getProductById(productId)
         if (!prod) {
+          console.error("Product not found with ID:", productId)
           router.push("/404")
           return
         }
