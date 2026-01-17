@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ShoppingCart, Heart, Share2 } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useLanguage } from "@/contexts/language-provider"
-import type { Product } from "@/lib/products-main"
+import type { Product } from "@/lib/products-api"
 
 interface AddToCartFormProps {
   product: Product
