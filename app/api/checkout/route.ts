@@ -59,26 +59,31 @@ export async function POST(request: NextRequest) {
       .join("")
 
     // Customer confirmation email
-    const isMBWayPending = paymentMethod === "MBWay"
+    const isMBWayPending = paymentMethod === "MBWay" || paymentMethod === "IBAN"
     const customerEmailHtml = `
       <!DOCTYPE html>
       <html>
         <head>
           <meta charset="utf-8">
-          <title>${isMBWayPending ? "Order Pending Payment" : "Order Confirmation"}</title>
+          <title>Order Placed - Awaiting Payment Confirmation</title>
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <div style="background-color: ${isMBWayPending ? "#ffc107" : "#f8f9fa"}; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h1 style="color: ${isMBWayPending ? "#856404" : "#2c3e50"}; margin: 0;">${isMBWayPending ? "Order Pending Payment ⏳" : "Order Confirmed! 🎉"}</h1>
+          <div style="background-color: #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h1 style="color: #856404; margin: 0;">Order Placed Successfully! 🎉</h1>
           </div>
           
           <p style="font-size: 16px;">Dear ${billingInfo.fullName},</p>
           
+          <p style="font-size: 16px;">Thank you for your order! Your order has been <strong>successfully placed</strong>.</p>
+          
+          <p style="font-size: 16px;"><strong>Order Number:</strong> ${order.orderNumber}</p>
+          
           ${isMBWayPending 
-            ? `<p style="font-size: 16px;">Your order has been received and is <strong>pending payment confirmation</strong>. Once payment is confirmed, your order will be processed and delivered in <strong>5-7 days</strong>.</p>
-               <p style="font-size: 16px;"><strong>Order Number:</strong> ${order.orderNumber}</p>`
-            : `<p style="font-size: 16px;">Your order is confirmed and it will be delivered in <strong>5-7 days</strong>.</p>
-               <p style="font-size: 16px;"><strong>Order Number:</strong> ${order.orderNumber}</p>`
+            ? `<div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
+                 <p style="margin: 0; font-size: 16px; font-weight: bold;">⏳ Please wait for payment confirmation</p>
+                 <p style="margin: 10px 0 0 0; font-size: 14px;">Your order is currently <strong>pending payment confirmation</strong>. Once we receive and confirm your payment, you will receive another email with the confirmation and your order will be processed and delivered in <strong>5-7 days</strong>.</p>
+               </div>`
+            : `<p style="font-size: 16px;">Your order is confirmed and it will be delivered in <strong>5-7 days</strong>.</p>`
           }
           
           <div style="background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0;">
@@ -131,8 +136,14 @@ export async function POST(request: NextRequest) {
           <div style="background-color: ${isMBWayPending ? "#fff3cd" : "#e7f3ff"}; border-left: 4px solid ${isMBWayPending ? "#ffc107" : "#2196F3"}; padding: 15px; margin: 20px 0;">
             <p style="margin: 0;"><strong>Payment Method:</strong> ${paymentMethod || "Card"}</p>
             ${isMBWayPending 
-              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Action Required:</strong> Please send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong> via MBWay.</p>
-                 <p style="margin: 10px 0 0 0; font-size: 14px;">Once payment is received and confirmed, you will receive a confirmation email and your order will be processed.</p>`
+              ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Payment Instructions:</strong></p>
+                 ${paymentMethod === "MBWay" 
+                   ? `<p style="margin: 10px 0 0 0; font-size: 14px;">Please send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong> via MBWay.</p>`
+                   : `<p style="margin: 10px 0 0 0; font-size: 14px;">Please transfer payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to the following IBAN account:</p>
+                      <p style="margin: 10px 0 0 0; font-size: 14px; font-family: monospace; background-color: #fff; padding: 10px; border: 1px solid #ddd;"><strong>PT50002300004559842600394</strong></p>`
+                 }
+                 <p style="margin: 10px 0 0 0; font-size: 14px;">Please include your order number <strong>${order.orderNumber}</strong> in the payment reference.</p>
+                 <p style="margin: 10px 0 0 0; font-size: 14px;">Once payment is received and confirmed by our admin, you will receive a confirmation email with all order details and your order will be processed.</p>`
               : `<p style="margin: 10px 0 0 0; font-size: 14px;">Payment processed successfully.</p>`
             }
           </div>
@@ -257,7 +268,7 @@ export async function POST(request: NextRequest) {
       from: `Alsa Fragrance <${smtpUser}>`,
       to: billingInfo.email,
       subject: isMBWayPending 
-        ? `Order Received - Payment Pending (Order ${order.orderNumber})`
+        ? `Order Placed - Awaiting Payment Confirmation (Order ${order.orderNumber})`
         : "Order Confirmation - Your order will be delivered in 5-7 days",
       html: customerEmailHtml,
     })

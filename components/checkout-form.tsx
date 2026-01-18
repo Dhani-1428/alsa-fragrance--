@@ -161,28 +161,33 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
       const responseData = await response.json()
       console.log("API response:", responseData)
 
-      if (responseData.isMBWayPending) {
+      if (responseData.isMBWayPending || paymentMethod === "iban") {
+        const paymentInstructions = paymentMethod === "mbway" 
+          ? `Please send payment of €${grandTotal.toFixed(2)} to +351 920062535 via MBWay.`
+          : `Please transfer payment of €${grandTotal.toFixed(2)} to IBAN: PT50002300004559842600394.`
+        
         toast({
-          title: "Order Received - Payment Pending 📱",
-          description: `Please send payment of €${grandTotal.toFixed(2)} to +351 920062535 via MBWay. You will receive a confirmation email once payment is verified. Order Number: ${responseData.orderNumber || ""}`,
-          duration: 10000,
+          title: "Order Placed Successfully! 🎉",
+          description: `Your order has been placed successfully! ${paymentInstructions} You will receive an email confirmation shortly. Once payment is confirmed by our admin, you will receive another email with payment confirmation and order details. Order Number: ${responseData.orderNumber || ""}`,
+          duration: 12000,
         })
-        // Keep cart for MBWay until payment is confirmed
+        clearCart()
         setTimeout(() => {
           if (onClose) {
             onClose()
           } else {
             router.push("/cart")
           }
-        }, 5000)
+        }, 3000)
       } else {
-      toast({
-          title: "Order Placed! 🎉",
-          description: "Your order has been placed. Check your email for confirmation.",
-      })
-      clearCart()
+        toast({
+          title: "Order Placed Successfully! 🎉",
+          description: "Your order has been placed successfully! Check your email for confirmation.",
+          duration: 5000,
+        })
+        clearCart()
         if (onClose) {
-      onClose()
+          onClose()
         } else {
           router.push("/cart")
         }

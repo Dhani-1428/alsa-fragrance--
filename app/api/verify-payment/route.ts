@@ -101,16 +101,22 @@ export async function POST(request: NextRequest) {
         </head>
         <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
           <div style="background-color: #28a745; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h1 style="margin: 0;">Payment Confirmed! 🎉</h1>
+            <h1 style="margin: 0;">Payment Successfully Completed! ✅</h1>
           </div>
           
           <p style="font-size: 16px;">Dear ${orderToConfirm.billingInfo.fullName},</p>
           
-          <p style="font-size: 16px;">Your ${orderToConfirm.paymentMethod} payment has been confirmed! Your order is now confirmed and will be delivered in <strong>5-7 days</strong>.</p>
+          <p style="font-size: 16px;">Great news! Your ${orderToConfirm.paymentMethod} payment has been <strong>successfully confirmed</strong> by our team.</p>
+          
+          <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0;">
+            <p style="margin: 0; font-size: 16px; font-weight: bold;">✅ Payment Confirmed</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;">Your order is now confirmed and will be processed. You will receive your order within <strong>5-7 business days</strong>.</p>
+          </div>
+          
+          <p style="font-size: 16px;"><strong>Order Number:</strong> ${orderToConfirm.orderNumber}</p>
           
           <div style="background-color: #fff; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin: 20px 0;">
-            <h2 style="color: #2c3e50; margin-top: 0;">Order Details</h2>
-            <p><strong>Order Number:</strong> ${orderToConfirm.orderNumber}</p>
+            <h2 style="color: #2c3e50; margin-top: 0;">Complete Order Details</h2>
             
             <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
               <thead>
@@ -157,11 +163,23 @@ export async function POST(request: NextRequest) {
 
           <div style="background-color: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0;">
             <p style="margin: 0;"><strong>Payment Method:</strong> ${orderToConfirm.paymentMethod}</p>
-            <p style="margin: 10px 0 0 0; font-size: 14px;">Payment confirmed and received.</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;">✅ Payment confirmed and received successfully.</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Amount Paid:</strong> €${orderToConfirm.grandTotal.toFixed(2)}</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Confirmed At:</strong> ${new Date().toLocaleString()}</p>
+          </div>
+
+          <div style="background-color: #e7f3ff; border-left: 4px solid #2196F3; padding: 15px; margin: 20px 0;">
+            <p style="margin: 0; font-size: 14px; font-weight: bold;">📦 Shipping Information</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;">Your order will be processed and shipped within 1-2 business days. You will receive a tracking number via email once your order is shipped.</p>
+            <p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Estimated Delivery:</strong> 5-7 business days</p>
           </div>
 
           <p style="font-size: 14px; color: #666; margin-top: 30px;">
             Thank you for your order! If you have any questions, please don't hesitate to contact us.
+          </p>
+          
+          <p style="font-size: 14px; color: #666; margin-top: 10px;">
+            <strong>Need Help?</strong> Reply to this email or contact us at fragrancealsa@gmail.com
           </p>
         </body>
       </html>

@@ -29,7 +29,7 @@ export interface Order {
   shipping: number
   tax: number
   grandTotal: number
-  paymentMethod: "Card" | "MBWay"
+  paymentMethod: "Card" | "MBWay" | "IBAN"
   status: "pending" | "confirmed" | "cancelled"
   createdAt: string
   confirmedAt?: string
