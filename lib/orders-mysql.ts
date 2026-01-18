@@ -58,7 +58,7 @@ export async function createOrder(order: Omit<Order, "id" | "orderNumber" | "sta
   
   // Generate unique order number
   const orderNumber = `AF-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`
-  const status = order.paymentMethod === "MBWay" ? "pending" : "confirmed"
+  const status = (order.paymentMethod === "MBWay" || order.paymentMethod === "IBAN") ? "pending" : "confirmed"
   
   // Ensure all product IDs are strings
   const cartItemsWithStringIds = order.cartItems.map(item => ({
