@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       shipping: effectiveShipping,
       tax: effectiveTax,
       grandTotal: effectiveGrandTotal,
-      paymentMethod: paymentMethod === "MBWay" ? "MBWay" : "Card",
+      paymentMethod: paymentMethod === "MBWay" ? "MBWay" : paymentMethod === "IBAN" ? "IBAN" : "MBWay",
     })
 
     // Generate order details HTML
