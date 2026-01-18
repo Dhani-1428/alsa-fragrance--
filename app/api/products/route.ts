@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
 import { handleDatabaseError } from '@/lib/db-error-handler'
+import { getTranslatedProduct } from '@/lib/i18n/product-translations'
 
 // GET all products
 export async function GET(request: NextRequest) {
@@ -29,13 +30,25 @@ export async function GET(request: NextRequest) {
       filteredProducts = filteredProducts.filter(p => p.isNew === true)
     }
 
+    // Get language from query parameter (default to 'en')
+    const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | null
+    const language = languageParam || "en"
+
     // Transform products to match frontend format - filter out products without valid IDs
     const transformedProducts = filteredProducts
       .filter((product) => product.id != null && product.id !== undefined && product.id > 0)
       .map((product) => {
+        // Get translated name and description
+        const translated = getTranslatedProduct(
+          product.id!,
+          product.name,
+          product.description,
+          language
+        )
+        
         return {
           id: product.id!.toString(), // Safe to use ! here since we filtered
-          name: product.name,
+          name: translated.name,
           category: product.category,
           price: product.price,
           originalPrice: product.originalPrice || product.price,
@@ -45,7 +58,7 @@ export async function GET(request: NextRequest) {
           reviews: product.reviews,
           image: product.image,
           images: product.images || [],
-          description: product.description,
+          description: translated.description,
           notes: {
             top: product.notesTop || [],
             middle: product.notesMiddle || [],

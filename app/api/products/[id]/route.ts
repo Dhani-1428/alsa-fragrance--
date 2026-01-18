@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import connectDB from '@/lib/mysql'
 import Product from '@/lib/models-mysql/Product'
 import { handleDatabaseError } from '@/lib/db-error-handler'
+import { getTranslatedProduct } from '@/lib/i18n/product-translations'
 
 // GET single product
 export async function GET(
@@ -40,10 +41,23 @@ export async function GET(
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
+    // Get language from query parameter (default to 'en')
+    const { searchParams } = new URL(request.url)
+    const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | null
+    const language = languageParam || "en"
+
+    // Get translated name and description
+    const translated = getTranslatedProduct(
+      product.id!,
+      product.name,
+      product.description,
+      language
+    )
+
     // Transform product to match frontend format
     const transformedProduct = {
       id: product.id?.toString() || '',
-      name: product.name,
+      name: translated.name,
       category: product.category,
       price: product.price,
       originalPrice: product.originalPrice || product.price,
@@ -53,7 +67,7 @@ export async function GET(
       reviews: product.reviews,
       image: product.image,
       images: product.images || [],
-      description: product.description,
+      description: translated.description,
       notes: {
         top: product.notesTop || [],
         middle: product.notesMiddle || [],

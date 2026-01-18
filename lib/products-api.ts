@@ -26,10 +26,11 @@ let cacheTimestamp: number = 0
 const CACHE_DURATION = 0 // No cache - always fetch fresh data
 
 // Fetch all products from API
-export async function fetchProducts(): Promise<Product[]> {
+export async function fetchProducts(language?: string): Promise<Product[]> {
   try {
     console.log("Fetching products from API...")
-    const response = await fetch("/api/products", {
+    const lang = language || (typeof window !== 'undefined' ? localStorage.getItem('language') || 'en' : 'en')
+    const response = await fetch(`/api/products?lang=${lang}`, {
       cache: "no-store",
       next: { revalidate: 0 }, // Disable Next.js caching
     })
@@ -51,9 +52,9 @@ export async function fetchProducts(): Promise<Product[]> {
 }
 
 // Get products with caching (disabled - always fresh)
-export async function getProducts(): Promise<Product[]> {
+export async function getProducts(language?: string): Promise<Product[]> {
   // Always fetch fresh data (no cache)
-  productsCache = await fetchProducts()
+  productsCache = await fetchProducts(language)
   cacheTimestamp = Date.now()
   return productsCache
 }
@@ -65,7 +66,7 @@ export async function getProductsByCategory(category: string): Promise<Product[]
 }
 
 // Get product by ID
-export async function getProductById(id: number | string): Promise<Product | undefined> {
+export async function getProductById(id: number | string, language?: string): Promise<Product | undefined> {
   try {
     // Ensure ID is a number for the API call
     const productId = typeof id === 'string' ? parseInt(id, 10) : id
@@ -74,7 +75,8 @@ export async function getProductById(id: number | string): Promise<Product | und
       return undefined
     }
     
-    const response = await fetch(`/api/products/${productId}`, {
+    const lang = language || (typeof window !== 'undefined' ? localStorage.getItem('language') || 'en' : 'en')
+    const response = await fetch(`/api/products/${productId}?lang=${lang}`, {
       cache: "no-store",
     })
     
@@ -104,8 +106,8 @@ export async function getProductsOnSale(): Promise<Product[]> {
 }
 
 // Get new arrivals
-export async function getNewArrivals(): Promise<Product[]> {
-  const products = await getProducts()
+export async function getNewArrivals(language?: string): Promise<Product[]> {
+  const products = await getProducts(language)
   return products.filter((product) => product.isNew)
 }
 

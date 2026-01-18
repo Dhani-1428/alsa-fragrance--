@@ -10,7 +10,7 @@ interface RelatedProductsProps {
 }
 
 export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -18,8 +18,8 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
     async function fetchRelatedProducts() {
       try {
         setLoading(true)
-        // Fetch all products from database
-        const allProducts = await getProducts()
+        // Fetch all products from database with current language
+        const allProducts = await getProducts(language)
         
         // Get current product ID for comparison
         const currentId = typeof currentProduct.id === 'string' 

@@ -56,9 +56,9 @@ export function Navigation() {
 
   useEffect(() => {
     setMounted(true)
-    // Load products for search suggestions
-    getProducts().then(setAllProducts).catch(console.error)
-  }, [])
+    // Load products for search suggestions with current language
+    getProducts(language).then(setAllProducts).catch(console.error)
+  }, [language])
 
   useEffect(() => {
     const handleScroll = () => {

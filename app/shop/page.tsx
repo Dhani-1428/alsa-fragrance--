@@ -32,7 +32,7 @@ interface FilterState {
 }
 
 export default function ShopPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("name")
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -51,7 +51,7 @@ export default function ShopPage() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const allProducts = await getProducts()
+        const allProducts = await getProducts(language)
         setProducts(allProducts)
       } catch (error) {
         console.error("Error loading products:", error)
@@ -60,7 +60,7 @@ export default function ShopPage() {
       }
     }
     loadProducts()
-  }, [])
+  }, [language])
 
   useEffect(() => {
     const urlSearch = searchParams.get("search")

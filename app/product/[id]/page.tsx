@@ -15,7 +15,6 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Truck, Shield, RotateCcw } from "lucide-react"
 import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
-import { getTranslatedProduct } from "@/lib/i18n/product-translations"
 import { Footer } from "@/components/footer"
 
 interface ProductPageProps {
@@ -56,8 +55,8 @@ export default function ProductPage({ params }: ProductPageProps) {
           return
         }
         
-        // Fetch product from API
-        const prod = await getProductById(productId)
+        // Fetch product from API with current language
+        const prod = await getProductById(productId, language)
         
         if (!prod) {
           console.error("Product not found with ID:", productId, "- This might mean:")
@@ -82,7 +81,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     } else {
       setLoading(false)
     }
-  }, [resolvedParams?.id])
+  }, [resolvedParams?.id, language])
 
   // Get translated product when product is loaded
   const translatedProduct = product ? getTranslatedProduct(
@@ -149,13 +148,13 @@ export default function ProductPage({ params }: ProductPageProps) {
             {product.category}
           </Link>
           <span>/</span>
-          <span className="text-foreground">{translatedProduct.name}</span>
+          <span className="text-foreground">{product.name}</span>
         </nav>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
           {/* Product Gallery */}
           <div className="flex items-center justify-center">
-            <ProductGallery images={galleryImages} productName={translatedProduct.name} />
+            <ProductGallery images={galleryImages} productName={product.name} />
           </div>
 
           {/* Product Info */}
@@ -182,7 +181,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* Title and Rating */}
             <div className="space-y-3">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-[family-name:var(--font-playfair)] text-foreground">
-                {translatedProduct.name}
+                {product.name}
               </h1>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
@@ -216,7 +215,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Description */}
             <div className="py-4">
-              <p className="text-base text-muted-foreground leading-relaxed">{translatedProduct.description}</p>
+              <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
             </div>
 
             {/* Size Selection and Add to Cart */}

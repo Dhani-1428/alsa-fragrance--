@@ -11,7 +11,7 @@ import { getProducts } from "@/lib/products-api"
 import type { Product } from "@/lib/products-api"
 
 export function FeaturedProducts() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
@@ -23,7 +23,7 @@ export function FeaturedProducts() {
       try {
         setLoading(true)
         console.log("FeaturedProducts: Fetching products...")
-        const products = await getProducts()
+        const products = await getProducts(language)
         console.log("FeaturedProducts: Received products:", products.length)
         
         // Filter out products without valid IDs and get first 5
@@ -48,7 +48,7 @@ export function FeaturedProducts() {
       }
     }
     fetchFeaturedProducts()
-  }, [])
+  }, [language])
 
   const itemsPerView = 4
   const maxIndex = Math.max(0, featuredProducts.length - itemsPerView)

@@ -10,7 +10,7 @@ import { useLanguage } from "@/contexts/language-provider"
 import type { Product } from "@/lib/products-api"
 
 export function NewArrivals() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [newProducts, setNewProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -18,7 +18,9 @@ export function NewArrivals() {
     async function fetchNewArrivals() {
       try {
         setLoading(true)
-        const products = await getNewArrivals()
+        // Get new arrivals with current language
+        const allProducts = await getProducts(language)
+        const products = allProducts.filter(p => p.isNew === true)
         // Filter out products without valid IDs
         const validProducts = products.filter(p => {
           const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
@@ -40,7 +42,7 @@ export function NewArrivals() {
       }
     }
     fetchNewArrivals()
-  }, [])
+  }, [language])
 
   return (
     <section className="py-16 px-4 bg-background relative overflow-hidden">
