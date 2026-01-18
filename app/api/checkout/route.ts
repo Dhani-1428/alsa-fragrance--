@@ -352,7 +352,8 @@ export async function POST(request: NextRequest) {
       orderId: order.id,
       orderNumber: order.orderNumber,
       status: order.status,
-      isMBWayPending
+      isMBWayPending,
+      paymentMethod: normalizedPaymentMethod
     })
   } catch (error: any) {
     console.error("Checkout error:", error)
