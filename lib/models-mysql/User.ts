@@ -40,6 +40,58 @@ export async function createUser(userData: {
   const connection = await pool.getConnection()
   
   try {
+    // Ensure id column has AUTO_INCREMENT (fix if needed)
+    try {
+      const [columnInfo]: any = await connection.execute(`
+        SELECT EXTRA 
+        FROM information_schema.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'users' 
+        AND COLUMN_NAME = 'id'
+      `)
+      
+      if (Array.isArray(columnInfo) && columnInfo.length > 0) {
+        const extra = columnInfo[0]?.EXTRA || ''
+        if (!extra.includes('auto_increment')) {
+          console.log('⚠️  id column does not have AUTO_INCREMENT. Attempting to fix...')
+          try {
+            await connection.execute(`
+              ALTER TABLE users 
+              MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT
+            `)
+            console.log('✅ Fixed id column to have AUTO_INCREMENT')
+          } catch (alterError: any) {
+            // If ALTER fails, log but continue - it might have foreign key constraints
+            console.warn('Could not alter id column:', alterError?.message)
+            // Try alternative approach: get max id and insert with next id
+            const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
+            const maxId = maxResult?.maxId || 0
+            const nextId = maxId + 1
+            
+            const [result]: any = await connection.execute(
+              `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
+              [
+                nextId,
+                userData.email.toLowerCase().trim(),
+                hashedPassword,
+                userData.name || null,
+                userData.role || 'client',
+              ]
+            )
+            
+            const newUser = await findUserById(nextId)
+            if (!newUser) {
+              throw new Error('Failed to retrieve created user')
+            }
+            return newUser
+          }
+        }
+      }
+    } catch (checkError: any) {
+      // If check fails, continue with normal insert
+      console.warn('Could not check AUTO_INCREMENT:', checkError?.message)
+    }
+    
     const [result]: any = await connection.execute(
       `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
       [
