@@ -66,33 +66,47 @@ export async function createUser(userData: {
         console.log('⚠️  AUTO_INCREMENT not working, using manual ID calculation...')
         
         // Get max ID and calculate next ID
-        const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
+        const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(CAST(id AS UNSIGNED)), 0) as maxId FROM users')
         let maxId = 0
         if (Array.isArray(maxResult) && maxResult.length > 0 && maxResult[0]) {
           const rawMaxId = maxResult[0].maxId
           // Ensure it's a number and handle different formats
           if (typeof rawMaxId === 'number') {
-            maxId = Math.floor(rawMaxId)
+            maxId = Math.floor(Math.abs(rawMaxId)) // Use abs to handle negative numbers
           } else if (typeof rawMaxId === 'string') {
-            maxId = parseInt(rawMaxId, 10) || 0
+            const parsed = parseInt(rawMaxId.replace(/[^0-9-]/g, ''), 10)
+            maxId = isNaN(parsed) ? 0 : Math.floor(Math.abs(parsed))
+          } else if (rawMaxId && typeof rawMaxId === 'bigint') {
+            maxId = Number(rawMaxId)
           } else {
             maxId = 0
           }
         }
-        const nextId = maxId + 1
         
-        // Ensure nextId is a valid integer (INT range is -2147483648 to 2147483647)
-        if (nextId > 2147483647 || nextId < 1) {
-          throw new Error(`Calculated ID ${nextId} is out of valid INT range. Please fix the table AUTO_INCREMENT.`)
+        // Ensure maxId is within INT range
+        if (maxId > 2147483647) {
+          maxId = 0 // Reset if somehow too large
         }
         
-        console.log(`Using manual ID: ${nextId} (previous max: ${maxId})`)
+        const nextId = maxId + 1
         
-        // Insert with explicit ID (ensure it's a number)
+        // Ensure nextId is a valid integer (INT range is 1 to 2147483647)
+        if (nextId > 2147483647 || nextId < 1) {
+          throw new Error(`Calculated ID ${nextId} is out of valid INT range (1-2147483647). Current max ID: ${maxId}. Please fix the table AUTO_INCREMENT or clean up the table.`)
+        }
+        
+        console.log(`Using manual ID: ${nextId} (previous max: ${maxId}, type: ${typeof nextId})`)
+        
+        // Insert with explicit ID (ensure it's a number, not string or bigint)
+        const cleanId = Number(nextId)
+        if (isNaN(cleanId) || cleanId < 1 || cleanId > 2147483647) {
+          throw new Error(`Invalid ID calculated: ${nextId} -> ${cleanId}`)
+        }
+        
         await connection.execute(
           `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
           [
-            parseInt(String(nextId), 10), // Ensure it's a clean integer
+            cleanId, // Clean integer value
             userData.email.toLowerCase().trim(),
             hashedPassword,
             userData.name || null,
