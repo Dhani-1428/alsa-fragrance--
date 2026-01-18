@@ -408,7 +408,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                     <div className="bg-black p-5 rounded-lg border-2 border-yellow-400/40 mb-5 backdrop-blur-sm">
                       <p className="text-xl font-mono font-bold text-center tracking-wider text-yellow-400">PT50002300004559842600394</p>
                     </div>
-                    <div className="flex items-center justify-between pt-2 border-t mb-4">
+                    <div className="flex items-center justify-between pt-2 border-t border-yellow-400/20 mb-4">
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"
