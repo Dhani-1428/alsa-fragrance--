@@ -345,6 +345,12 @@ export function Navigation() {
                   <DropdownMenuItem onClick={() => setLanguage("ur")}>
                     <span className={language === "ur" ? "font-bold" : ""}>اردو</span>
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage("fr")}>
+                    <span className={language === "fr" ? "font-bold" : ""}>Français</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setLanguage("es")}>
+                    <span className={language === "es" ? "font-bold" : ""}>Español</span>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 

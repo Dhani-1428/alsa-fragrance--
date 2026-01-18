@@ -43,7 +43,7 @@ export async function GET(
 
     // Get language from query parameter (default to 'en')
     const { searchParams } = new URL(request.url)
-    const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | null
+        const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | "fr" | "es" | null
     const language = languageParam || "en"
 
     // Get translated name and description

@@ -5,7 +5,7 @@
 
 export const productTranslations: Record<
   string,
-  Partial<Record<"en" | "pt" | "hi" | "ar" | "ur", { name?: string; description?: string }>>
+  Partial<Record<"en" | "pt" | "hi" | "ar" | "ur" | "fr" | "es", { name?: string; description?: string }>>
 > = {
   "64": {
     en: { 
@@ -27,6 +27,14 @@ export const productTranslations: Record<
     ur: { 
       name: "ALSA LEÃO", 
       description: "ایک گرم اور خوش آمدید خوشبو جو دن کا استقبال کرتی ہے۔ امیر، سنہری نوٹ جو مثبتیت اور فضل پھیلاتے ہیں۔" 
+    },
+    fr: { 
+      name: "ALSA LEÃO", 
+      description: "Un parfum chaleureux et accueillant qui salue la journée avec élégance. Des notes riches et dorées qui rayonnent de positivité et de grâce." 
+    },
+    es: { 
+      name: "ALSA LEÃO", 
+      description: "Una fragancia cálida y acogedora que saluda el día con elegancia. Notas ricas y doradas que irradian positividad y gracia." 
     },
   },
   "66": {
@@ -50,6 +58,14 @@ export const productTranslations: Record<
       name: "ALSA FOR MEN", 
       description: "ALSA FOR MEN ایک پراعتماد اور جدید خوشبو ہے جس میں تازہ، مصالحے دار شروع، بہتر خوشبو والا دل، اور گرم، دیرپا اختتام ہے۔ بہادر لیکن شائستہ، یہ ان مردوں کے لیے بنایا گیا ہے جو طاقت، انداز، اور نفاست کی تعریف کرتے ہیں۔" 
     },
+    fr: { 
+      name: "ALSA POUR HOMMES", 
+      description: "ALSA pour Hommes est un parfum confiant et moderne avec une ouverture fraîche et épicée, un cœur aromatique raffiné et une finition chaude et durable. Audacieux mais élégant, il est conçu pour les hommes qui apprécient la force, le style et la sophistication." 
+    },
+    es: { 
+      name: "ALSA PARA HOMBRES", 
+      description: "ALSA para Hombres es una fragancia segura y moderna con una apertura fresca y especiada, un corazón aromático refinado y un final cálido y duradero. Audaz pero elegante, está diseñado para hombres que aprecian la fuerza, el estilo y la sofisticación." 
+    },
   },
   "67": {
     en: { 
@@ -71,6 +87,14 @@ export const productTranslations: Record<
     ur: { 
       name: "ALSA مڈنائٹ", 
       description: "ALSA مڈنائٹ ایک تازہ لیکن شدید خوشبو ہے جو توانائی اور نفاست کو پکڑتی ہے۔ شروع میں روشن اور خوشبودار، یہ گرم، پراعتماد اختتام کے ساتھ ہموار، متوازن دل میں تیار ہوتا ہے۔ جدید اور کثیر جہتی، یہ شام اور ایسے لمحات کے لیے مثالی ہے جو دیرپا تاثر کی ضرورت ہوتی ہے۔" 
+    },
+    fr: { 
+      name: "ALSA MINUIT", 
+      description: "ALSA Minuit est un parfum frais mais intense qui capture l'énergie et l'élégance. Lumineux et aromatique au départ, il évolue vers un cœur doux et équilibré avec une finition chaude et confiante. Moderne et polyvalent, il est idéal pour les soirées et les moments qui demandent une impression durable." 
+    },
+    es: { 
+      name: "ALSA MEDIANOCHE", 
+      description: "ALSA Medianoche es una fragancia fresca pero intensa que captura energía y elegancia. Brillante y aromática al inicio, evoluciona hacia un corazón suave y equilibrado con un final cálido y seguro. Moderna y versátil, es ideal para las noches y los momentos que requieren una impresión duradera." 
     },
   },
   "69": {
@@ -94,6 +118,14 @@ export const productTranslations: Record<
       name: "ALSA VELMIR", 
       description: "ALSA VELMIR ایک بہتر اور شاندار خوشبو ہے جس کا ہموار، جدید کردار ہے۔ یہ صاف، شائستہ تاثر کے ساتھ کھلتا ہے، ایک گہرے، حسی اختتام میں بسنے سے پہلے ایک امیر اور متوازن دل میں کھلتا ہے۔ پیچیدہ اور دیرپا، یہ ان لوگوں کے لیے بنایا گیا ہے جو کم قوت اور لازوال انداز کی تعریف کرتے ہیں۔" 
     },
+    fr: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir est un parfum raffiné et luxueux avec un caractère doux et moderne. Il s'ouvre avec une impression propre et élégante, se déploie en un cœur riche et équilibré avant de s'installer dans une finition profonde et sensuelle. Sophistiqué et durable, il est conçu pour ceux qui apprécient le pouvoir discret et le style intemporel." 
+    },
+    es: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir es una fragancia refinada y lujosa con un carácter suave y moderno. Se abre con una impresión limpia y elegante, desarrollándose en un corazón rico y equilibrado antes de establecerse en un final profundo y sensual. Sofisticado y duradero, está diseñado para quienes aprecian el poder discreto y el estilo atemporal." 
+    },
   },
   "70": {
     en: { 
@@ -116,6 +148,14 @@ export const productTranslations: Record<
       name: "ALSA گڈ مارننگ", 
       description: "ALSA گڈ مارننگ ایک گرم اور دعوت دینے والی خوشبو ہے جس کا ہموار، شائستہ کردار ہے۔ یہ امیر، متحرک تاثر کے ساتھ کھلتا ہے، متوازن خوشبودار دل میں نرم ہوتا ہے اور گہرا، آرام دہ ٹریل کے ساتھ ختم ہوتا ہے۔ بہتر لیکن مخصوص، یہ ان لوگوں کے لیے بہترین ہے جو پراعتماد اور خوش آمدید خوشبو سے لطف اندوز ہوتے ہیں۔" 
     },
+    fr: { 
+      name: "ALSA BONJOUR", 
+      description: "ALSA Bonjour est une fragrance chaude et invitante avec un caractère doux et élégant. Elle s'ouvre avec une impression riche et vibrante, s'adoucit en un cœur aromatique équilibré et se termine par une traînée profonde et réconfortante. Raffinée mais distinctive, elle est parfaite pour ceux qui apprécient un parfum confiant et accueillant." 
+    },
+    es: { 
+      name: "ALSA BUENOS DÍAS", 
+      description: "ALSA Buenos Días es una fragancia cálida e invitante con un carácter suave y elegante. Se abre con una impresión rica y vibrante, suavizándose en un corazón aromático equilibrado y finalizando con un rastro profundo y reconfortante. Refinada pero distintiva, es perfecta para aquellos que disfrutan de un aroma seguro y acogedor." 
+    },
   },
 }
 
@@ -127,7 +167,7 @@ export function getTranslatedProduct(
   productId: string | number,
   originalName: string,
   originalDescription: string,
-  language: "en" | "pt" | "hi" | "ar" | "ur"
+  language: "en" | "pt" | "hi" | "ar" | "ur" | "fr" | "es"
 ): { name: string; description: string } {
   const id = String(productId)
   const translations = productTranslations[id]

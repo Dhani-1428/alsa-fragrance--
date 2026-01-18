@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get language from query parameter (default to 'en')
-    const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | null
+    const languageParam = searchParams.get('lang') as "en" | "pt" | "hi" | "ar" | "ur" | "fr" | "es" | null
     const language = languageParam || "en"
 
     // Transform products to match frontend format - filter out products without valid IDs
