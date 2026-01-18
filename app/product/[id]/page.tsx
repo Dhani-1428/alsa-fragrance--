@@ -30,9 +30,6 @@ export default function ProductPage({ params }: ProductPageProps) {
   // Unwrap params Promise using React.use() (Next.js 16+)
   // NOTE: params is a Promise in Next.js 16, must use React.use() before accessing properties
   const resolvedParams = use(params)
-  
-  // Import translation utility
-  const { getTranslatedProduct } = require('@/lib/i18n/product-translations')
 
   useEffect(() => {
     async function loadProduct() {

@@ -46,7 +46,7 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
     }
     
     fetchRelatedProducts()
-  }, [currentProduct.id, currentProduct.category])
+  }, [currentProduct.id, currentProduct.category, language])
 
   if (loading || relatedProducts.length === 0) {
     return null
