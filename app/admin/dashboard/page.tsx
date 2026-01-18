@@ -303,29 +303,34 @@ export default function AdminDashboard() {
         additionalImageUrls = formData.images.split(",").map((img) => img.trim()).filter(Boolean)
       }
 
-      const productData = {
+      // Always include all fields when updating so they can be properly saved
+      const productData: any = {
         name: formData.name.trim(),
         category: formData.category,
-        price: parseFloat(formData.price),
-        originalPrice: formData.originalPrice && formData.originalPrice.trim() ? parseFloat(formData.originalPrice) : null,
-        salePrice: formData.salePrice && formData.salePrice.trim() ? parseFloat(formData.salePrice) : null,
-        salePercent: formData.salePercent && formData.salePercent.trim() ? parseFloat(formData.salePercent) : null,
-        rating: formData.rating && formData.rating.trim() ? parseFloat(formData.rating) : 0,
-        reviews: formData.reviews && formData.reviews.trim() ? parseInt(formData.reviews) : 0,
-        image: mainImageUrl,
-        images: additionalImageUrls,
+        price: parseFloat(formData.price) || 0,
         description: formData.description.trim(),
-        notes: {
-          top: formData.notesTop && formData.notesTop.trim() ? formData.notesTop.split(",").map((n) => n.trim()).filter(Boolean) : [],
-          middle: formData.notesMiddle && formData.notesMiddle.trim() ? formData.notesMiddle.split(",").map((n) => n.trim()).filter(Boolean) : [],
-          base: formData.notesBase && formData.notesBase.trim() ? formData.notesBase.split(",").map((n) => n.trim()).filter(Boolean) : [],
-        },
-        size: formData.size && formData.size.trim() ? formData.size.split(",").map((s) => s.trim()).filter(Boolean) : [],
-        inStock: formData.inStock,
-        isNew: formData.isNew,
-        isSale: formData.isSale,
-        badge: formData.badge && formData.badge.trim() ? formData.badge.trim() : null,
+        image: mainImageUrl || "",
+        images: additionalImageUrls || [],
+        rating: formData.rating && formData.rating.trim() ? parseFloat(formData.rating) : 0,
+        reviews: formData.reviews && formData.reviews.trim() ? parseInt(formData.reviews, 10) : 0,
+        inStock: Boolean(formData.inStock),
+        isNew: Boolean(formData.isNew),
+        isSale: Boolean(formData.isSale),
       }
+      
+      // Include optional fields - explicitly set to null if empty to allow clearing
+      productData.originalPrice = formData.originalPrice && formData.originalPrice.trim() ? parseFloat(formData.originalPrice) : null
+      productData.salePrice = formData.salePrice && formData.salePrice.trim() ? parseFloat(formData.salePrice) : null
+      productData.salePercent = formData.salePercent && formData.salePercent.trim() ? parseFloat(formData.salePercent) : null
+      productData.badge = formData.badge && formData.badge.trim() ? formData.badge.trim() : null
+      
+      // Always include notes and size, even if empty arrays
+      productData.notes = {
+        top: formData.notesTop && formData.notesTop.trim() ? formData.notesTop.split(",").map((n) => n.trim()).filter(Boolean) : [],
+        middle: formData.notesMiddle && formData.notesMiddle.trim() ? formData.notesMiddle.split(",").map((n) => n.trim()).filter(Boolean) : [],
+        base: formData.notesBase && formData.notesBase.trim() ? formData.notesBase.split(",").map((n) => n.trim()).filter(Boolean) : [],
+      }
+      productData.size = formData.size && formData.size.trim() ? formData.size.split(",").map((s) => s.trim()).filter(Boolean) : []
 
       const url = editingProduct ? `/api/products/${editingProduct.id}` : "/api/products"
       const method = editingProduct ? "PUT" : "POST"

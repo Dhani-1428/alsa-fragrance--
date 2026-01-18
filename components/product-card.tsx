@@ -97,7 +97,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
           <div className="flex items-center gap-2">
             <span className="font-bold text-primary">€{product.price.toFixed(2)}</span>
-            {product.originalPrice && (
+            {/* Only show originalPrice if it's different from current price (actual discount) */}
+            {product.originalPrice && product.originalPrice > product.price && (
               <span className="text-xs text-muted-foreground line-through">€{product.originalPrice.toFixed(2)}</span>
             )}
           </div>

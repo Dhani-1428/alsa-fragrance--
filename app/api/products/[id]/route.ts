@@ -135,25 +135,43 @@ export async function PUT(
     } = body
 
     const updateData: any = {}
-    if (name !== undefined) updateData.name = name
-    if (category !== undefined) updateData.category = category
-    if (price !== undefined) updateData.price = parseFloat(price)
-    if (originalPrice !== undefined) updateData.originalPrice = originalPrice ? parseFloat(originalPrice) : null
-    if (salePrice !== undefined) updateData.salePrice = salePrice ? parseFloat(salePrice) : null
-    if (salePercent !== undefined) updateData.salePercent = salePercent ? parseFloat(salePercent) : null
-    if (rating !== undefined) updateData.rating = parseFloat(rating)
-    if (reviews !== undefined) updateData.reviews = reviews
-    if (image !== undefined) updateData.image = image
-    if (images !== undefined) updateData.images = images || []
-    if (description !== undefined) updateData.description = description
-    if (notes?.top !== undefined) updateData.notesTop = notes.top || []
-    if (notes?.middle !== undefined) updateData.notesMiddle = notes.middle || []
-    if (notes?.base !== undefined) updateData.notesBase = notes.base || []
-    if (size !== undefined) updateData.size = size || []
-    if (inStock !== undefined) updateData.inStock = inStock
-    if (isNew !== undefined) updateData.isNew = isNew
-    if (isSale !== undefined) updateData.isSale = isSale
-    if (badge !== undefined) updateData.badge = badge || null
+    // Always include fields if they're in the request body, even if empty/null
+    if (name !== undefined) updateData.name = String(name).trim()
+    if (category !== undefined) updateData.category = String(category).trim()
+    if (price !== undefined) {
+      const priceValue = typeof price === 'number' ? price : parseFloat(String(price))
+      updateData.price = isNaN(priceValue) ? 0 : priceValue
+    }
+    if (originalPrice !== undefined) {
+      updateData.originalPrice = originalPrice === null || originalPrice === '' ? null : (typeof originalPrice === 'number' ? originalPrice : parseFloat(String(originalPrice)))
+    }
+    if (salePrice !== undefined) {
+      updateData.salePrice = salePrice === null || salePrice === '' ? null : (typeof salePrice === 'number' ? salePrice : parseFloat(String(salePrice)))
+    }
+    if (salePercent !== undefined) {
+      updateData.salePercent = salePercent === null || salePercent === '' ? null : (typeof salePercent === 'number' ? salePercent : parseFloat(String(salePercent)))
+    }
+    if (rating !== undefined) {
+      const ratingValue = typeof rating === 'number' ? rating : parseFloat(String(rating))
+      updateData.rating = isNaN(ratingValue) ? 0 : ratingValue
+    }
+    if (reviews !== undefined) {
+      const reviewsValue = typeof reviews === 'number' ? reviews : parseInt(String(reviews), 10)
+      updateData.reviews = isNaN(reviewsValue) ? 0 : reviewsValue
+    }
+    if (image !== undefined) updateData.image = String(image).trim()
+    if (images !== undefined) updateData.images = Array.isArray(images) ? images : []
+    if (description !== undefined) updateData.description = String(description).trim()
+    if (notes !== undefined) {
+      if (notes.top !== undefined) updateData.notesTop = Array.isArray(notes.top) ? notes.top : []
+      if (notes.middle !== undefined) updateData.notesMiddle = Array.isArray(notes.middle) ? notes.middle : []
+      if (notes.base !== undefined) updateData.notesBase = Array.isArray(notes.base) ? notes.base : []
+    }
+    if (size !== undefined) updateData.size = Array.isArray(size) ? size : []
+    if (inStock !== undefined) updateData.inStock = Boolean(inStock)
+    if (isNew !== undefined) updateData.isNew = Boolean(isNew)
+    if (isSale !== undefined) updateData.isSale = Boolean(isSale)
+    if (badge !== undefined) updateData.badge = badge === null || badge === '' ? null : String(badge).trim()
 
     const productIdStr = String(resolvedParams.id || '').trim()
     if (!productIdStr) {
