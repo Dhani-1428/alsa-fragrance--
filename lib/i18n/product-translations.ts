@@ -7,15 +7,116 @@ export const productTranslations: Record<
   string,
   Partial<Record<"en" | "pt" | "hi" | "ar" | "ur", { name?: string; description?: string }>>
 > = {
-  // Add product translations here
-  // Example:
-  // "1": {
-  //   en: { name: "Product Name", description: "Product description in English" },
-  //   pt: { name: "Nome do Produto", description: "Descrição do produto em português" },
-  //   hi: { name: "उत्पाद का नाम", description: "हिंदी में उत्पाद विवरण" },
-  //   ar: { name: "اسم المنتج", description: "وصف المنتج بالعربية" },
-  //   ur: { name: "مصنوعات کا نام", description: "اردو میں مصنوعات کی تفصیل" },
-  // },
+  "64": {
+    en: { 
+      name: "ALSA LEÃO", 
+      description: "A warm and welcoming fragrance that greets the day with elegance. Rich, golden notes that radiate positivity and grace." 
+    },
+    pt: { 
+      name: "ALSA LEÃO", 
+      description: "Uma fragrância quente e acolhedora que cumprimenta o dia com elegância. Notas ricas e douradas que irradiam positividade e graça." 
+    },
+    hi: { 
+      name: "ALSA LEÃO", 
+      description: "एक गर्म और स्वागत योग्य सुगंध जो दिन का सत्कार करती है। समृद्ध, सुनहरे नोट जो सकारात्मकता और अनुग्रह बिखेरते हैं।" 
+    },
+    ar: { 
+      name: "ALSA LEÃO", 
+      description: "عطر دافئ ومرحب يحيي اليوم بأناقة. نوتات غنية وذهبية تشع بالإيجابية والنعمة." 
+    },
+    ur: { 
+      name: "ALSA LEÃO", 
+      description: "ایک گرم اور خوش آمدید خوشبو جو دن کا استقبال کرتی ہے۔ امیر، سنہری نوٹ جو مثبتیت اور فضل پھیلاتے ہیں۔" 
+    },
+  },
+  "66": {
+    en: { 
+      name: "ALSA FOR MEN", 
+      description: "ALSA for Men is a confident and modern fragrance with a fresh, spicy opening, a refined aromatic heart, and a warm, long-lasting finish. Bold yet elegant, it's designed for men who appreciate strength, style, and sophistication." 
+    },
+    pt: { 
+      name: "ALSA PARA HOMENS", 
+      description: "ALSA para Homens é uma fragrância confiante e moderna com uma abertura fresca e picante, um coração aromático refinado e um acabamento quente e duradouro. Ousado mas elegante, foi projetado para homens que apreciam força, estilo e sofisticação." 
+    },
+    hi: { 
+      name: "ALSA फॉर मेन", 
+      description: "ALSA फॉर मेन एक आत्मविश्वासी और आधुनिक सुगंध है जिसमें ताज़ी, मसालेदार शुरुआत, परिष्कृत सुगंधित हृदय, और गर्म, लंबे समय तक चलने वाला फिनिश है। बोल्ड लेकिन सुरुचिपूर्ण, यह उन पुरुषों के लिए डिज़ाइन किया गया है जो ताकत, शैली और परिष्कार की सराहना करते हैं।" 
+    },
+    ar: { 
+      name: "ALSA للرجال", 
+      description: "ALSA للرجال هو عطر واثق وعصري بافتتاح منعش وحار، وقلب عطري رفيع، وإنهاء دافئ ودائم. جريء وأنيق، صُمم للرجال الذين يقدرون القوة والأناقة والتطور." 
+    },
+    ur: { 
+      name: "ALSA FOR MEN", 
+      description: "ALSA FOR MEN ایک پراعتماد اور جدید خوشبو ہے جس میں تازہ، مصالحے دار شروع، بہتر خوشبو والا دل، اور گرم، دیرپا اختتام ہے۔ بہادر لیکن شائستہ، یہ ان مردوں کے لیے بنایا گیا ہے جو طاقت، انداز، اور نفاست کی تعریف کرتے ہیں۔" 
+    },
+  },
+  "67": {
+    en: { 
+      name: "ALSA MIDNIGHT", 
+      description: "ALSA Midnight is a fresh yet intense fragrance that captures energy and elegance. Bright and aromatic at the start, it evolves into a smooth, balanced heart with a warm, confident finish. Modern and versatile, it's ideal for evenings and moments that call for a lasting impression." 
+    },
+    pt: { 
+      name: "ALSA MEIA-NOITE", 
+      description: "ALSA Meia-Noite é uma fragrância fresca mas intensa que captura energia e elegância. Brilhante e aromático no início, evolui para um coração suave e equilibrado com um acabamento quente e confiante. Moderno e versátil, é ideal para noites e momentos que exigem uma impressão duradoura." 
+    },
+    hi: { 
+      name: "ALSA मिडनाइट", 
+      description: "ALSA मिडनाइट एक ताज़ी लेकिन तीव्र सुगंध है जो ऊर्जा और सुरुचि को पकड़ती है। शुरुआत में चमकदार और सुगंधित, यह गर्म, आत्मविश्वासपूर्ण फिनिश के साथ एक चिकना, संतुलित हृदय में विकसित होता है। आधुनिक और बहुमुखी, यह शाम और उन क्षणों के लिए आदर्श है जो स्थायी प्रभाव की मांग करते हैं।" 
+    },
+    ar: { 
+      name: "ALSA منتصف الليل", 
+      description: "ALSA منتصف الليل هو عطر منعش ولكنه مكثف يلتقط الطاقة والأناقة. مشرق وعطري في البداية، يتطور إلى قلب ناعم ومتوازن مع إنهاء دافئ وواثق. عصري ومتعدد الاستخدامات، مثالي للمساء واللحظات التي تتطلب انطباعًا دائمًا." 
+    },
+    ur: { 
+      name: "ALSA مڈنائٹ", 
+      description: "ALSA مڈنائٹ ایک تازہ لیکن شدید خوشبو ہے جو توانائی اور نفاست کو پکڑتی ہے۔ شروع میں روشن اور خوشبودار، یہ گرم، پراعتماد اختتام کے ساتھ ہموار، متوازن دل میں تیار ہوتا ہے۔ جدید اور کثیر جہتی، یہ شام اور ایسے لمحات کے لیے مثالی ہے جو دیرپا تاثر کی ضرورت ہوتی ہے۔" 
+    },
+  },
+  "69": {
+    en: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir is a refined and luxurious fragrance with a smooth, modern character. It opens with a clean, elegant impression, unfolding into a rich and balanced heart before settling into a deep, sensual finish. Sophisticated and long-lasting, it is designed for those who appreciate understated power and timeless style." 
+    },
+    pt: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir é uma fragrância refinada e luxuosa com um caráter suave e moderno. Abre com uma impressão limpa e elegante, desdobrando-se em um coração rico e equilibrado antes de se estabelecer em um acabamento profundo e sensual. Sofisticado e duradouro, foi projetado para aqueles que apreciam poder discreto e estilo atemporal." 
+    },
+    hi: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir एक परिष्कृत और शानदार सुगंध है जिसमें एक चिकनी, आधुनिक चरित्र है। यह एक साफ, सुरुचिपूर्ण प्रभाव के साथ खुलता है, एक गहरे, कामुक फिनिश में बसने से पहले एक समृद्ध और संतुलित हृदय में खुलता है। परिष्कृत और लंबे समय तक चलने वाला, यह उन लोगों के लिए डिज़ाइन किया गया है जो संयमित शक्ति और कालातीत शैली की सराहना करते हैं।" 
+    },
+    ar: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA Velmir هو عطر راقي وفاخر بطابع ناعم وعصري. يفتح بانطباع نظيف وأنيق، ويتكشف إلى قلب غني ومتوازن قبل أن يستقر في إنهاء عميق وحسي. متطور ودائم، صُمم لمن يقدرون القوة المتواضعة والأناقة الخالدة." 
+    },
+    ur: { 
+      name: "ALSA VELMIR", 
+      description: "ALSA VELMIR ایک بہتر اور شاندار خوشبو ہے جس کا ہموار، جدید کردار ہے۔ یہ صاف، شائستہ تاثر کے ساتھ کھلتا ہے، ایک گہرے، حسی اختتام میں بسنے سے پہلے ایک امیر اور متوازن دل میں کھلتا ہے۔ پیچیدہ اور دیرپا، یہ ان لوگوں کے لیے بنایا گیا ہے جو کم قوت اور لازوال انداز کی تعریف کرتے ہیں۔" 
+    },
+  },
+  "70": {
+    en: { 
+      name: "ALSA GOOD MORNING", 
+      description: "ALSA Good Morning is a warm and inviting fragrance with a smooth, elegant character. It opens with a rich, vibrant impression, softening into a balanced aromatic heart and finishing with a deep, comforting trail. Refined yet distinctive, it's perfect for those who enjoy a confident and welcoming scent." 
+    },
+    pt: { 
+      name: "ALSA BOM DIA", 
+      description: "ALSA Bom Dia é uma fragrância quente e acolhedora com um caráter suave e elegante. Abre com uma impressão rica e vibrante, suavizando em um coração aromático equilibrado e terminando com um rastro profundo e reconfortante. Refinado mas distintivo, é perfeito para aqueles que apreciam um aroma confiante e acolhedor." 
+    },
+    hi: { 
+      name: "ALSA गुड मॉर्निंग", 
+      description: "ALSA गुड मॉर्निंग एक गर्म और आमंत्रित करने वाली सुगंध है जिसमें एक चिकनी, सुरुचिपूर्ण चरित्र है। यह एक समृद्ध, जीवंत प्रभाव के साथ खुलता है, एक संतुलित सुगंधित हृदय में नरम हो जाता है और एक गहरी, आरामदायक ट्रेल के साथ समाप्त होता है। परिष्कृत लेकिन विशिष्ट, यह उन लोगों के लिए एकदम सही है जो एक आत्मविश्वासपूर्ण और स्वागत योग्य सुगंध का आनंद लेते हैं।" 
+    },
+    ar: { 
+      name: "ALSA صباح الخير", 
+      description: "ALSA صباح الخير هو عطر دافئ وجذاب بطابع ناعم وأنيق. يفتح بانطباع غني ونابض بالحياة، ثم يلين إلى قلب عطري متوازن وينتهي بأثر عميق ومريح. راقي لكن مميز، مثالي لمن يستمتعون برائحة واثقة ومرحبة." 
+    },
+    ur: { 
+      name: "ALSA گڈ مارننگ", 
+      description: "ALSA گڈ مارننگ ایک گرم اور دعوت دینے والی خوشبو ہے جس کا ہموار، شائستہ کردار ہے۔ یہ امیر، متحرک تاثر کے ساتھ کھلتا ہے، متوازن خوشبودار دل میں نرم ہوتا ہے اور گہرا، آرام دہ ٹریل کے ساتھ ختم ہوتا ہے۔ بہتر لیکن مخصوص، یہ ان لوگوں کے لیے بہترین ہے جو پراعتماد اور خوش آمدید خوشبو سے لطف اندوز ہوتے ہیں۔" 
+    },
+  },
 }
 
 /**
