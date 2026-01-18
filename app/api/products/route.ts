@@ -74,9 +74,37 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(transformedProducts)
   } catch (error: any) {
-    console.error('Error fetching products:', error)
+    console.error('❌ Error fetching products:', error)
+    console.error('Error name:', error?.name)
+    console.error('Error message:', error?.message)
+    console.error('Error stack:', error?.stack)
+    console.error('Error code:', error?.code)
     
-    // Handle MongoDB connection errors
+    // Handle MySQL connection errors
+    if (error.message && (error.message.includes('ECONNREFUSED') || error.message.includes('MySQL') || error.message.includes('ER_') || error.code === 'ECONNREFUSED')) {
+      return NextResponse.json(
+        { 
+          error: 'MySQL connection failed. Please check your database configuration.',
+          details: error.message,
+          code: error.code
+        },
+        { status: 503 }
+      )
+    }
+    
+    // Handle database query errors
+    if (error.code && error.code.startsWith('ER_')) {
+      return NextResponse.json(
+        { 
+          error: 'Database query error.',
+          details: error.message,
+          code: error.code
+        },
+        { status: 500 }
+      )
+    }
+    
+    // Handle MongoDB connection errors (for backward compatibility)
     if (error.message && error.message.includes('IP')) {
       return NextResponse.json(
         { 
@@ -97,8 +125,13 @@ export async function GET(request: NextRequest) {
       )
     }
     
+    // Return detailed error in development, generic in production
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch products' },
+      { 
+        error: error.message || 'Failed to fetch products',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
+        code: error.code
+      },
       { status: 500 }
     )
   }
