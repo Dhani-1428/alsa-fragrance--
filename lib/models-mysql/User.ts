@@ -36,82 +36,67 @@ export async function createUser(userData: {
   const hashedPassword = await bcrypt.hash(userData.password, 10)
   
   // Get connection to access insertId
-  const pool = await import('../mysql').then(m => m.getPool())
+  const pool = getPool()
   const connection = await pool.getConnection()
   
   try {
-    // Ensure id column has AUTO_INCREMENT (fix if needed)
+    // First, try normal INSERT (if AUTO_INCREMENT works)
     try {
-      const [columnInfo]: any = await connection.execute(`
-        SELECT EXTRA 
-        FROM information_schema.COLUMNS 
-        WHERE TABLE_SCHEMA = DATABASE() 
-        AND TABLE_NAME = 'users' 
-        AND COLUMN_NAME = 'id'
-      `)
+      const [result]: any = await connection.execute(
+        `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
+        [
+          userData.email.toLowerCase().trim(),
+          hashedPassword,
+          userData.name || null,
+          userData.role || 'client',
+        ]
+      )
       
-      if (Array.isArray(columnInfo) && columnInfo.length > 0) {
-        const extra = columnInfo[0]?.EXTRA || ''
-        if (!extra.includes('auto_increment')) {
-          console.log('⚠️  id column does not have AUTO_INCREMENT. Attempting to fix...')
-          try {
-            await connection.execute(`
-              ALTER TABLE users 
-              MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT
-            `)
-            console.log('✅ Fixed id column to have AUTO_INCREMENT')
-          } catch (alterError: any) {
-            // If ALTER fails, log but continue - it might have foreign key constraints
-            console.warn('Could not alter id column:', alterError?.message)
-            // Try alternative approach: get max id and insert with next id
-            const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
-            const maxId = maxResult?.maxId || 0
-            const nextId = maxId + 1
-            
-            const [result]: any = await connection.execute(
-              `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
-              [
-                nextId,
-                userData.email.toLowerCase().trim(),
-                hashedPassword,
-                userData.name || null,
-                userData.role || 'client',
-              ]
-            )
-            
-            const newUser = await findUserById(nextId)
-            if (!newUser) {
-              throw new Error('Failed to retrieve created user')
-            }
-            return newUser
-          }
+      const insertId = result.insertId
+      if (insertId) {
+        const newUser = await findUserById(insertId)
+        if (newUser) {
+          return newUser
         }
       }
-    } catch (checkError: any) {
-      // If check fails, continue with normal insert
-      console.warn('Could not check AUTO_INCREMENT:', checkError?.message)
+    } catch (insertError: any) {
+      // If insert fails with "Field 'id' doesn't have a default value" error
+      if (insertError?.message?.includes("doesn't have a default value") || 
+          insertError?.code === 'ER_NO_DEFAULT_FOR_FIELD') {
+        console.log('⚠️  AUTO_INCREMENT not working, using manual ID calculation...')
+        
+        // Get max ID and calculate next ID
+        const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
+        const maxId = (Array.isArray(maxResult) && maxResult[0]?.maxId) ? parseInt(maxResult[0].maxId) : 0
+        const nextId = maxId + 1
+        
+        console.log(`Using manual ID: ${nextId}`)
+        
+        // Insert with explicit ID
+        await connection.execute(
+          `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
+          [
+            nextId,
+            userData.email.toLowerCase().trim(),
+            hashedPassword,
+            userData.name || null,
+            userData.role || 'client',
+          ]
+        )
+        
+        const newUser = await findUserById(nextId)
+        if (!newUser) {
+          throw new Error('Failed to retrieve created user')
+        }
+        return newUser
+      } else {
+        // If it's a different error, re-throw it
+        throw insertError
+      }
     }
     
-    const [result]: any = await connection.execute(
-      `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
-      [
-        userData.email.toLowerCase().trim(),
-        hashedPassword,
-        userData.name || null,
-        userData.role || 'client',
-      ]
-    )
-    
-    const insertId = result.insertId
-    if (!insertId) {
-      throw new Error('Failed to get insert ID after user creation')
-    }
-    
-    const newUser = await findUserById(insertId)
-    if (!newUser) {
-      throw new Error('Failed to retrieve created user')
-    }
-    return newUser
+    // This should not be reached, but just in case
+    throw new Error('Unexpected error during user creation')
   } finally {
     connection.release()
   }
