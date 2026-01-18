@@ -517,7 +517,9 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     removeAuthToken()
-    router.push("/admin/login")
+    toast.success("Logged out successfully")
+    // Redirect to home page instead of admin login
+    router.push("/")
   }
 
   if (loading) {
