@@ -418,7 +418,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                             setOpenPaymentMethod(null)
                             setPaymentMethod(null)
                           }}
-                          className="h-9 px-4"
+                          className="bg-transparent border-yellow-400/50 text-yellow-400 hover:bg-yellow-400/10 h-9 px-4"
                         >
                           {t.common.cancel}
                         </Button>
@@ -435,7 +435,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                               description: "IBAN transfer method confirmed. You can now proceed to place your order.",
                             })
                           }}
-                          className="h-9 px-4"
+                          className="bg-yellow-400 text-black hover:bg-yellow-500 font-semibold h-9 px-4"
                         >
                           {t.pages.confirmPaymentMethod}
                         </Button>
