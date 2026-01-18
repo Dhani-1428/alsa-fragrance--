@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Star, Eye } from "lucide-react"
 import type { Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
+import { useTranslatedProduct } from "@/lib/hooks/use-translated-product"
 import { AddToCartButton } from "@/components/add-to-cart-button"
 
 interface ProductCardProps {
@@ -15,6 +16,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { t } = useLanguage()
+  const translatedProduct = useTranslatedProduct(product)
   
   // Ensure ID is converted to string for the URL and validate it
   let productId: string | number = product.id
@@ -41,7 +43,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <Link href={`/product/${productId}`}>
             <img
               src={product.image || "/premium-perfume-bottle-elegant-design.jpg"}
-              alt={product.name}
+              alt={translatedProduct.name}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
           </Link>
@@ -65,7 +67,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
 
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <AddToCartButton product={product} size={product.size && product.size.length > 0 ? product.size[0] : ''} />
+            <AddToCartButton product={translatedProduct} size={translatedProduct.size && translatedProduct.size.length > 0 ? translatedProduct.size[0] : ''} />
             <Link href={`/product/${productId}`}>
               <Button size="icon" variant="secondary" className="bg-white/90 hover:bg-white text-black">
                 <Eye className="h-4 w-4" />
@@ -89,15 +91,15 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-xs text-muted-foreground">({product.reviews})</span>
           </div>
 
-          <p className="text-xs text-muted-foreground mb-1 capitalize">{product.category}</p>
+          <p className="text-xs text-muted-foreground mb-1 capitalize">{translatedProduct.category}</p>
           <Link href={`/product/${productId}`}>
-            <h3 className="font-semibold mb-2 text-sm hover:text-primary transition-colors">{product.name}</h3>
+            <h3 className="font-semibold mb-2 text-sm hover:text-primary transition-colors">{translatedProduct.name}</h3>
           </Link>
 
           <div className="flex items-center gap-2">
-            <span className="font-bold text-primary">€{product.price.toFixed(2)}</span>
-            {product.originalPrice && (
-              <span className="text-xs text-muted-foreground line-through">€{product.originalPrice.toFixed(2)}</span>
+            <span className="font-bold text-primary">€{translatedProduct.price.toFixed(2)}</span>
+            {translatedProduct.originalPrice && (
+              <span className="text-xs text-muted-foreground line-through">€{translatedProduct.originalPrice.toFixed(2)}</span>
             )}
           </div>
         </div>

@@ -15,6 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Truck, Shield, RotateCcw } from "lucide-react"
 import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
+import { useTranslatedProduct } from "@/lib/hooks/use-translated-product"
 import { Footer } from "@/components/footer"
 
 interface ProductPageProps {
@@ -25,11 +26,14 @@ export default function ProductPage({ params }: ProductPageProps) {
   const router = useRouter()
   const [product, setProduct] = useState<Product | null>(null)
   const [loading, setLoading] = useState(true)
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   
   // Unwrap params Promise using React.use() (Next.js 16+)
   // NOTE: params is a Promise in Next.js 16, must use React.use() before accessing properties
   const resolvedParams = use(params)
+  
+  // Import translation utility
+  const { getTranslatedProduct } = require('@/lib/i18n/product-translations')
 
   useEffect(() => {
     async function loadProduct() {
@@ -79,6 +83,14 @@ export default function ProductPage({ params }: ProductPageProps) {
       setLoading(false)
     }
   }, [resolvedParams?.id])
+
+  // Get translated product when product is loaded
+  const translatedProduct = product ? getTranslatedProduct(
+    product.id,
+    product.name,
+    product.description,
+    language as "en" | "pt" | "hi" | "ar" | "ur"
+  ) : { name: '', description: '' }
 
   if (loading) {
     return (
@@ -137,13 +149,13 @@ export default function ProductPage({ params }: ProductPageProps) {
             {product.category}
           </Link>
           <span>/</span>
-          <span className="text-foreground">{product.name}</span>
+          <span className="text-foreground">{translatedProduct.name}</span>
         </nav>
 
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 mb-20">
           {/* Product Gallery */}
           <div className="flex items-center justify-center">
-            <ProductGallery images={galleryImages} productName={product.name} />
+            <ProductGallery images={galleryImages} productName={translatedProduct.name} />
           </div>
 
           {/* Product Info */}
@@ -170,7 +182,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* Title and Rating */}
             <div className="space-y-3">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-[family-name:var(--font-playfair)] text-foreground">
-                {product.name}
+                {translatedProduct.name}
               </h1>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1">
@@ -204,7 +216,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Description */}
             <div className="py-4">
-              <p className="text-base text-muted-foreground leading-relaxed">{product.description}</p>
+              <p className="text-base text-muted-foreground leading-relaxed">{translatedProduct.description}</p>
             </div>
 
             {/* Size Selection and Add to Cart */}
