@@ -402,11 +402,11 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="mt-4 animate-in slide-in-from-top-2 duration-200">
-                  <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50/95 to-indigo-50/95 dark:from-blue-950/95 dark:to-indigo-950/95 text-foreground shadow-lg">
-                    <h4 className="font-bold text-lg mb-3">{t.pages.ibanInstructions}</h4>
-                    <p className="text-sm mb-4 leading-relaxed">{t.pages.ibanDescription}</p>
-                    <div className="bg-background p-5 rounded-lg border-2 mb-5 backdrop-blur-sm">
-                      <p className="text-xl font-mono font-bold text-center tracking-wider">PT50002300004559842600394</p>
+                  <div className="p-6 rounded-xl border-2 bg-black text-yellow-400 shadow-lg">
+                    <h4 className="font-bold text-lg mb-3 text-yellow-400">{t.pages.ibanInstructions}</h4>
+                    <p className="text-sm mb-4 leading-relaxed text-yellow-300">{t.pages.ibanDescription}</p>
+                    <div className="bg-black p-5 rounded-lg border-2 border-yellow-400/40 mb-5 backdrop-blur-sm">
+                      <p className="text-xl font-mono font-bold text-center tracking-wider text-yellow-400">PT50002300004559842600394</p>
                     </div>
                     <div className="flex items-center justify-between pt-2 border-t mb-4">
                       <div className="flex items-center gap-2">
@@ -441,7 +441,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                         </Button>
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-yellow-300/80 leading-relaxed">
                       {t.pages.ibanPaymentNote}
                     </p>
                   </div>
