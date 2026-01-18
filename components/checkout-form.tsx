@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useCart } from "@/lib/cart-context"
 import { useLanguage } from "@/contexts/language-provider"
 // import { Spinner } from "@/components/ui/spinner"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "sonner"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { ChevronDown, Smartphone, Building2 } from "lucide-react"
 
@@ -31,7 +31,6 @@ type PaymentMethod = "mbway" | "iban"
 
 function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
   const { state, clearCart } = useCart()
-  const { toast } = useToast()
   const { t } = useLanguage()
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -61,29 +60,23 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
     
     // Check if cart is empty
     if (!state.items || state.items.length === 0) {
-      toast({
-        title: "Cart is Empty",
+      toast.error("Cart is Empty", {
         description: "Please add items to your cart before placing an order.",
-        variant: "destructive",
       })
       return
     }
     
     if (!paymentMethod) {
-      toast({
-        title: "Payment Method Required",
+      toast.error("Payment Method Required", {
         description: "Please select a payment method to continue.",
-        variant: "destructive",
       })
       return
     }
 
     // Validate billing information
     if (!formData.fullName || !formData.email || !formData.phone || !formData.address || !formData.city || !formData.postalCode || !formData.country) {
-      toast({
-        title: "Billing Information Required",
+      toast.error("Billing Information Required", {
         description: "Please fill in all required billing fields.",
-        variant: "destructive",
       })
       return
     }
@@ -161,15 +154,15 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
       const responseData = await response.json()
       console.log("API response:", responseData)
 
+      // Show success toast
       if (responseData.isMBWayPending || paymentMethod === "iban") {
         const paymentInstructions = paymentMethod === "mbway" 
           ? `Please send payment of €${grandTotal.toFixed(2)} to +351 920062535 via MBWay.`
           : `Please transfer payment of €${grandTotal.toFixed(2)} to IBAN: PT50002300004559842600394.`
         
-        toast({
-          title: "Order Placed Successfully! 🎉",
-          description: `Your order has been placed successfully! ${paymentInstructions} You will receive an email confirmation shortly. Once payment is confirmed by our admin, you will receive another email with payment confirmation and order details. Order Number: ${responseData.orderNumber || ""}`,
-          duration: 12000,
+        toast.success("Order Placed Successfully! 🎉", {
+          description: `Your order has been placed successfully! ${paymentInstructions} You will receive an email confirmation shortly at ${formData.email}. Once payment is confirmed by our admin, you will receive another email with payment confirmation and order details. Order Number: ${responseData.orderNumber || ""}`,
+          duration: 15000,
         })
         clearCart()
         setTimeout(() => {
@@ -180,10 +173,9 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
           }
         }, 3000)
       } else {
-        toast({
-          title: "Order Placed Successfully! 🎉",
-          description: "Your order has been placed successfully! Check your email for confirmation.",
-          duration: 5000,
+        toast.success("Order Placed Successfully! 🎉", {
+          description: `Your order has been placed successfully! Check your email at ${formData.email} for confirmation.`,
+          duration: 8000,
         })
         clearCart()
         if (onClose) {
@@ -209,10 +201,8 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
         }
       }
       
-      toast({
-        title: "Order Failed",
+      toast.error("Order Failed", {
         description: errorMessage,
-        variant: "destructive",
       })
     } finally {
       setIsSubmitting(false)
@@ -330,8 +320,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                             e.stopPropagation()
                             setPaymentMethod("mbway")
                             setOpenPaymentMethod("mbway")
-                            toast({
-                              title: "Payment Method Selected",
+                            toast.success("Payment Method Selected", {
                               description: "MBWay payment method confirmed. You can now proceed to place your order.",
                             })
                           }}
@@ -435,8 +424,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                             e.stopPropagation()
                             setPaymentMethod("iban")
                             setOpenPaymentMethod("iban")
-                            toast({
-                              title: "Payment Method Selected",
+                            toast.success("Payment Method Selected", {
                               description: "IBAN transfer method confirmed. You can now proceed to place your order.",
                             })
                           }}

@@ -263,23 +263,49 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Send email to customer only if payment is confirmed (Card) or pending (MBWay)
-    await transporter.sendMail({
-      from: `Alsa Fragrance <${smtpUser}>`,
-      to: billingInfo.email,
-      subject: isMBWayPending 
-        ? `Order Placed - Awaiting Payment Confirmation (Order ${order.orderNumber})`
-        : "Order Confirmation - Your order will be delivered in 5-7 days",
-      html: customerEmailHtml,
-    })
+    // Send email to customer
+    try {
+      console.log(`Sending order confirmation email to customer: ${billingInfo.email}`)
+      await transporter.sendMail({
+        from: `Alsa Fragrance <${smtpUser}>`,
+        to: billingInfo.email,
+        replyTo: smtpUser,
+        subject: isMBWayPending 
+          ? `Order Placed - Awaiting Payment Confirmation (Order ${order.orderNumber})`
+          : "Order Confirmation - Your order will be delivered in 5-7 days",
+        html: customerEmailHtml,
+      })
+      console.log(`✅ Customer email sent successfully to ${billingInfo.email}`)
+    } catch (emailError: any) {
+      console.error("❌ Error sending customer email:", emailError)
+      // Don't fail the order if email fails - log it and continue
+      console.error("Email error details:", {
+        message: emailError?.message,
+        code: emailError?.code,
+        response: emailError?.response,
+      })
+    }
 
     // Send email to admin
-    await transporter.sendMail({
-      from: `Alsa Fragrance <${smtpUser}>`,
-      to: "fragrancealsa@gmail.com",
-      subject: `New Order from ${billingInfo.fullName} - €${effectiveGrandTotal.toFixed(2)}`,
-      html: adminEmailHtml,
-    })
+    try {
+      console.log("Sending order notification email to admin")
+      await transporter.sendMail({
+        from: `Alsa Fragrance <${smtpUser}>`,
+        to: smtpUser,
+        replyTo: billingInfo.email,
+        subject: `New Order from ${billingInfo.fullName} - €${effectiveGrandTotal.toFixed(2)}`,
+        html: adminEmailHtml,
+      })
+      console.log("✅ Admin email sent successfully")
+    } catch (emailError: any) {
+      console.error("❌ Error sending admin email:", emailError)
+      // Don't fail the order if email fails - log it and continue
+      console.error("Email error details:", {
+        message: emailError?.message,
+        code: emailError?.code,
+        response: emailError?.response,
+      })
+    }
 
     return NextResponse.json({ 
       success: true, 
