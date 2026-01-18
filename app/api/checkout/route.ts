@@ -149,10 +149,10 @@ export async function POST(request: NextRequest) {
           </div>
 
           <div style="background-color: ${isMBWayPending ? "#fff3cd" : "#e7f3ff"}; border-left: 4px solid ${isMBWayPending ? "#ffc107" : "#2196F3"}; padding: 15px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Payment Method:</strong> ${paymentMethod || "Card"}</p>
+            <p style="margin: 0;"><strong>Payment Method:</strong> ${normalizedPaymentMethod || "Card"}</p>
             ${isMBWayPending 
               ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Payment Instructions:</strong></p>
-                 ${paymentMethod === "MBWay" 
+                 ${normalizedPaymentMethod === "MBWay" 
                    ? `<p style="margin: 10px 0 0 0; font-size: 14px;">Please send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong> via MBWay.</p>`
                    : `<p style="margin: 10px 0 0 0; font-size: 14px;">Please transfer payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to the following IBAN account:</p>
                       <p style="margin: 10px 0 0 0; font-size: 14px; font-family: monospace; background-color: #fff; padding: 10px; border: 1px solid #ddd;"><strong>PT50002300004559842600394</strong></p>`
@@ -248,7 +248,7 @@ export async function POST(request: NextRequest) {
           </div>
 
           <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Payment Method:</strong> ${paymentMethod || "Card"}</p>
+            <p style="margin: 0;"><strong>Payment Method:</strong> ${normalizedPaymentMethod || "Card"}</p>
             ${isMBWayPending 
               ? `<p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Status:</strong> Payment Pending - Customer should send payment of <strong>€${effectiveGrandTotal.toFixed(2)}</strong> to <strong>+351 920062535</strong></p>
                  <p style="margin: 10px 0 0 0; font-size: 14px;"><strong>Order Number:</strong> ${order.orderNumber}</p>
