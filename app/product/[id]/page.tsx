@@ -80,13 +80,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     }
   }, [resolvedParams?.id, language])
 
-  // Get translated product when product is loaded
-  const translatedProduct = product ? getTranslatedProduct(
-    product.id,
-    product.name,
-    product.description,
-    language as "en" | "pt" | "hi" | "ar" | "ur"
-  ) : { name: '', description: '' }
+  // Product is already translated from API based on language parameter
 
   if (loading) {
     return (
