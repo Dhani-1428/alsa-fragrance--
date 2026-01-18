@@ -18,8 +18,25 @@ export async function GET(request: NextRequest) {
     const isNew = searchParams.get('isNew')
 
     // Use the MySQL model function instead of Product.find()
+    console.log('📋 Fetching products from database...')
+    console.log('📋 Filter - category:', category || 'none')
+    
     const { findAllProducts } = await import('@/lib/models-mysql/Product')
-    const allProducts = await findAllProducts({ category: category || undefined })
+    let allProducts: any[] = []
+    
+    try {
+      allProducts = await findAllProducts({ category: category || undefined })
+      console.log(`✅ Successfully fetched ${allProducts.length} products from database`)
+    } catch (dbError: any) {
+      console.error('❌ Error fetching products from database:', dbError)
+      console.error('Database error details:', {
+        message: dbError?.message,
+        code: dbError?.code,
+        errno: dbError?.errno,
+        sqlState: dbError?.sqlState,
+      })
+      throw dbError // Re-throw to be caught by outer catch block
+    }
     
     // Apply additional filters
     let filteredProducts = allProducts
