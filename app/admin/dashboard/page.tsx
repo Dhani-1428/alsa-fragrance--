@@ -319,21 +319,31 @@ export default function AdminDashboard() {
       const url = editingProduct ? `/api/products/${editingProduct.id}` : "/api/products"
       const method = editingProduct ? "PUT" : "POST"
 
+      console.log(`📤 Sending ${method} request to: ${url}`)
+      console.log(`📤 Product data:`, JSON.stringify(productData, null, 2))
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(productData),
       })
 
+      console.log(`📥 Response status: ${response.status} ${response.statusText}`)
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
+        console.error('❌ Error response:', errorData)
         throw new Error(errorData.error || `Failed to save product: ${response.status} ${response.statusText}`)
       }
 
-      toast.success(editingProduct ? "Product updated!" : "Product created!")
+      const responseData = await response.json()
+      console.log(`✅ Product ${editingProduct ? 'updated' : 'created'} successfully:`, responseData)
+
+      toast.success(editingProduct ? "Product updated successfully!" : "Product created successfully!")
       setIsDialogOpen(false)
       resetForm()
-      fetchProducts()
+      // Force refresh products to get updated data
+      await fetchProducts()
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save product"
       const errorDetails = error.details ? ` ${error.details}` : ''

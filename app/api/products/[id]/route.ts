@@ -155,14 +155,28 @@ export async function PUT(
     if (isSale !== undefined) updateData.isSale = isSale
     if (badge !== undefined) updateData.badge = badge || null
 
-    const productId = parseInt(resolvedParams.id)
+    const productIdStr = String(resolvedParams.id || '').trim()
+    if (!productIdStr) {
+      return NextResponse.json({ error: 'Product ID is required' }, { status: 400 })
+    }
+    
+    const productId = parseInt(productIdStr, 10)
+    if (isNaN(productId) || productId <= 0) {
+      return NextResponse.json({ error: 'Invalid product ID' }, { status: 400 })
+    }
+    
+    console.log(`📝 API: Updating product ${productId}`)
+    console.log(`📝 API: Update data received:`, JSON.stringify(updateData, null, 2))
+    
     const { updateProduct } = await import('@/lib/models-mysql/Product')
     const product = await updateProduct(productId, updateData)
 
     if (!product) {
+      console.error(`❌ API: Product ${productId} not found after update`)
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
 
+    console.log(`✅ API: Product ${productId} updated successfully`)
     return NextResponse.json({
       id: product.id?.toString() || '',
       ...product,

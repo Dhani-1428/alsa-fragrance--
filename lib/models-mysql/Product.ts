@@ -185,93 +185,127 @@ export async function createProduct(productData: Omit<IProduct, 'id' | 'createdA
 }
 
 export async function updateProduct(id: number, productData: Partial<IProduct>): Promise<IProduct | null> {
-  const updates: string[] = []
-  const values: any[] = []
-  
-  if (productData.name) {
-    updates.push('name = ?')
-    values.push(productData.name)
+  try {
+    console.log(`🔄 Updating product ID: ${id}`)
+    console.log(`📝 Update data:`, JSON.stringify(productData, null, 2))
+    
+    const updates: string[] = []
+    const values: any[] = []
+    
+    // Validate ID
+    if (!id || isNaN(id) || id <= 0) {
+      throw new Error(`Invalid product ID: ${id}`)
+    }
+    
+    // Always update name if provided (even if empty string is passed, we should allow it to be cleared)
+    if (productData.name !== undefined) {
+      updates.push('name = ?')
+      values.push(String(productData.name).trim())
+    }
+    if (productData.category !== undefined) {
+      updates.push('category = ?')
+      values.push(String(productData.category).trim())
+    }
+    if (productData.price !== undefined) {
+      updates.push('price = ?')
+      values.push(parseFloat(String(productData.price)))
+    }
+    if (productData.originalPrice !== undefined) {
+      updates.push('originalPrice = ?')
+      values.push(productData.originalPrice ? parseFloat(String(productData.originalPrice)) : null)
+    }
+    if (productData.salePrice !== undefined) {
+      updates.push('salePrice = ?')
+      values.push(productData.salePrice ? parseFloat(String(productData.salePrice)) : null)
+    }
+    if (productData.salePercent !== undefined) {
+      updates.push('salePercent = ?')
+      values.push(productData.salePercent ? parseFloat(String(productData.salePercent)) : null)
+    }
+    if (productData.rating !== undefined) {
+      updates.push('rating = ?')
+      values.push(parseFloat(String(productData.rating)) || 0)
+    }
+    if (productData.reviews !== undefined) {
+      updates.push('reviews = ?')
+      values.push(parseInt(String(productData.reviews)) || 0)
+    }
+    if (productData.image !== undefined) {
+      updates.push('image = ?')
+      values.push(String(productData.image).trim())
+    }
+    if (productData.images !== undefined) {
+      updates.push('images = ?')
+      values.push(JSON.stringify(Array.isArray(productData.images) ? productData.images : []))
+    }
+    if (productData.description !== undefined) {
+      updates.push('description = ?')
+      values.push(String(productData.description).trim())
+    }
+    if (productData.notesTop !== undefined) {
+      updates.push('notesTop = ?')
+      values.push(JSON.stringify(Array.isArray(productData.notesTop) ? productData.notesTop : []))
+    }
+    if (productData.notesMiddle !== undefined) {
+      updates.push('notesMiddle = ?')
+      values.push(JSON.stringify(Array.isArray(productData.notesMiddle) ? productData.notesMiddle : []))
+    }
+    if (productData.notesBase !== undefined) {
+      updates.push('notesBase = ?')
+      values.push(JSON.stringify(Array.isArray(productData.notesBase) ? productData.notesBase : []))
+    }
+    if (productData.size !== undefined) {
+      updates.push('size = ?')
+      values.push(JSON.stringify(Array.isArray(productData.size) ? productData.size : []))
+    }
+    if (productData.inStock !== undefined) {
+      updates.push('inStock = ?')
+      values.push(productData.inStock ? 1 : 0)
+    }
+    if (productData.isNew !== undefined) {
+      updates.push('isNew = ?')
+      values.push(productData.isNew ? 1 : 0)
+    }
+    if (productData.isSale !== undefined) {
+      updates.push('isSale = ?')
+      values.push(productData.isSale ? 1 : 0)
+    }
+    if (productData.badge !== undefined) {
+      updates.push('badge = ?')
+      values.push(productData.badge ? String(productData.badge).trim() : null)
+    }
+    
+    if (updates.length === 0) {
+      console.warn('⚠️  No fields to update for product', id)
+      return await findProductById(id)
+    }
+    
+    values.push(id)
+    const sql = `UPDATE products SET ${updates.join(', ')} WHERE id = ?`
+    console.log(`📋 Executing SQL: ${sql}`)
+    console.log(`📋 With values:`, values)
+    
+    const result: any = await query(sql, values)
+    console.log(`✅ Update result:`, result)
+    
+    // Verify the update
+    const updatedProduct = await findProductById(id)
+    if (!updatedProduct) {
+      throw new Error(`Failed to retrieve updated product with ID ${id}`)
+    }
+    
+    console.log(`✅ Product updated successfully:`, updatedProduct.name)
+    return updatedProduct
+  } catch (error: any) {
+    console.error(`❌ Error updating product ${id}:`, error)
+    console.error('Error details:', {
+      message: error?.message,
+      code: error?.code,
+      errno: error?.errno,
+      sqlState: error?.sqlState,
+    })
+    throw error
   }
-  if (productData.category) {
-    updates.push('category = ?')
-    values.push(productData.category)
-  }
-  if (productData.price !== undefined) {
-    updates.push('price = ?')
-    values.push(productData.price)
-  }
-  if (productData.originalPrice !== undefined) {
-    updates.push('originalPrice = ?')
-    values.push(productData.originalPrice || null)
-  }
-  if (productData.salePrice !== undefined) {
-    updates.push('salePrice = ?')
-    values.push(productData.salePrice || null)
-  }
-  if (productData.salePercent !== undefined) {
-    updates.push('salePercent = ?')
-    values.push(productData.salePercent || null)
-  }
-  if (productData.rating !== undefined) {
-    updates.push('rating = ?')
-    values.push(productData.rating)
-  }
-  if (productData.reviews !== undefined) {
-    updates.push('reviews = ?')
-    values.push(productData.reviews)
-  }
-  if (productData.image) {
-    updates.push('image = ?')
-    values.push(productData.image)
-  }
-  if (productData.images !== undefined) {
-    updates.push('images = ?')
-    values.push(JSON.stringify(productData.images))
-  }
-  if (productData.description) {
-    updates.push('description = ?')
-    values.push(productData.description)
-  }
-  if (productData.notesTop !== undefined) {
-    updates.push('notesTop = ?')
-    values.push(JSON.stringify(productData.notesTop))
-  }
-  if (productData.notesMiddle !== undefined) {
-    updates.push('notesMiddle = ?')
-    values.push(JSON.stringify(productData.notesMiddle))
-  }
-  if (productData.notesBase !== undefined) {
-    updates.push('notesBase = ?')
-    values.push(JSON.stringify(productData.notesBase))
-  }
-  if (productData.size !== undefined) {
-    updates.push('size = ?')
-    values.push(JSON.stringify(productData.size))
-  }
-  if (productData.inStock !== undefined) {
-    updates.push('inStock = ?')
-    values.push(productData.inStock ? 1 : 0)
-  }
-  if (productData.isNew !== undefined) {
-    updates.push('isNew = ?')
-    values.push(productData.isNew ? 1 : 0)
-  }
-  if (productData.isSale !== undefined) {
-    updates.push('isSale = ?')
-    values.push(productData.isSale ? 1 : 0)
-  }
-  if (productData.badge !== undefined) {
-    updates.push('badge = ?')
-    values.push(productData.badge || null)
-  }
-  
-  if (updates.length === 0) {
-    return await findProductById(id)
-  }
-  
-  values.push(id)
-  await query(`UPDATE products SET ${updates.join(', ')} WHERE id = ?`, values)
-  return await findProductById(id)
 }
 
 export async function deleteProduct(id: number): Promise<boolean> {
