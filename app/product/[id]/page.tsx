@@ -15,7 +15,7 @@ import { Separator } from "@/components/ui/separator"
 import { Star, Truck, Shield, RotateCcw } from "lucide-react"
 import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
-import { useTranslatedProduct } from "@/lib/hooks/use-translated-product"
+import { getTranslatedProduct } from "@/lib/i18n/product-translations"
 import { Footer } from "@/components/footer"
 
 interface ProductPageProps {
