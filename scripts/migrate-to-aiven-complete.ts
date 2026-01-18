@@ -147,7 +147,7 @@ async function createAivenSchema() {
         shipping DECIMAL(10, 2) NOT NULL DEFAULT 0,
         tax DECIMAL(10, 2) NOT NULL DEFAULT 0,
         grandTotal DECIMAL(10, 2) NOT NULL,
-        paymentMethod ENUM('Card', 'MBWay') NOT NULL,
+        paymentMethod ENUM('Card', 'MBWay', 'IBAN') NOT NULL,
         status ENUM('pending', 'confirmed', 'cancelled') DEFAULT 'pending',
         confirmedAt TIMESTAMP NULL DEFAULT NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

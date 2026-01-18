@@ -27,7 +27,7 @@ export interface IOrder {
   shipping: number
   tax: number
   grandTotal: number
-  paymentMethod: "Card" | "MBWay"
+  paymentMethod: "Card" | "MBWay" | "IBAN"
   status: "pending" | "confirmed" | "cancelled"
   createdAt?: Date
   confirmedAt?: Date
