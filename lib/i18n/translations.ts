@@ -156,6 +156,9 @@ export interface Translations {
     mbwayInstructions: string
     mbwayNumber: string
     mbwayDescription: string
+    ibanInstructions: string
+    ibanDescription: string
+    ibanPaymentNote: string
     cardNumber: string
     cardExpiry: string
     cardCvv: string
@@ -525,6 +528,7 @@ export const translations: Record<Language, Translations> = {
       paymentMethod: "Payment Method",
       cardPayment: "Debit/Credit Card (Visa, Mastercard, etc.)",
       mbway: "MBWay",
+      ibanTransfer: "IBAN Transfer",
       placeOrder: "Place Order",
       processing: "Processing...",
     },
@@ -599,6 +603,9 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "MBWay Payment Instructions",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "Please send payment to the following MBWay number:",
+      ibanInstructions: "IBAN Transfer Instructions",
+      ibanDescription: "Please transfer the payment to the following IBAN account:",
+      ibanPaymentNote: "Once payment is transferred, your order will be processed. Please include your order number in the transfer reference.",
       cardNumber: "Card Number",
       cardExpiry: "MM/YY",
       cardCvv: "CVV",
@@ -1036,6 +1043,9 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "Instruções de Pagamento MBWay",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "Por favor, envie o pagamento para o seguinte número MBWay:",
+      ibanInstructions: "Instruções de Transferência IBAN",
+      ibanDescription: "Por favor, transfira o pagamento para a seguinte conta IBAN:",
+      ibanPaymentNote: "Após a transferência do pagamento, o seu pedido será processado. Por favor, inclua o número do seu pedido na referência da transferência.",
       cardNumber: "Número do Cartão",
       cardExpiry: "MM/AA",
       cardCvv: "CVV",
@@ -1910,6 +1920,9 @@ export const translations: Record<Language, Translations> = {
       mbwayInstructions: "تعليمات دفع MBWay",
       mbwayNumber: "+351 920062535",
       mbwayDescription: "يرجى إرسال الدفع إلى رقم MBWay التالي:",
+      ibanInstructions: "تعليمات التحويل البنكي IBAN",
+      ibanDescription: "يرجى تحويل الدفع إلى حساب IBAN التالي:",
+      ibanPaymentNote: "بمجرد تحويل الدفع، سيتم معالجة طلبك. يرجى تضمين رقم طلبك في مرجع التحويل.",
       cardNumber: "رقم البطاقة",
       cardExpiry: "MM/YY",
       cardCvv: "CVV",

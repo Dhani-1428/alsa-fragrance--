@@ -14,7 +14,7 @@ import { useLanguage } from "@/contexts/language-provider"
 // import { Spinner } from "@/components/ui/spinner"
 import { useToast } from "@/hooks/use-toast"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronDown, CreditCard, Smartphone } from "lucide-react"
+import { ChevronDown, Smartphone, Building2 } from "lucide-react"
 
 interface BillingFormData {
   fullName: string
@@ -27,7 +27,7 @@ interface BillingFormData {
   additionalNotes?: string
 }
 
-type PaymentMethod = "card" | "mbway"
+type PaymentMethod = "mbway" | "iban"
 
 function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
   const { state, clearCart } = useCart()
@@ -37,9 +37,6 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null)
   const [openPaymentMethod, setOpenPaymentMethod] = useState<PaymentMethod | null>(null)
-  const [cardNumber, setCardNumber] = useState("")
-  const [cardExpiry, setCardExpiry] = useState("")
-  const [cardCvv, setCardCvv] = useState("")
   const [formData, setFormData] = useState<BillingFormData>({
     fullName: "",
     email: "",
@@ -102,18 +99,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
       const tax = 0
       const grandTotal = subtotal
 
-      if (paymentMethod === "card") {
-        // Validate card details are entered
-        if (!cardNumber.trim() || !cardExpiry.trim() || !cardCvv.trim()) {
-          setIsSubmitting(false)
-          toast({
-            title: "Card Details Required",
-            description: "Please enter all card details.",
-            variant: "destructive",
-          })
-          return
-        }
-      } else if (paymentMethod === "mbway") {
+      if (paymentMethod === "mbway") {
         // MBWay payment - just confirm payment was sent
         // In production, you would integrate with MBWay API here
         // For now, we'll proceed assuming user will send payment
@@ -133,7 +119,7 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
         shipping,
         tax,
         grandTotal,
-        paymentMethod: paymentMethod === "mbway" ? "MBWay" : "Card",
+        paymentMethod: paymentMethod === "mbway" ? "MBWay" : paymentMethod === "iban" ? "IBAN" : "MBWay",
       }
       
       console.log("Order data:", orderData)
@@ -252,177 +238,13 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
             <div className="space-y-4">
               <h3 className="font-semibold text-lg">{t.checkout.paymentMethod}</h3>
               
-              {/* Credit/Debit Card Option */}
-              <Collapsible
-                open={openPaymentMethod === "card"}
-                onOpenChange={(open) => {
-                  if (open) {
-                    // Close MBWay if open
-                    if (openPaymentMethod === "mbway") {
-                      setOpenPaymentMethod("card")
-                      setPaymentMethod("card")
-                    } else {
-                      setOpenPaymentMethod("card")
-                      // Don't set payment method yet - wait for confirmation
-                    }
-                  } else {
-                    setOpenPaymentMethod(null)
-                    // Only clear payment method if it was card
-                    if (paymentMethod === "card") {
-                      setPaymentMethod(null)
-                    }
-                  }
-                }}
-                className="w-full"
-              >
-                <CollapsibleTrigger asChild>
-                  <Button
-                    type="button"
-                    variant={paymentMethod === "card" ? "default" : "outline"}
-                    className={`w-full justify-between h-auto py-4 px-6 transition-all cursor-pointer ${
-                      paymentMethod === "card" 
-                        ? "bg-primary text-primary-foreground shadow-md" 
-                        : "hover:bg-accent hover:text-accent-foreground"
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault()
-                      e.stopPropagation()
-                      if (openPaymentMethod === "card") {
-                        setOpenPaymentMethod(null)
-                        if (paymentMethod === "card") {
-                          setPaymentMethod(null)
-                        }
-                      } else {
-                        // Close MBWay if open
-                        if (openPaymentMethod === "mbway") {
-                          setOpenPaymentMethod("card")
-                          setPaymentMethod(null) // Clear MBWay selection
-                        } else {
-                          setOpenPaymentMethod("card")
-                        }
-                      }
-                    }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <CreditCard className={`h-5 w-5 ${paymentMethod === "card" ? "text-primary-foreground" : ""}`} />
-                      <span className="font-semibold text-base">{t.checkout.cardPayment}</span>
-                    </div>
-                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${openPaymentMethod === "card" ? "rotate-180" : ""}`} />
-                  </Button>
-                </CollapsibleTrigger>
-                <CollapsibleContent className="mt-4 space-y-4 animate-in slide-in-from-top-2 duration-200">
-                  <div className="p-6 border rounded-xl bg-card shadow-sm space-y-4">
-                    <div className="space-y-4">
-                      <Label className="mb-4 block text-base font-semibold">{t.pages.cardDetails}</Label>
-                      
-                      <div className="space-y-3">
-                        <div>
-                          <Label htmlFor="cardNumber" className="text-sm mb-2 block">{t.pages.cardNumber}</Label>
-                          <Input
-                            id="cardNumber"
-                            type="text"
-                            placeholder="1234 5678 9012 3456"
-                            value={cardNumber}
-                            onChange={(e) => {
-                              const value = e.target.value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim()
-                              setCardNumber(value.slice(0, 19))
-                            }}
-                            className="h-12 text-base"
-                            maxLength={19}
-                          />
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <Label htmlFor="cardExpiry" className="text-sm mb-2 block">{t.pages.cardExpiry}</Label>
-                            <Input
-                              id="cardExpiry"
-                              type="text"
-                              placeholder={t.pages.cardExpiry}
-                              value={cardExpiry}
-                              onChange={(e) => {
-                                let value = e.target.value.replace(/\D/g, '')
-                                if (value.length >= 2) {
-                                  value = value.slice(0, 2) + '/' + value.slice(2, 4)
-                                }
-                                setCardExpiry(value.slice(0, 5))
-                              }}
-                              className="h-12 text-base"
-                              maxLength={5}
-                            />
-                          </div>
-                          
-                          <div>
-                            <Label htmlFor="cardCvv" className="text-sm mb-2 block">{t.pages.cardCvv}</Label>
-                            <Input
-                              id="cardCvv"
-                              type="text"
-                              placeholder="123"
-                              value={cardCvv}
-                              onChange={(e) => {
-                                setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))
-                              }}
-                              className="h-12 text-base"
-                              maxLength={4}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between pt-2 border-t">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => {
-                            setOpenPaymentMethod(null)
-                            setPaymentMethod(null)
-                            setCardNumber("")
-                            setCardExpiry("")
-                            setCardCvv("")
-                          }}
-                          className="h-9 px-4"
-                        >
-                          {t.common.cancel}
-                        </Button>
-                        <Button
-                          type="button"
-                          size="sm"
-                          onClick={() => {
-                            if (cardNumber.trim() && cardExpiry.trim() && cardCvv.trim()) {
-                              setPaymentMethod("card")
-                              setOpenPaymentMethod("card")
-                            }
-                          }}
-                          className="h-9 px-4"
-                          disabled={!cardNumber.trim() || !cardExpiry.trim() || !cardCvv.trim()}
-                        >
-                          {t.pages.confirmPaymentMethod}
-                        </Button>
-                      </div>
-                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                        <span className="font-medium">{t.pages.secure}</span>
-                        <span>•</span>
-                        <span>{t.pages.encrypted}</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {t.pages.cardAcceptance}
-                    </p>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-
               {/* MBWay Option */}
               <Collapsible
                 open={openPaymentMethod === "mbway"}
                 onOpenChange={(open) => {
                   if (open) {
-                    // Close card if open
-                    if (openPaymentMethod === "card") {
+                    // Close IBAN if open
+                    if (openPaymentMethod === "iban") {
                       setOpenPaymentMethod("mbway")
                       setPaymentMethod("mbway")
                     } else {
@@ -456,15 +278,15 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                         if (paymentMethod === "mbway") {
                           setPaymentMethod(null)
                         }
-                      } else {
-                        // Close card if open
-                        if (openPaymentMethod === "card") {
-                          setOpenPaymentMethod("mbway")
-                          setPaymentMethod(null) // Clear card selection
-                        } else {
-                          setOpenPaymentMethod("mbway")
-                        }
-                      }
+                  } else {
+                    // Close IBAN if open
+                    if (openPaymentMethod === "iban") {
+                      setOpenPaymentMethod("mbway")
+                      setPaymentMethod(null) // Clear IBAN selection
+                    } else {
+                      setOpenPaymentMethod("mbway")
+                    }
+                  }
                     }}
                   >
                     <div className="flex items-center gap-3">
@@ -516,6 +338,111 @@ function InnerCheckoutForm({ onClose }: { onClose?: () => void }) {
                     </div>
                     <p className="text-xs text-yellow-300/80 leading-relaxed">
                       {t.pages.mbwayPaymentNote}
+                    </p>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+              {/* IBAN Transfer Option */}
+              <Collapsible
+                open={openPaymentMethod === "iban"}
+                onOpenChange={(open) => {
+                  if (open) {
+                    // Close MBWay if open
+                    if (openPaymentMethod === "mbway") {
+                      setOpenPaymentMethod("iban")
+                      setPaymentMethod("iban")
+                    } else {
+                      setOpenPaymentMethod("iban")
+                      // Don't set payment method yet - wait for confirmation
+                    }
+                  } else {
+                    setOpenPaymentMethod(null)
+                    // Only clear payment method if it was IBAN
+                    if (paymentMethod === "iban") {
+                      setPaymentMethod(null)
+                    }
+                  }
+                }}
+                className="w-full"
+              >
+                <CollapsibleTrigger asChild>
+                  <Button
+                    type="button"
+                    variant={paymentMethod === "iban" ? "default" : "outline"}
+                    className={`w-full justify-between h-auto py-4 px-6 transition-all cursor-pointer ${
+                      paymentMethod === "iban" 
+                        ? "bg-primary text-primary-foreground shadow-md" 
+                        : "hover:bg-accent hover:text-accent-foreground"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      if (openPaymentMethod === "iban") {
+                        setOpenPaymentMethod(null)
+                        if (paymentMethod === "iban") {
+                          setPaymentMethod(null)
+                        }
+                      } else {
+                        // Close MBWay if open
+                        if (openPaymentMethod === "mbway") {
+                          setOpenPaymentMethod("iban")
+                          setPaymentMethod(null) // Clear MBWay selection
+                        } else {
+                          setOpenPaymentMethod("iban")
+                        }
+                      }
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <Building2 className={`h-5 w-5 ${paymentMethod === "iban" ? "text-primary-foreground" : ""}`} />
+                      <span className="font-semibold text-base">{t.checkout.ibanTransfer || "IBAN Transfer"}</span>
+                    </div>
+                    <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${openPaymentMethod === "iban" ? "rotate-180" : ""}`} />
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="mt-4 animate-in slide-in-from-top-2 duration-200">
+                  <div className="p-6 rounded-xl border-2 bg-gradient-to-br from-blue-50/95 to-indigo-50/95 dark:from-blue-950/95 dark:to-indigo-950/95 text-foreground shadow-lg">
+                    <h4 className="font-bold text-lg mb-3">{t.pages.ibanInstructions}</h4>
+                    <p className="text-sm mb-4 leading-relaxed">{t.pages.ibanDescription}</p>
+                    <div className="bg-background p-5 rounded-lg border-2 mb-5 backdrop-blur-sm">
+                      <p className="text-xl font-mono font-bold text-center tracking-wider">PT50002300004559842600394</p>
+                    </div>
+                    <div className="flex items-center justify-between pt-2 border-t mb-4">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setOpenPaymentMethod(null)
+                            setPaymentMethod(null)
+                          }}
+                          className="h-9 px-4"
+                        >
+                          {t.common.cancel}
+                        </Button>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setPaymentMethod("iban")
+                            setOpenPaymentMethod("iban")
+                            toast({
+                              title: "Payment Method Selected",
+                              description: "IBAN transfer method confirmed. You can now proceed to place your order.",
+                            })
+                          }}
+                          className="h-9 px-4"
+                        >
+                          {t.pages.confirmPaymentMethod}
+                        </Button>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {t.pages.ibanPaymentNote}
                     </p>
                   </div>
                 </CollapsibleContent>

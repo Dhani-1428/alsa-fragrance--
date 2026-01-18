@@ -53,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
                 {product.badge}
               </Badge>
             )}
-            {product.isNew && (
+            {product.isNew && product.badge !== "New" && product.badge !== t.home.newArrivals && (
               <Badge variant="secondary" className="text-xs bg-primary text-primary-foreground">
                 {t.home.newArrivals}
               </Badge>

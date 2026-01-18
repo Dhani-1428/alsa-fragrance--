@@ -157,7 +157,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                   {product.badge}
                 </Badge>
               )}
-              {product.isNew && (
+              {product.isNew && product.badge !== "New" && product.badge !== t.pages.new && (
                 <Badge variant="secondary" className="bg-primary text-primary-foreground text-sm px-3 py-1">
                   {t.pages.new}
                 </Badge>
@@ -194,7 +194,7 @@ export default function ProductPage({ params }: ProductPageProps) {
             {/* Price */}
             <div className="flex items-center gap-4 pb-4 border-b">
               <span className="text-4xl lg:text-5xl font-bold text-primary">€{product.price.toFixed(2)}</span>
-              {product.originalPrice && (
+              {product.originalPrice && product.originalPrice > product.price && (
                 <>
                   <span className="text-2xl text-muted-foreground line-through">€{product.originalPrice.toFixed(2)}</span>
                   <Badge variant="destructive" className="text-sm px-3 py-1">
