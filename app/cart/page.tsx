@@ -55,8 +55,8 @@ export default function CartPage() {
     <main className="min-h-screen">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+        <div className="flex items-center justify-between mb-8 px-2">
           <h1 className="text-3xl font-bold font-[family-name:var(--font-playfair)]">
             {t.cart.title} ({getTotalItems()} {t.cart.items})
           </h1>
@@ -65,12 +65,12 @@ export default function CartPage() {
           </Button>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {state.items.map((item) => (
-              <Card key={`${item.product.id}-${item.size}`}>
-                <CardContent className="p-6">
+              <Card key={`${item.product.id}-${item.size}`} className="overflow-hidden">
+                <CardContent className="p-4 sm:p-6">
                   <div className="flex gap-6">
                     <img
                       src={item.product.image || "/placeholder.svg"}
@@ -125,11 +125,11 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
                 <CardTitle>{t.checkout.orderSummary}</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 px-4 sm:px-6 pb-4 sm:pb-6">
                 <div className="flex justify-between">
                   <span>{t.cart.subtotal} ({getTotalItems()} {t.cart.items})</span>
                   <span>{formatPrice(getTotalPrice())}</span>
@@ -168,11 +168,11 @@ export default function CartPage() {
             </Card>
 
             {/* Promo Code */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6">
                 <CardTitle className="text-base">Promo Code</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
                 <div className="flex gap-2">
                   <Input placeholder="Enter promo code" />
                   <Button variant="outline">Apply</Button>
@@ -181,8 +181,8 @@ export default function CartPage() {
             </Card>
 
             {/* Benefits */}
-            <Card>
-              <CardContent className="pt-6">
+            <Card className="overflow-hidden">
+              <CardContent className="p-4 sm:p-6 pt-4 sm:pt-6">
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Truck className="h-5 w-5 text-primary" />

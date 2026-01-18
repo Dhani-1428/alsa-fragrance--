@@ -49,8 +49,8 @@ export default function WishlistPage() {
     <main className="min-h-screen">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+        <div className="flex items-center justify-between mb-8 px-2">
           <h1 className="text-3xl font-bold font-[family-name:var(--font-playfair)]">
             {t.wishlist.title} ({getTotalItems()} {getTotalItems() === 1 ? t.wishlist.item : t.wishlist.items})
           </h1>
@@ -59,12 +59,12 @@ export default function WishlistPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {state.items.map((product) => {
             const productId = typeof product.id === 'string' ? product.id : String(product.id)
             return (
               <Card key={productId} className="group overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
+                <CardContent className="p-0 overflow-hidden">
                   <div className="relative">
                     <Link href={`/product/${productId}`}>
                       <img
@@ -84,20 +84,20 @@ export default function WishlistPage() {
                     </Button>
                   </div>
 
-                  <div className="p-4">
+                  <div className="p-4 sm:p-5">
                     <Link href={`/product/${productId}`}>
-                      <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors line-clamp-2">
+                      <h3 className="font-semibold text-base sm:text-lg mb-1 hover:text-primary transition-colors line-clamp-2">
                         {product.name}
                       </h3>
                     </Link>
-                    <p className="text-muted-foreground text-sm capitalize mb-2">{product.category}</p>
+                    <p className="text-muted-foreground text-xs sm:text-sm capitalize mb-2">{product.category}</p>
                     
                     <div className="flex items-center justify-between mb-3">
-                      <p className="font-semibold text-lg text-primary">{formatPrice(product.price)}</p>
+                      <p className="font-semibold text-base sm:text-lg text-primary">{formatPrice(product.price)}</p>
                     </div>
 
                     <Button
-                      className="w-full"
+                      className="w-full text-sm"
                       onClick={() => handleAddToCart(product)}
                     >
                       <ShoppingCart className="h-4 w-4 mr-2" />

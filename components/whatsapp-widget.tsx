@@ -31,7 +31,7 @@ export function WhatsAppWidget() {
   return (
     <>
       <motion.div
-        className="fixed bottom-6 right-6 z-50"
+        className="fixed bottom-6 right-4 z-50"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 1, duration: 0.3 }}
@@ -81,7 +81,7 @@ export function WhatsAppWidget() {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: 20, scale: 0.8 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 right-6 z-40"
+            className="fixed bottom-24 right-4 z-40"
           >
             <div className="bg-gradient-to-br from-gray-900 to-black text-white text-sm px-4 py-3 rounded-lg shadow-2xl border border-green-500/20 max-w-xs">
               <div className="flex items-center gap-2 mb-1">
