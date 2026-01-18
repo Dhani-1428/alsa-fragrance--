@@ -106,8 +106,8 @@ export async function findAllProducts(filter?: {
       params.push(filter.inStock ? 1 : 0)
     }
     
-    // Try to order by createdAt if it exists, otherwise order by id
-    sql += ' ORDER BY COALESCE(createdAt, id) DESC'
+    // Order by id DESC (most recent first) - this is safer than createdAt which might not exist
+    sql += ' ORDER BY id DESC'
     
     console.log('📋 Executing SQL:', sql, 'with params:', params)
     const results = await query(sql, params)
