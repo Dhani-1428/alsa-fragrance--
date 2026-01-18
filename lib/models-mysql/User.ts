@@ -67,16 +67,32 @@ export async function createUser(userData: {
         
         // Get max ID and calculate next ID
         const [maxResult]: any = await connection.execute('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
-        const maxId = (Array.isArray(maxResult) && maxResult[0]?.maxId) ? parseInt(maxResult[0].maxId) : 0
+        let maxId = 0
+        if (Array.isArray(maxResult) && maxResult.length > 0 && maxResult[0]) {
+          const rawMaxId = maxResult[0].maxId
+          // Ensure it's a number and handle different formats
+          if (typeof rawMaxId === 'number') {
+            maxId = Math.floor(rawMaxId)
+          } else if (typeof rawMaxId === 'string') {
+            maxId = parseInt(rawMaxId, 10) || 0
+          } else {
+            maxId = 0
+          }
+        }
         const nextId = maxId + 1
         
-        console.log(`Using manual ID: ${nextId}`)
+        // Ensure nextId is a valid integer (INT range is -2147483648 to 2147483647)
+        if (nextId > 2147483647 || nextId < 1) {
+          throw new Error(`Calculated ID ${nextId} is out of valid INT range. Please fix the table AUTO_INCREMENT.`)
+        }
         
-        // Insert with explicit ID
+        console.log(`Using manual ID: ${nextId} (previous max: ${maxId})`)
+        
+        // Insert with explicit ID (ensure it's a number)
         await connection.execute(
           `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
           [
-            nextId,
+            parseInt(String(nextId), 10), // Ensure it's a clean integer
             userData.email.toLowerCase().trim(),
             hashedPassword,
             userData.name || null,

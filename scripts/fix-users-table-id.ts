@@ -35,7 +35,15 @@ async function fixUsersTable() {
           let autoIncrementStart = 1
           if (count > 0) {
             const [maxResult]: any = await query('SELECT COALESCE(MAX(id), 0) as maxId FROM users')
-            const maxId = maxResult?.maxId || 0
+            let maxId = 0
+            if (Array.isArray(maxResult) && maxResult.length > 0 && maxResult[0]) {
+              const rawMaxId = maxResult[0].maxId
+              if (typeof rawMaxId === 'number') {
+                maxId = Math.floor(rawMaxId)
+              } else if (typeof rawMaxId === 'string') {
+                maxId = parseInt(rawMaxId, 10) || 0
+              }
+            }
             autoIncrementStart = maxId + 1
             console.log(`Max existing ID: ${maxId}, setting AUTO_INCREMENT to start at ${autoIncrementStart}`)
           }
