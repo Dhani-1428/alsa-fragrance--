@@ -40,19 +40,33 @@ function parseJSONField(field: any): string[] {
 }
 
 function transformProduct(row: any): IProduct {
+  // Validate required fields
+  if (!row || !row.id) {
+    throw new Error('Invalid product row: missing id')
+  }
+  if (!row.name) {
+    throw new Error(`Invalid product row: missing name for product id ${row.id}`)
+  }
+  if (!row.category) {
+    throw new Error(`Invalid product row: missing category for product id ${row.id}`)
+  }
+  if (row.price === null || row.price === undefined) {
+    throw new Error(`Invalid product row: missing price for product id ${row.id}`)
+  }
+  
   return {
     id: row.id,
-    name: row.name,
-    category: row.category,
-    price: parseFloat(row.price),
+    name: String(row.name || '').trim(),
+    category: String(row.category || 'other').trim(),
+    price: parseFloat(row.price) || 0,
     originalPrice: row.originalPrice ? parseFloat(row.originalPrice) : undefined,
     salePrice: row.salePrice ? parseFloat(row.salePrice) : undefined,
     salePercent: row.salePercent ? parseFloat(row.salePercent) : undefined,
     rating: parseFloat(row.rating) || 0,
     reviews: parseInt(row.reviews) || 0,
-    image: row.image,
+    image: String(row.image || '').trim(),
     images: parseJSONField(row.images),
-    description: row.description,
+    description: String(row.description || '').trim(),
     notesTop: parseJSONField(row.notesTop),
     notesMiddle: parseJSONField(row.notesMiddle),
     notesBase: parseJSONField(row.notesBase),
@@ -60,7 +74,7 @@ function transformProduct(row: any): IProduct {
     inStock: Boolean(row.inStock),
     isNew: Boolean(row.isNew),
     isSale: Boolean(row.isSale),
-    badge: row.badge || undefined,
+    badge: row.badge ? String(row.badge).trim() : undefined,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   }
@@ -78,26 +92,58 @@ export async function findAllProducts(filter?: {
   category?: string
   inStock?: boolean
 }): Promise<IProduct[]> {
-  let sql = 'SELECT * FROM products WHERE 1=1'
-  const params: any[] = []
-  
-  if (filter?.category) {
-    sql += ' AND category = ?'
-    params.push(filter.category)
+  try {
+    let sql = 'SELECT * FROM products WHERE 1=1'
+    const params: any[] = []
+    
+    if (filter?.category) {
+      sql += ' AND category = ?'
+      params.push(filter.category)
+    }
+    
+    if (filter?.inStock !== undefined) {
+      sql += ' AND inStock = ?'
+      params.push(filter.inStock ? 1 : 0)
+    }
+    
+    // Try to order by createdAt if it exists, otherwise order by id
+    sql += ' ORDER BY COALESCE(createdAt, id) DESC'
+    
+    console.log('📋 Executing SQL:', sql, 'with params:', params)
+    const results = await query(sql, params)
+    
+    if (Array.isArray(results)) {
+      console.log(`✅ Found ${results.length} products`)
+      return results.map((row: any) => {
+        try {
+          return transformProduct(row)
+        } catch (transformError: any) {
+          console.error(`⚠️  Error transforming product row:`, row, 'Error:', transformError)
+          // Return a minimal valid product to prevent breaking the API
+          return {
+            id: row.id,
+            name: row.name || 'Unknown Product',
+            category: row.category || 'other',
+            price: parseFloat(row.price) || 0,
+            rating: 0,
+            reviews: 0,
+            image: row.image || '',
+            description: row.description || '',
+            inStock: Boolean(row.inStock),
+            isNew: Boolean(row.isNew),
+            isSale: Boolean(row.isSale),
+          } as IProduct
+        }
+      })
+    }
+    return []
+  } catch (error: any) {
+    console.error('❌ Error in findAllProducts:', error)
+    console.error('Error message:', error?.message)
+    console.error('Error code:', error?.code)
+    console.error('Error stack:', error?.stack)
+    throw error
   }
-  
-  if (filter?.inStock !== undefined) {
-    sql += ' AND inStock = ?'
-    params.push(filter.inStock ? 1 : 0)
-  }
-  
-  sql += ' ORDER BY createdAt DESC'
-  
-  const results = await query(sql, params)
-  if (Array.isArray(results)) {
-    return results.map(transformProduct)
-  }
-  return []
 }
 
 export async function createProduct(productData: Omit<IProduct, 'id' | 'createdAt' | 'updatedAt'>): Promise<IProduct> {
