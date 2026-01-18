@@ -169,7 +169,17 @@ export default function AdminDashboard() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("/api/products")
+      setLoading(true)
+      // Add cache-busting query parameter to ensure fresh data
+      const cacheBuster = Date.now()
+      const response = await fetch(`/api/products?t=${cacheBuster}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache",
+          "Expires": "0"
+        }
+      })
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))
         const errorMessage = errorData.error || `Failed to fetch products: ${response.status} ${response.statusText}`
@@ -177,6 +187,7 @@ export default function AdminDashboard() {
         throw new Error(errorMessage + errorDetails)
       }
       const data = await response.json()
+      console.log(`✅ Admin: Fetched ${data.length} products from database`)
       setProducts(data)
     } catch (error: any) {
       console.error("Error fetching products:", error)
@@ -339,11 +350,18 @@ export default function AdminDashboard() {
       const responseData = await response.json()
       console.log(`✅ Product ${editingProduct ? 'updated' : 'created'} successfully:`, responseData)
 
-      toast.success(editingProduct ? "Product updated successfully!" : "Product created successfully!")
+      // Clear editing state and reset form first
+      const wasEditing = editingProduct !== null
+      setEditingProduct(null)
       setIsDialogOpen(false)
       resetForm()
-      // Force refresh products to get updated data
+      
+      // Force refresh products to get updated data from database
+      setLoading(true)
       await fetchProducts()
+      
+      // Show success message after refresh
+      toast.success(wasEditing ? "Product updated successfully in database, website, and admin panel!" : "Product created successfully!")
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save product"
       const errorDetails = error.details ? ` ${error.details}` : ''

@@ -118,7 +118,14 @@ export async function GET(request: NextRequest) {
         }
       })
 
-    return NextResponse.json(transformedProducts)
+    // Return with no-cache headers to ensure fresh data
+    return NextResponse.json(transformedProducts, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
+    })
   } catch (error: any) {
     console.error('❌ Error fetching products:', error)
     console.error('Error name:', error?.name)

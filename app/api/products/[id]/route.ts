@@ -180,6 +180,12 @@ export async function PUT(
     return NextResponse.json({
       id: product.id?.toString() || '',
       ...product,
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+      }
     })
   } catch (error: any) {
     console.error('Error updating product:', error)
