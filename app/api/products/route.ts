@@ -38,37 +38,66 @@ export async function GET(request: NextRequest) {
     const transformedProducts = filteredProducts
       .filter((product) => product.id != null && product.id !== undefined && product.id > 0)
       .map((product) => {
-        // Get translated name and description
-        const translated = getTranslatedProduct(
-          product.id!,
-          product.name,
-          product.description,
-          language
-        )
-        
-        return {
-          id: product.id!.toString(), // Safe to use ! here since we filtered
-          name: translated.name,
-          category: product.category,
-          price: product.price,
-          originalPrice: product.originalPrice || product.price,
-          salePrice: product.salePrice || undefined,
-          salePercent: product.salePercent || undefined,
-          rating: product.rating,
-          reviews: product.reviews,
-          image: product.image,
-          images: product.images || [],
-          description: translated.description,
-          notes: {
-            top: product.notesTop || [],
-            middle: product.notesMiddle || [],
-            base: product.notesBase || [],
-          },
-          size: product.size || [],
-          inStock: product.inStock,
-          isNew: product.isNew,
-          isSale: product.isSale,
-          badge: product.badge,
+        try {
+          // Get translated name and description
+          const translated = getTranslatedProduct(
+            product.id!,
+            product.name,
+            product.description,
+            language
+          )
+          
+          return {
+            id: product.id!.toString(), // Safe to use ! here since we filtered
+            name: translated.name,
+            category: product.category,
+            price: product.price,
+            originalPrice: product.originalPrice || product.price,
+            salePrice: product.salePrice || undefined,
+            salePercent: product.salePercent || undefined,
+            rating: product.rating,
+            reviews: product.reviews,
+            image: product.image,
+            images: product.images || [],
+            description: translated.description,
+            notes: {
+              top: product.notesTop || [],
+              middle: product.notesMiddle || [],
+              base: product.notesBase || [],
+            },
+            size: product.size || [],
+            inStock: product.inStock,
+            isNew: product.isNew,
+            isSale: product.isSale,
+            badge: product.badge,
+          }
+        } catch (translationError: any) {
+          console.error(`⚠️  Error translating product ${product.id}:`, translationError)
+          // Return product without translation on error
+          return {
+            id: product.id!.toString(),
+            name: product.name,
+            category: product.category,
+            price: product.price,
+            originalPrice: product.originalPrice || product.price,
+            salePrice: product.salePrice || undefined,
+            salePercent: product.salePercent || undefined,
+            rating: product.rating,
+            reviews: product.reviews,
+            image: product.image,
+            images: product.images || [],
+            description: product.description,
+            notes: {
+              top: product.notesTop || [],
+              middle: product.notesMiddle || [],
+              base: product.notesBase || [],
+            },
+            size: product.size || [],
+            inStock: product.inStock,
+            isNew: product.isNew,
+            isSale: product.isSale,
+            badge: product.badge,
+          }
         }
       })
 
