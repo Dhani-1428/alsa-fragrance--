@@ -117,6 +117,21 @@ export async function findOrdersByEmailAndStatus(
 }
 
 export async function createOrder(orderData: Omit<IOrder, 'id' | 'createdAt' | 'updatedAt'>): Promise<IOrder> {
+  // Normalize payment method to ensure it matches ENUM values exactly
+  let normalizedPaymentMethod: "Card" | "MBWay" | "IBAN" = "MBWay"
+  if (orderData.paymentMethod) {
+    const pm = String(orderData.paymentMethod).trim()
+    if (pm.toLowerCase() === "mbway" || pm === "MBWay") {
+      normalizedPaymentMethod = "MBWay"
+    } else if (pm.toLowerCase() === "iban" || pm === "IBAN") {
+      normalizedPaymentMethod = "IBAN"
+    } else if (pm.toLowerCase() === "card" || pm === "Card") {
+      normalizedPaymentMethod = "Card"
+    }
+  }
+  
+  console.log(`📋 Creating order with payment method: "${orderData.paymentMethod}" → normalized to: "${normalizedPaymentMethod}"`)
+  
   const result: any = await query(
     `INSERT INTO orders (
       orderNumber, billingInfo, cartItems, subtotal, shipping, tax,
@@ -130,7 +145,7 @@ export async function createOrder(orderData: Omit<IOrder, 'id' | 'createdAt' | '
       orderData.shipping || 0,
       orderData.tax || 0,
       orderData.grandTotal,
-      orderData.paymentMethod,
+      normalizedPaymentMethod, // Use normalized value
       orderData.status || 'pending',
       orderData.confirmedAt || null,
     ]

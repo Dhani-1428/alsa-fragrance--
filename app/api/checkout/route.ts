@@ -32,6 +32,21 @@ export async function POST(request: NextRequest) {
       }, { status: 400 })
     }
 
+    // Normalize payment method - ensure it's exactly "Card", "MBWay", or "IBAN"
+    let normalizedPaymentMethod: "Card" | "MBWay" | "IBAN" = "MBWay" // Default to MBWay
+    if (paymentMethod) {
+      const pm = String(paymentMethod).trim()
+      if (pm.toLowerCase() === "mbway" || pm === "MBWay") {
+        normalizedPaymentMethod = "MBWay"
+      } else if (pm.toLowerCase() === "iban" || pm === "IBAN") {
+        normalizedPaymentMethod = "IBAN"
+      } else if (pm.toLowerCase() === "card" || pm === "Card") {
+        normalizedPaymentMethod = "Card"
+      }
+    }
+    
+    console.log(`📋 Payment method received: "${paymentMethod}" → normalized to: "${normalizedPaymentMethod}"`)
+
     // Create and store order
     const order = await createOrder({
       billingInfo,
@@ -40,7 +55,7 @@ export async function POST(request: NextRequest) {
       shipping: effectiveShipping,
       tax: effectiveTax,
       grandTotal: effectiveGrandTotal,
-      paymentMethod: paymentMethod === "MBWay" ? "MBWay" : paymentMethod === "IBAN" ? "IBAN" : "MBWay",
+      paymentMethod: normalizedPaymentMethod,
     })
 
     // Generate order details HTML
@@ -59,7 +74,7 @@ export async function POST(request: NextRequest) {
       .join("")
 
     // Customer confirmation email
-    const isMBWayPending = paymentMethod === "MBWay" || paymentMethod === "IBAN"
+    const isMBWayPending = normalizedPaymentMethod === "MBWay" || normalizedPaymentMethod === "IBAN"
     const customerEmailHtml = `
       <!DOCTYPE html>
       <html>
