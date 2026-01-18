@@ -40,17 +40,51 @@ export async function createUser(userData: {
   const connection = await pool.getConnection()
   
   try {
+    // Check if tenantId column exists and get the column info
+    let hasTenantId = false
+    try {
+      const [columnInfo]: any = await connection.execute(`
+        SELECT COLUMN_NAME 
+        FROM information_schema.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() 
+        AND TABLE_NAME = 'users' 
+        AND COLUMN_NAME = 'tenantId'
+      `)
+      hasTenantId = Array.isArray(columnInfo) && columnInfo.length > 0
+    } catch (checkError) {
+      // If check fails, assume no tenantId column
+      hasTenantId = false
+    }
+
+    // Generate tenantId if needed (use UUID or simple ID)
+    const { randomUUID } = await import('crypto')
+    const tenantId = hasTenantId ? randomUUID() : null
+
     // First, try normal INSERT (if AUTO_INCREMENT works)
     try {
-      const [result]: any = await connection.execute(
-        `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
-        [
+      let insertQuery: string
+      let insertValues: any[]
+      
+      if (hasTenantId) {
+        insertQuery = `INSERT INTO users (email, password, name, role, tenantId) VALUES (?, ?, ?, ?, ?)`
+        insertValues = [
+          userData.email.toLowerCase().trim(),
+          hashedPassword,
+          userData.name || null,
+          userData.role || 'client',
+          tenantId,
+        ]
+      } else {
+        insertQuery = `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`
+        insertValues = [
           userData.email.toLowerCase().trim(),
           hashedPassword,
           userData.name || null,
           userData.role || 'client',
         ]
-      )
+      }
+
+      const [result]: any = await connection.execute(insertQuery, insertValues)
       
       const insertId = result.insertId
       if (insertId) {
@@ -103,16 +137,38 @@ export async function createUser(userData: {
           throw new Error(`Invalid ID calculated: ${nextId} -> ${cleanId}`)
         }
         
-        await connection.execute(
-          `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`,
-          [
-            cleanId, // Clean integer value
+        // Generate tenantId if needed
+        let tenantIdValue: string | null = null
+        if (hasTenantId) {
+          const { randomUUID } = await import('crypto')
+          tenantIdValue = randomUUID()
+        }
+        
+        let insertQuery: string
+        let insertValues: any[]
+        
+        if (hasTenantId) {
+          insertQuery = `INSERT INTO users (id, email, password, name, role, tenantId) VALUES (?, ?, ?, ?, ?, ?)`
+          insertValues = [
+            cleanId,
+            userData.email.toLowerCase().trim(),
+            hashedPassword,
+            userData.name || null,
+            userData.role || 'client',
+            tenantIdValue,
+          ]
+        } else {
+          insertQuery = `INSERT INTO users (id, email, password, name, role) VALUES (?, ?, ?, ?, ?)`
+          insertValues = [
+            cleanId,
             userData.email.toLowerCase().trim(),
             hashedPassword,
             userData.name || null,
             userData.role || 'client',
           ]
-        )
+        }
+        
+        await connection.execute(insertQuery, insertValues)
         
         const newUser = await findUserById(nextId)
         if (!newUser) {
