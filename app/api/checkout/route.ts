@@ -261,29 +261,53 @@ export async function POST(request: NextRequest) {
         user: smtpUser,
         pass: smtpPass,
       },
+      tls: {
+        rejectUnauthorized: false
+      }
     })
 
-    // Send email to customer
+    // Verify transporter configuration
     try {
-      console.log(`Sending order confirmation email to customer: ${billingInfo.email}`)
-      await transporter.sendMail({
+      await transporter.verify()
+      console.log("✅ SMTP server connection verified")
+    } catch (verifyError: any) {
+      console.error("❌ SMTP server connection failed:", verifyError)
+      console.error("Email sending may fail. Please check SMTP credentials.")
+    }
+
+    // Send email to customer
+    let customerEmailSent = false
+    try {
+      console.log(`📧 Sending order confirmation email to customer: ${billingInfo.email}`)
+      console.log(`📧 From: ${smtpUser}`)
+      console.log(`📧 To: ${billingInfo.email}`)
+      console.log(`📧 Order Number: ${order.orderNumber}`)
+      
+      const mailResult = await transporter.sendMail({
         from: `Alsa Fragrance <${smtpUser}>`,
-        to: billingInfo.email,
+        to: billingInfo.email.trim(),
         replyTo: smtpUser,
         subject: isMBWayPending 
           ? `Order Placed - Awaiting Payment Confirmation (Order ${order.orderNumber})`
           : "Order Confirmation - Your order will be delivered in 5-7 days",
         html: customerEmailHtml,
       })
+      
       console.log(`✅ Customer email sent successfully to ${billingInfo.email}`)
+      console.log(`📧 Message ID: ${mailResult.messageId}`)
+      customerEmailSent = true
     } catch (emailError: any) {
       console.error("❌ Error sending customer email:", emailError)
-      // Don't fail the order if email fails - log it and continue
       console.error("Email error details:", {
         message: emailError?.message,
         code: emailError?.code,
+        command: emailError?.command,
         response: emailError?.response,
+        responseCode: emailError?.responseCode,
+        stack: emailError?.stack,
       })
+      // Still continue with order - don't fail the order if email fails
+      customerEmailSent = false
     }
 
     // Send email to admin
