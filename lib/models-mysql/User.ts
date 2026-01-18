@@ -34,21 +34,35 @@ export async function createUser(userData: {
   role?: 'client' | 'admin'
 }): Promise<IUser> {
   const hashedPassword = await bcrypt.hash(userData.password, 10)
-  const result: any = await query(
-    `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
-    [
-      userData.email.toLowerCase().trim(),
-      hashedPassword,
-      userData.name || null,
-      userData.role || 'client',
-    ]
-  )
   
-  const newUser = await findUserById(result.insertId)
-  if (!newUser) {
-    throw new Error('Failed to create user')
+  // Get connection to access insertId
+  const pool = await import('../mysql').then(m => m.getPool())
+  const connection = await pool.getConnection()
+  
+  try {
+    const [result]: any = await connection.execute(
+      `INSERT INTO users (email, password, name, role) VALUES (?, ?, ?, ?)`,
+      [
+        userData.email.toLowerCase().trim(),
+        hashedPassword,
+        userData.name || null,
+        userData.role || 'client',
+      ]
+    )
+    
+    const insertId = result.insertId
+    if (!insertId) {
+      throw new Error('Failed to get insert ID after user creation')
+    }
+    
+    const newUser = await findUserById(insertId)
+    if (!newUser) {
+      throw new Error('Failed to retrieve created user')
+    }
+    return newUser
+  } finally {
+    connection.release()
   }
-  return newUser
 }
 
 export async function updateUserPassword(id: number, newPassword: string): Promise<void> {

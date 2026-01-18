@@ -3,11 +3,12 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ShoppingCart, Heart, Share2 } from "lucide-react"
+import { ShoppingCart, Heart, Share2, CreditCard } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useWishlist } from "@/lib/wishlist-context"
 import { useLanguage } from "@/contexts/language-provider"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 import type { Product } from "@/lib/products-api"
 
 interface AddToCartFormProps {
@@ -21,10 +22,31 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   const { addItem, openCart } = useCart()
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isFavorite } = useWishlist()
   const { t } = useLanguage()
+  const router = useRouter()
 
   const handleAddToCart = () => {
+    // Only add to cart if a size is selected (if sizes are available)
+    if (product.size && product.size.length > 0 && !selectedSize) {
+      toast.error(t.product.selectSize || "Please select a size")
+      return
+    }
     addItem(product, selectedSize, 1)
     openCart()
+  }
+
+  const handleBuyNow = () => {
+    // Only proceed if a size is selected (if sizes are available)
+    if (product.size && product.size.length > 0 && !selectedSize) {
+      toast.error(t.product.selectSize || "Please select a size")
+      return
+    }
+    if (!product.inStock) {
+      toast.error(t.product.outOfStock)
+      return
+    }
+    // Add product to cart and redirect to checkout
+    addItem(product, selectedSize, 1)
+    router.push("/checkout")
   }
 
   const handleWishlist = () => {
@@ -93,28 +115,40 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
         </div>
       )}
 
-      {/* Add to Cart */}
-      <div className="flex gap-3">
-        <Button size="lg" className="flex-1" disabled={!product.inStock} onClick={handleAddToCart}>
-          <ShoppingCart className="h-4 w-4 mr-2" />
-          {product.inStock ? t.common.addToCart : t.product.outOfStock}
-        </Button>
+      {/* Add to Cart and Buy Now */}
+      <div className="space-y-3">
+        <div className="flex gap-3">
+          <Button size="lg" className="flex-1" disabled={!product.inStock || (product.size && product.size.length > 0 && !selectedSize)} onClick={handleAddToCart}>
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            {product.inStock ? t.common.addToCart : t.product.outOfStock}
+          </Button>
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={handleWishlist}
+            className={favorite ? "text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950" : ""}
+            title={favorite ? t.wishlist.removeFromWishlist : t.wishlist.addToWishlist}
+          >
+            <Heart className={`h-4 w-4 ${favorite ? "fill-red-500" : ""}`} />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="lg"
+            onClick={handleShare}
+            title="Share product"
+          >
+            <Share2 className="h-4 w-4" />
+          </Button>
+        </div>
         <Button 
-          variant="outline" 
           size="lg" 
-          onClick={handleWishlist}
-          className={favorite ? "text-red-500 border-red-500 hover:bg-red-50 dark:hover:bg-red-950" : ""}
-          title={favorite ? t.wishlist.removeFromWishlist : t.wishlist.addToWishlist}
+          className="w-full" 
+          variant="default"
+          disabled={!product.inStock || (product.size && product.size.length > 0 && !selectedSize)}
+          onClick={handleBuyNow}
         >
-          <Heart className={`h-4 w-4 ${favorite ? "fill-red-500" : ""}`} />
-        </Button>
-        <Button 
-          variant="outline" 
-          size="lg"
-          onClick={handleShare}
-          title="Share product"
-        >
-          <Share2 className="h-4 w-4" />
+          <CreditCard className="h-4 w-4 mr-2" />
+          {t.common.buyNow}
         </Button>
       </div>
     </div>
