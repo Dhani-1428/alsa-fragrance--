@@ -1,4 +1,4 @@
-import { query } from '../mysql'
+import { query, getPool } from '../mysql'
 import bcrypt from 'bcryptjs'
 
 export interface IUser {
