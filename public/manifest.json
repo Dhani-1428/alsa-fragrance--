@@ -1,7 +1,7 @@
 {
-  "name": "AlsaFragrance - Luxury Perfumes & Attars",
-  "short_name": "AlsaFragrance",
-  "description": "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+  "name": "Alsa Fragrance - Luxury Perfumes & Attars",
+  "short_name": "Alsa Fragrance",
+  "description": "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

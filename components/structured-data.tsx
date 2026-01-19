@@ -12,6 +12,8 @@ export function StructuredData() {
     "alternateName": ["AlsaFragrance", "Alsa Fragrance Perfumes"],
     "url": baseUrl,
     "description": "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online.",
+    "image": `${baseUrl}/alsa-logo.png`,
+    "logo": `${baseUrl}/alsa-logo.png`,
     "potentialAction": {
       "@type": "SearchAction",
       "target": {

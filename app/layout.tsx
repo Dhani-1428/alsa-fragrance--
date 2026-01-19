@@ -153,6 +153,8 @@ export const metadata: Metadata = {
     "geo.placename": "Queluz",
     "geo.position": "38.7592;-9.2545",
     "ICBM": "38.7592, -9.2545",
+    "msapplication-TileImage": "/alsa-logo.png",
+    "msapplication-TileColor": "#000000",
   },
   viewport: {
     width: "device-width",
