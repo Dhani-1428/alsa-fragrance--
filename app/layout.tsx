@@ -54,10 +54,92 @@ const marckScript = Marck_Script({
 })
 
 export const metadata: Metadata = {
-  title: "AlsaFragrance - Luxury Perfumes & Attars",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://alsafragrance.com'),
+  title: {
+    default: "AlsaFragrance - Luxury Perfumes & Attars",
+    template: "%s | AlsaFragrance"
+  },
   description:
-    "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
-  generator: "v0.app",
+    "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop online for exclusive fragrances.",
+  keywords: [
+    "perfumes",
+    "attars",
+    "fragrances",
+    "luxury perfumes",
+    "men's fragrances",
+    "women's perfumes",
+    "AlsaFragrance",
+    "eau de parfum",
+    "luxury scents",
+    "premium fragrances",
+    "online perfume store"
+  ],
+  authors: [{ name: "AlsaFragrance" }],
+  creator: "AlsaFragrance",
+  publisher: "AlsaFragrance",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: "AlsaFragrance",
+    title: "AlsaFragrance - Luxury Perfumes & Attars",
+    description:
+      "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+    images: [
+      {
+        url: "/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg",
+        width: 1200,
+        height: 630,
+        alt: "AlsaFragrance Luxury Perfumes",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AlsaFragrance - Luxury Perfumes & Attars",
+    description:
+      "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+    images: ["/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg"],
+    creator: "@alsafragrance",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "",
+  },
+  alternates: {
+    canonical: "/",
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+    viewportFit: "cover",
+  },
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#000000" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+  icons: {
+    icon: "/alsa-logo.png",
+    apple: "/alsa-logo.png",
+  },
+  manifest: "/manifest.json",
 }
 
 export default function RootLayout({
@@ -67,7 +149,7 @@ export default function RootLayout({
 }>) {
   return (
     // Suppress hydration warnings on <html> to tolerate extra attributes injected by browser extensions
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning itemScope itemType="https://schema.org/WebSite">
       <body
         className={`font-sans ${playfair.variable} ${montserrat.variable} ${greatVibes.variable} ${sacramento.variable} ${parisienne.variable} ${marckScript.variable}`}
       >

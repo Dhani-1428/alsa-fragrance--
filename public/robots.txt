@@ -1,0 +1,15 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /wishlist/
+
+# Sitemap
+Sitemap: https://alsafragrance.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
