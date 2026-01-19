@@ -119,15 +119,15 @@
     @apply border-border outline-ring/50;
   }
   html {
+    height: 100%;
     overflow-x: hidden;
-    overflow-y: hidden; /* Hide html scrollbar completely */
+    overflow-y: auto; /* Show scrollbar on html element */
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
     max-width: 100vw;
     position: relative;
-    min-height: 100vh;
-    overflow-y: auto; /* Only body scrolls - single scrollbar */
+    min-height: 100%;
     margin: 0;
     padding: 0;
   }
