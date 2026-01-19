@@ -128,6 +128,9 @@
   }
   html::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera */
+    width: 0;
+    height: 0;
+    background: transparent;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
@@ -136,5 +139,21 @@
     min-height: 100%;
     margin: 0;
     padding: 0;
+    /* Hide scrollbar on body as well */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+  /* Hide scrollbar on all scrollable elements */
+  *::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
   }
 }
