@@ -16,6 +16,7 @@ import { Star, Truck, Shield, RotateCcw } from "lucide-react"
 import { getProductById, type Product } from "@/lib/products-api"
 import { useLanguage } from "@/contexts/language-provider"
 import { Footer } from "@/components/footer"
+import { ProductStructuredData } from "@/components/product-structured-data"
 
 interface ProductPageProps {
   params: Promise<{ id: string }>
@@ -122,6 +123,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <main className="min-h-screen bg-background">
+      <ProductStructuredData product={product} />
       <Navigation />
 
       <div className="container mx-auto px-4 py-8 max-w-7xl">

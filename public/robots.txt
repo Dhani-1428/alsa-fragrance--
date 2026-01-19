@@ -1,4 +1,11 @@
 # https://www.robotstxt.org/robotstxt.html
+# Allow Googlebot and all search engines
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+
 User-agent: *
 Allow: /
 Disallow: /api/
@@ -8,15 +15,13 @@ Disallow: /checkout/
 Disallow: /cart/
 Disallow: /wishlist/
 
-# Allow specific important files
+# Allow specific important files for SEO
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /favicon.ico
 Allow: /manifest.json
+Allow: /google3231990485fdc786.html
 
 # Sitemap
 Sitemap: https://www.alsafragrance.com/sitemap.xml
 Sitemap: https://alsafragrance.com/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 0.5
