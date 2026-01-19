@@ -121,16 +121,7 @@
   html {
     height: 100%;
     overflow-x: hidden;
-    overflow-y: auto; /* Allow scrolling */
-    /* Hide scrollbar but keep scrolling functionality */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-  }
-  html::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-    width: 0;
-    height: 0;
-    background: transparent;
+    overflow-y: auto;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;
@@ -139,21 +130,68 @@
     min-height: 100%;
     margin: 0;
     padding: 0;
-    /* Hide scrollbar on body as well */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
   }
-  body::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-    background: transparent;
-  }
-  /* Hide scrollbar on all scrollable elements */
-  *::-webkit-scrollbar {
-    display: none;
-    width: 0;
-    height: 0;
-    background: transparent;
-  }
+}
+
+/* Custom Scrollbar Styling */
+html {
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.75 0.15 85) oklch(0.15 0 0); /* Gold thumb on black track */
+}
+
+html::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+}
+
+html::-webkit-scrollbar-track {
+  background: oklch(0.15 0 0); /* Dark black track */
+  border-left: 1px solid oklch(0.3 0.08 85); /* Subtle border */
+}
+
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, oklch(0.75 0.15 85), oklch(0.65 0.12 80)); /* Gold gradient */
+  border-radius: 5px;
+  border: 1px solid oklch(0.6 0.1 85); /* Subtle border */
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, oklch(0.8 0.15 85), oklch(0.7 0.12 80)); /* Lighter gold on hover */
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5), 0 0 8px oklch(0.75 0.15 85 / 0.5); /* Glow effect */
+}
+
+html::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(to bottom, oklch(0.7 0.15 85), oklch(0.6 0.12 80)); /* Darker gold when active */
+}
+
+/* Custom scrollbar for body (backup) */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.75 0.15 85) oklch(0.15 0 0);
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+  background: oklch(0.15 0 0);
+  border-left: 1px solid oklch(0.3 0.08 85);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, oklch(0.75 0.15 85), oklch(0.65 0.12 80));
+  border-radius: 5px;
+  border: 1px solid oklch(0.6 0.1 85);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, oklch(0.8 0.15 85), oklch(0.7 0.12 80));
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5), 0 0 8px oklch(0.75 0.15 85 / 0.5);
+}
+
+body::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(to bottom, oklch(0.7 0.15 85), oklch(0.6 0.12 80));
 }
