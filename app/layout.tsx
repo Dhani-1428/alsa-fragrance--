@@ -125,6 +125,12 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  other: {
+    "geo.region": "PT",
+    "geo.placename": "Queluz",
+    "geo.position": "38.7592;-9.2545",
+    "ICBM": "38.7592, -9.2545",
+  },
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -152,11 +158,6 @@ export default function RootLayout({
     // Suppress hydration warnings on <html> to tolerate extra attributes injected by browser extensions
       <html lang="en" suppressHydrationWarning itemScope itemType="https://schema.org/WebSite">
       <head>
-        <link rel="canonical" href={process.env.NEXT_PUBLIC_SITE_URL || 'https://www.alsafragrance.com'} />
-        <meta name="geo.region" content="PT" />
-        <meta name="geo.placename" content="Queluz" />
-        <meta name="geo.position" content="38.7592;-9.2545" />
-        <meta name="ICBM" content="38.7592, -9.2545" />
         <StructuredData />
       </head>
       <body
