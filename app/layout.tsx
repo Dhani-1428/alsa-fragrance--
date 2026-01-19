@@ -157,12 +157,10 @@ export default function RootLayout({
   return (
     // Suppress hydration warnings on <html> to tolerate extra attributes injected by browser extensions
       <html lang="en" suppressHydrationWarning itemScope itemType="https://schema.org/WebSite">
-      <head>
-        <StructuredData />
-      </head>
       <body
         className={`font-sans ${playfair.variable} ${montserrat.variable} ${greatVibes.variable} ${sacramento.variable} ${parisienne.variable} ${marckScript.variable}`}
       >
+        <StructuredData />
         <LanguageProvider>
           <AuthProvider>
             <CartProvider>
