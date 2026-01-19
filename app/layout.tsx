@@ -143,7 +143,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "google3231990485fdc786",
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "googled168445b77dad94b",
   },
   alternates: {
     canonical: "/",

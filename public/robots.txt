@@ -21,6 +21,7 @@ Allow: /robots.txt
 Allow: /favicon.ico
 Allow: /manifest.json
 Allow: /google3231990485fdc786.html
+Allow: /googled168445b77dad94b.html
 
 # Sitemap
 Sitemap: https://www.alsafragrance.com/sitemap.xml
