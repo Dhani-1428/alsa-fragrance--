@@ -54,7 +54,7 @@ const marckScript = Marck_Script({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://alsafragrance.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.alsafragrance.com'),
   title: {
     default: "AlsaFragrance - Luxury Perfumes & Attars",
     template: "%s | AlsaFragrance"

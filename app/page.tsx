@@ -13,7 +13,21 @@ import { LimitedEdition } from "@/components/limited-edition"
 
 export const metadata: Metadata = {
   title: "AlsaFragrance - Luxury Perfumes & Attars",
-  description: "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+  description: "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop online at www.alsafragrance.com",
+  keywords: [
+    "www.alsafragrance.com",
+    "alsafragrance.com",
+    "AlsaFragrance",
+    "luxury perfumes",
+    "online perfume store",
+    "premium fragrances",
+    "attars",
+    "men's fragrances",
+    "women's perfumes"
+  ],
+  alternates: {
+    canonical: "https://www.alsafragrance.com",
+  },
 }
 
 export default function HomePage() {

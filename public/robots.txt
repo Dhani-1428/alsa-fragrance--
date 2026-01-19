@@ -9,6 +9,7 @@ Disallow: /cart/
 Disallow: /wishlist/
 
 # Sitemap
+Sitemap: https://www.alsafragrance.com/sitemap.xml
 Sitemap: https://alsafragrance.com/sitemap.xml
 
 # Crawl-delay
