@@ -1,0 +1,51 @@
+{
+  "name": "AlsaFragrance - Luxury Perfumes & Attars",
+  "short_name": "AlsaFragrance",
+  "description": "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/alsa-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/alsa-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "Shop",
+      "short_name": "Shop",
+      "description": "Browse our perfume collection",
+      "url": "/shop",
+      "icons": [{ "src": "/alsa-logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Men's Fragrances",
+      "short_name": "Men",
+      "description": "Browse men's fragrances",
+      "url": "/men",
+      "icons": [{ "src": "/alsa-logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Women's Fragrances",
+      "short_name": "Women",
+      "description": "Browse women's fragrances",
+      "url": "/women",
+      "icons": [{ "src": "/alsa-logo.png", "sizes": "96x96" }]
+    }
+  ]
+}
