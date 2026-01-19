@@ -8,9 +8,15 @@ Disallow: /checkout/
 Disallow: /cart/
 Disallow: /wishlist/
 
+# Allow specific important files
+Allow: /sitemap.xml
+Allow: /robots.txt
+Allow: /favicon.ico
+Allow: /manifest.json
+
 # Sitemap
 Sitemap: https://www.alsafragrance.com/sitemap.xml
 Sitemap: https://alsafragrance.com/sitemap.xml
 
 # Crawl-delay
-Crawl-delay: 1
+Crawl-delay: 0.5
