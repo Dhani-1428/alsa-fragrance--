@@ -32,7 +32,12 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "ADD_ITEM": {
       const { product, size, quantity = 1 } = action.payload
-      const existingItemIndex = state.items.findIndex((item) => item.product.id === product.id && item.size === size)
+      // Normalize IDs to numbers for comparison
+      const productId = typeof product.id === 'string' ? parseInt(product.id, 10) : product.id
+      const existingItemIndex = state.items.findIndex((item) => {
+        const itemId = typeof item.product.id === 'string' ? parseInt(item.product.id, 10) : item.product.id
+        return itemId === productId && item.size === size
+      })
 
       if (existingItemIndex > -1) {
         const updatedItems = [...state.items]
@@ -50,7 +55,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       const { productId, size } = action.payload
       return {
         ...state,
-        items: state.items.filter((item) => !(item.product.id === productId && item.size === size)),
+        items: state.items.filter((item) => {
+          const itemId = typeof item.product.id === 'string' ? parseInt(item.product.id, 10) : item.product.id
+          return !(itemId === productId && item.size === size)
+        }),
       }
     }
 
@@ -59,15 +67,19 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       if (quantity <= 0) {
         return {
           ...state,
-          items: state.items.filter((item) => !(item.product.id === productId && item.size === size)),
+          items: state.items.filter((item) => {
+            const itemId = typeof item.product.id === 'string' ? parseInt(item.product.id, 10) : item.product.id
+            return !(itemId === productId && item.size === size)
+          }),
         }
       }
 
       return {
         ...state,
-        items: state.items.map((item) =>
-          item.product.id === productId && item.size === size ? { ...item, quantity } : item,
-        ),
+        items: state.items.map((item) => {
+          const itemId = typeof item.product.id === 'string' ? parseInt(item.product.id, 10) : item.product.id
+          return itemId === productId && item.size === size ? { ...item, quantity } : item
+        }),
       }
     }
 

@@ -5,7 +5,7 @@ import type React from "react"
 import { Button } from "@/components/ui/button"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
-import type { Product } from "@/lib/products-main"
+import type { Product } from "@/lib/products-api"
 
 interface AddToCartButtonProps {
   product: Product
@@ -19,7 +19,14 @@ export function AddToCartButton({ product, size, quantity = 1, className, childr
   const { addItem, openCart } = useCart()
 
   const handleAddToCart = () => {
-    addItem(product, size, quantity)
+    // Normalize product ID to number for cart context compatibility
+    const normalizedProduct = {
+      ...product,
+      id: typeof product.id === 'string' ? parseInt(product.id, 10) : product.id
+    }
+    // Type assertion needed because cart context expects products-main Product type
+    // but the structure is compatible
+    addItem(normalizedProduct as any, size, quantity)
     openCart()
   }
 
