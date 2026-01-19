@@ -12,9 +12,14 @@ import { NewArrivals } from "@/components/new-arrivals"
 import { LimitedEdition } from "@/components/limited-edition"
 
 export const metadata: Metadata = {
-  title: "AlsaFragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
-  description: "Discover premium perfumes, attars, and fragrances for men and women at AlsaFragrance. Experience luxury scents that define elegance. Shop online at www.alsafragrance.com - Portugal's premier fragrance destination since 2018.",
+  title: "Alsa Fragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
+  description: "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online at www.alsafragrance.com - Portugal's premier fragrance destination since 2018.",
   keywords: [
+    "Alsa Fragrance",
+    "Alsa Fragrance perfumes",
+    "Alsa Fragrance attars",
+    "Alsa Fragrance online",
+    "Alsa Fragrance Portugal",
     "www.alsafragrance.com",
     "alsafragrance.com",
     "AlsaFragrance",
@@ -35,10 +40,10 @@ export const metadata: Metadata = {
     canonical: "https://www.alsafragrance.com",
   },
   openGraph: {
-    title: "AlsaFragrance - Luxury Perfumes & Attars",
-    description: "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+    title: "Alsa Fragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
+    description: "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online.",
     url: "https://www.alsafragrance.com",
-    siteName: "AlsaFragrance",
+    siteName: "Alsa Fragrance",
     images: [
       {
         url: "https://www.alsafragrance.com/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg",

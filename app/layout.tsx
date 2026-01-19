@@ -57,25 +57,30 @@ const marckScript = Marck_Script({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.alsafragrance.com'),
   title: {
-    default: "AlsaFragrance - Luxury Perfumes & Attars",
-    template: "%s | AlsaFragrance"
+    default: "Alsa Fragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
+    template: "%s | Alsa Fragrance"
   },
   description:
-    "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop online for exclusive fragrances.",
+    "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online for exclusive fragrances. Portugal's premier fragrance destination since 2018.",
   keywords: [
+    "Alsa Fragrance",
+    "Alsa Fragrance perfumes",
+    "Alsa Fragrance attars",
+    "Alsa Fragrance online",
+    "Alsa Fragrance Portugal",
+    "AlsaFragrance",
+    "www.alsafragrance.com",
+    "alsafragrance.com",
     "perfumes",
     "attars",
     "fragrances",
     "luxury perfumes",
     "men's fragrances",
     "women's perfumes",
-    "AlsaFragrance",
     "eau de parfum",
     "luxury scents",
     "premium fragrances",
     "online perfume store",
-    "www.alsafragrance.com",
-    "alsafragrance.com",
     "perfumes Portugal",
     "perfume shop Queluz",
     "traditional attars",
@@ -90,9 +95,9 @@ export const metadata: Metadata = {
     "scented attars",
     "alcohol-free perfumes"
   ],
-  authors: [{ name: "AlsaFragrance" }],
-  creator: "AlsaFragrance",
-  publisher: "AlsaFragrance",
+  authors: [{ name: "Alsa Fragrance" }],
+  creator: "Alsa Fragrance",
+  publisher: "Alsa Fragrance",
   formatDetection: {
     email: false,
     address: false,
@@ -103,10 +108,10 @@ export const metadata: Metadata = {
     locale: "en_US",
     alternateLocale: ["pt_PT", "hi_IN", "ar_SA", "ur_PK", "fr_FR", "es_ES"],
     url: "/",
-    siteName: "AlsaFragrance",
-    title: "AlsaFragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
+    siteName: "Alsa Fragrance",
+    title: "Alsa Fragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
     description:
-      "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop online at www.alsafragrance.com - Portugal's premier fragrance destination since 2018.",
+      "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online at www.alsafragrance.com - Portugal's premier fragrance destination since 2018.",
     images: [
       {
         url: "/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg",
@@ -119,9 +124,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AlsaFragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
+    title: "Alsa Fragrance - Luxury Perfumes & Attars | Premium Fragrances Online",
     description:
-      "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop online at www.alsafragrance.com.",
+      "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online at www.alsafragrance.com.",
     images: ["/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg"],
     creator: "@alsafragrance",
     site: "@alsafragrance",

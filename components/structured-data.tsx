@@ -8,10 +8,10 @@ export function StructuredData() {
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "AlsaFragrance",
-    "alternateName": "Alsa Fragrance",
+    "name": "Alsa Fragrance",
+    "alternateName": ["AlsaFragrance", "Alsa Fragrance Perfumes"],
     "url": baseUrl,
-    "description": "Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance.",
+    "description": "Alsa Fragrance - Discover premium perfumes, attars, and fragrances for men and women. Experience luxury scents that define elegance. Shop Alsa Fragrance online.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
@@ -22,7 +22,8 @@ export function StructuredData() {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "AlsaFragrance",
+      "name": "Alsa Fragrance",
+      "alternateName": "AlsaFragrance",
       "logo": {
         "@type": "ImageObject",
         "url": `${baseUrl}/alsa-logo.png`
@@ -33,11 +34,11 @@ export function StructuredData() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "AlsaFragrance",
-    "alternateName": "Alsa Fragrance",
+    "name": "Alsa Fragrance",
+    "alternateName": ["AlsaFragrance", "Alsa Fragrance Perfumes", "Alsa Fragrance Store"],
     "url": baseUrl,
     "logo": `${baseUrl}/alsa-logo.png`,
-    "description": "Luxury perfumes, attars, and fragrances crafted with royal sophistication since 2018",
+    "description": "Alsa Fragrance - Luxury perfumes, attars, and fragrances crafted with royal sophistication since 2018. Shop Alsa Fragrance online for premium scents.",
     "foundingDate": "2018",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -62,9 +63,10 @@ export function StructuredData() {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "Store",
-    "name": "AlsaFragrance",
+    "name": "Alsa Fragrance",
+    "alternateName": "AlsaFragrance",
     "image": `${baseUrl}/luxury-alsa-fragrance-branded-perfume-bottles-eleg.jpg`,
-    "description": "Premium perfumes, attars, and fragrances store. Luxury scents for men and women.",
+    "description": "Alsa Fragrance - Premium perfumes, attars, and fragrances store. Luxury scents for men and women. Shop Alsa Fragrance online.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Avenida doutor Miguel bombarda Loja n'47",
@@ -118,34 +120,50 @@ export function StructuredData() {
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What types of perfumes does AlsaFragrance offer?",
+        "name": "What types of perfumes does Alsa Fragrance offer?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AlsaFragrance offers premium perfumes for men and women, traditional attars, testers, limited edition fragrances, and new arrivals. We specialize in luxury scents crafted with royal sophistication."
+          "text": "Alsa Fragrance offers premium perfumes for men and women, traditional attars, testers, limited edition fragrances, and new arrivals. We specialize in luxury scents crafted with royal sophistication."
         }
       },
       {
         "@type": "Question",
-        "name": "Where is AlsaFragrance located?",
+        "name": "Where is Alsa Fragrance located?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AlsaFragrance is located at Avenida doutor Miguel bombarda Loja n'47, Queluz, 2745-172, Portugal. We also ship worldwide."
+          "text": "Alsa Fragrance is located at Avenida doutor Miguel bombarda Loja n'47, Queluz, 2745-172, Portugal. We also ship worldwide."
         }
       },
       {
         "@type": "Question",
-        "name": "What payment methods does AlsaFragrance accept?",
+        "name": "What payment methods does Alsa Fragrance accept?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "We accept Visa, Mastercard, MBWay, and IBAN transfers. All transactions are secure and protected."
+          "text": "Alsa Fragrance accepts Visa, Mastercard, MBWay, and IBAN transfers. All transactions are secure and protected."
         }
       },
       {
         "@type": "Question",
-        "name": "Does AlsaFragrance ship internationally?",
+        "name": "Does Alsa Fragrance ship internationally?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes, AlsaFragrance ships worldwide. We deliver premium perfumes and fragrances to customers globally with secure packaging."
+          "text": "Yes, Alsa Fragrance ships worldwide. We deliver premium perfumes and fragrances to customers globally with secure packaging."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Alsa Fragrance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Alsa Fragrance is a luxury perfume and fragrance brand offering premium perfumes, attars, and scents for men and women. Located in Queluz, Portugal, Alsa Fragrance has been crafting exceptional fragrances since 2018."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I buy Alsa Fragrance perfumes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can buy Alsa Fragrance perfumes online at www.alsafragrance.com or visit our store at Avenida doutor Miguel bombarda Loja n'47, Queluz, Portugal. Alsa Fragrance ships worldwide."
         }
       }
     ]
