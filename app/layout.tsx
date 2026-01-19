@@ -166,10 +166,32 @@ export const metadata: Metadata = {
     { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
   icons: {
-    icon: "/alsa-logo.png",
-    apple: "/alsa-logo.png",
+    icon: [
+      { url: "/alsa-logo.png", sizes: "32x32", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "16x16", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "192x192", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/alsa-logo.png", sizes: "180x180", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "152x152", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "144x144", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "120x120", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "114x114", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "76x76", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "72x72", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "60x60", type: "image/png" },
+      { url: "/alsa-logo.png", sizes: "57x57", type: "image/png" },
+    ],
+    shortcut: "/alsa-logo.png",
   },
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Alsa Fragrance",
+    startupImage: "/alsa-logo.png",
+  },
 }
 
 export default function RootLayout({

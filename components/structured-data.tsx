@@ -26,7 +26,10 @@ export function StructuredData() {
       "alternateName": "AlsaFragrance",
       "logo": {
         "@type": "ImageObject",
-        "url": `${baseUrl}/alsa-logo.png`
+        "url": `${baseUrl}/alsa-logo.png`,
+        "width": 512,
+        "height": 512,
+        "caption": "Alsa Fragrance Logo"
       }
     }
   }
@@ -37,7 +40,13 @@ export function StructuredData() {
     "name": "Alsa Fragrance",
     "alternateName": ["AlsaFragrance", "Alsa Fragrance Perfumes", "Alsa Fragrance Store"],
     "url": baseUrl,
-    "logo": `${baseUrl}/alsa-logo.png`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${baseUrl}/alsa-logo.png`,
+      "width": 512,
+      "height": 512,
+      "caption": "Alsa Fragrance Logo"
+    },
     "description": "Alsa Fragrance - Luxury perfumes, attars, and fragrances crafted with royal sophistication since 2018. Shop Alsa Fragrance online for premium scents.",
     "foundingDate": "2018",
     "contactPoint": {
