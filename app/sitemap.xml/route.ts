@@ -70,7 +70,6 @@ export async function GET() {
     headers: {
       'Content-Type': 'application/xml; charset=utf-8',
       'Cache-Control': 'public, max-age=0, must-revalidate',
-      'X-Robots-Tag': 'noindex',
     },
   })
 }
