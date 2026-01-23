@@ -188,6 +188,17 @@ export default function TestersPage() {
             </div>
           </SlideInRight>
 
+          {/* Always visible content section for SEO - prevents Soft 404 */}
+          <div className="mb-8 prose prose-sm max-w-none">
+            <h2 className="text-2xl font-bold mb-4">Tester Perfumes Collection</h2>
+            <p className="text-muted-foreground mb-4">
+              Browse our tester perfumes at Alsa Fragrance. Tester bottles are perfect for trying new fragrances before purchasing full-size bottles. These authentic tester perfumes are available at discounted prices, making it easy to discover your next favorite scent.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Shop tester perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. We offer free shipping on all orders. Browse our collection of tester fragrances for men and women.
+            </p>
+          </div>
+
           {/* Products Grid */}
           <FadeInUp delay={0.3} className="mb-6">
             <p className="text-muted-foreground">
@@ -197,10 +208,20 @@ export default function TestersPage() {
 
           {filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
-              <Button onClick={() => setSearchQuery("")} variant="outline">
-                {t.categoryPages.common.clearSearch}
-              </Button>
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-xl font-semibold mb-4">Tester Perfumes Available</h3>
+                <p className="text-muted-foreground mb-4">
+                  We're currently updating our tester collection. Check back soon for tester perfumes and fragrances. In the meantime, explore our full collection of men's and women's perfumes, attars, and limited edition fragrances.
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button onClick={() => setSearchQuery("")} variant="outline">
+                    {t.categoryPages.common.clearSearch}
+                  </Button>
+                  <Button asChild variant="default">
+                    <a href="/shop">Browse All Products</a>
+                  </Button>
+                </div>
+              </div>
             </FadeInUp>
           ) : (
             <StaggerContainer

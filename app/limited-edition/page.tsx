@@ -75,7 +75,7 @@ export default function LimitedEditionPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
-        {/* Static SEO content for Google crawlers */}
+        {/* Static SEO content for Google crawlers - visible to crawlers */}
         <div className="sr-only" aria-hidden="true">
           <h1>Limited Edition Fragrances | Alsa Fragrance - Exclusive Perfumes</h1>
           <p>Explore exclusive limited edition fragrances at Alsa Fragrance. Rare scents and premium bottles with elegant gifting presentation. Limited availability - shop exclusive perfumes now.</p>
@@ -184,16 +184,37 @@ export default function LimitedEditionPage() {
             </p>
           </FadeInUp>
 
+          {/* Always visible content section for SEO - prevents Soft 404 */}
+          <div className="mb-8 prose prose-sm max-w-none">
+            <h2 className="text-2xl font-bold mb-4">Limited Edition Fragrances Collection</h2>
+            <p className="text-muted-foreground mb-4">
+              Discover our exclusive limited edition fragrances at Alsa Fragrance. Each perfume in this collection features rare scents, premium bottles, and elegant presentation perfect for gifting. These exclusive fragrances are available in limited quantities, making them perfect for those seeking unique and sophisticated scents.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Shop limited edition perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. We offer free shipping on all orders. Browse our collection of exclusive fragrances, rare scents, and premium perfume bottles.
+            </p>
+          </div>
+
           {loading ? (
             <FadeInUp delay={0.4} className="text-center py-12">
               <p className="text-muted-foreground text-lg">{t.categoryPages.common.loadingProducts}</p>
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.5} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
-              <Button onClick={() => setSearchQuery("")} variant="outline">
-                {t.categoryPages.common.clearSearch}
-              </Button>
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-xl font-semibold mb-4">Limited Edition Fragrances Coming Soon</h3>
+                <p className="text-muted-foreground mb-4">
+                  We're currently updating our limited edition collection. Check back soon for exclusive fragrances, rare scents, and premium perfume bottles. In the meantime, explore our full collection of men's and women's perfumes, attars, and testers.
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button onClick={() => setSearchQuery("")} variant="outline">
+                    {t.categoryPages.common.clearSearch}
+                  </Button>
+                  <Button asChild variant="default">
+                    <a href="/shop">Browse All Products</a>
+                  </Button>
+                </div>
+              </div>
             </FadeInUp>
           ) : (
             <StaggerContainer

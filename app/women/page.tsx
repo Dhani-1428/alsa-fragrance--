@@ -177,6 +177,17 @@ export default function WomenPage() {
             </div>
           </SlideInLeft>
 
+          {/* Always visible content section for SEO - prevents Soft 404 */}
+          <div className="mb-8 prose prose-sm max-w-none">
+            <h2 className="text-2xl font-bold mb-4">Women's Perfumes & Fragrances Collection</h2>
+            <p className="text-muted-foreground mb-4">
+              Discover our beautiful collection of women's perfumes and fragrances at Alsa Fragrance. From floral and fruity scents to oriental and woody fragrances, we offer authentic women's perfumes from top luxury brands. Find your perfect scent or explore new favorites.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Shop women's perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. We offer free shipping on all orders. Browse our collection of women's fragrances, perfumes, and scents.
+            </p>
+          </div>
+
           {/* Products Grid */}
           <SlideInRight delay={0.2} className="mb-6">
             <p className="text-muted-foreground">
@@ -190,10 +201,20 @@ export default function WomenPage() {
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
-              <Button onClick={() => setSearchQuery("")} variant="outline">
-                {t.categoryPages.common.clearSearch}
-              </Button>
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-xl font-semibold mb-4">Women's Perfumes Available</h3>
+                <p className="text-muted-foreground mb-4">
+                  We're currently updating our women's collection. Check back soon for women's perfumes and fragrances. In the meantime, explore our full collection of men's perfumes, attars, testers, and limited edition fragrances.
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button onClick={() => setSearchQuery("")} variant="outline">
+                    {t.categoryPages.common.clearSearch}
+                  </Button>
+                  <Button asChild variant="default">
+                    <a href="/shop">Browse All Products</a>
+                  </Button>
+                </div>
+              </div>
             </FadeInUp>
           ) : (
             <StaggerContainer

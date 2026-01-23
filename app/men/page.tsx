@@ -177,6 +177,17 @@ export default function MenPage() {
             </div>
           </SlideInLeft>
 
+          {/* Always visible content section for SEO - prevents Soft 404 */}
+          <div className="mb-8 prose prose-sm max-w-none">
+            <h2 className="text-2xl font-bold mb-4">Men's Perfumes & Colognes Collection</h2>
+            <p className="text-muted-foreground mb-4">
+              Explore our extensive collection of men's perfumes and colognes at Alsa Fragrance. From fresh and sporty scents to bold and sophisticated fragrances, we offer authentic men's perfumes from top brands. Find your signature scent or discover something new.
+            </p>
+            <p className="text-muted-foreground mb-4">
+              Shop men's perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. We offer free shipping on all orders. Browse our collection of men's colognes, fragrances, and perfumes.
+            </p>
+          </div>
+
           <SlideInRight delay={0.2} className="mb-6">
             <p className="text-muted-foreground">
               {loading ? t.common.loading : `${t.categoryPages.common.showing} ${filteredAndSortedProducts.length} ${t.categoryPages.common.of} ${menProducts.length} ${t.categoryPages.common.products}`}
@@ -189,10 +200,20 @@ export default function MenPage() {
             </FadeInUp>
           ) : filteredAndSortedProducts.length === 0 ? (
             <FadeInUp delay={0.4} className="text-center py-12">
-              <p className="text-muted-foreground text-lg mb-4">{t.categoryPages.common.noProductsFound}</p>
-              <Button onClick={() => setSearchQuery("")} variant="outline">
-                {t.categoryPages.common.clearSearch}
-              </Button>
+              <div className="max-w-2xl mx-auto">
+                <h3 className="text-xl font-semibold mb-4">Men's Perfumes Available</h3>
+                <p className="text-muted-foreground mb-4">
+                  We're currently updating our men's collection. Check back soon for men's perfumes and colognes. In the meantime, explore our full collection of women's perfumes, attars, testers, and limited edition fragrances.
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button onClick={() => setSearchQuery("")} variant="outline">
+                    {t.categoryPages.common.clearSearch}
+                  </Button>
+                  <Button asChild variant="default">
+                    <a href="/shop">Browse All Products</a>
+                  </Button>
+                </div>
+              </div>
             </FadeInUp>
           ) : (
             <StaggerContainer
