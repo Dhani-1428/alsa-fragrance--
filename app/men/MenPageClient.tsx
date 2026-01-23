@@ -165,17 +165,16 @@ export function MenPageClient({ initialProducts }: MenPageClientProps) {
           </div>
         </FadeInUp>
       ) : (
-        <StaggerContainer
-          className={`grid gap-6 ${
+        <>
+          {/* Render products immediately for SEO - visible in initial HTML */}
+          <div className={`grid gap-6 ${
             viewMode === "grid" ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-          }`}
-        >
-          {filteredAndSortedProducts.map((product) => (
-            <StaggerItem key={product.id}>
-              <ProductCard product={product} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+          }`}>
+            {filteredAndSortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </>
       )}
     </div>
   )
