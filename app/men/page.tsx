@@ -75,6 +75,12 @@ export default function MenPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>Men's Fragrances | Alsa Fragrance - Premium Men's Perfumes</h1>
+          <p>Discover our collection of luxury men's fragrances at Alsa Fragrance. Shop premium men's perfumes, colognes, and scents. Bold, sophisticated fragrances for the modern man.</p>
+          <p>Alsa Fragrance offers premium men's perfumes, luxury colognes, and masculine scents. Shop men's perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping available.</p>
+        </div>
         <Navigation />
 
         <motion.section

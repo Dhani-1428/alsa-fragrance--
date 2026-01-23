@@ -76,6 +76,12 @@ export default function TestersPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>Perfume Testers | Alsa Fragrance - Try Before You Buy</h1>
+          <p>Try before you buy with Alsa Fragrance perfume testers. Sample our luxury fragrances at affordable prices. Test premium perfumes before committing to full-size bottles.</p>
+          <p>Alsa Fragrance offers perfume testers, fragrance samples, and sample sizes. Try perfumes before buying at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping on testers.</p>
+        </div>
         <Navigation />
 
         <motion.section

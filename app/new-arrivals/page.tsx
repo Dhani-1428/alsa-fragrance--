@@ -75,6 +75,12 @@ export default function NewArrivalsPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>New Arrivals | Alsa Fragrance - Latest Perfumes & Fragrances</h1>
+          <p>Discover the newest fragrances at Alsa Fragrance. Shop our latest perfume arrivals and new fragrance collections. Be the first to experience our newest luxury scents.</p>
+          <p>Alsa Fragrance offers new perfumes, latest fragrances, and new scent collections. Shop new arrivals online at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping available.</p>
+        </div>
         <Navigation />
 
         <motion.section

@@ -75,6 +75,12 @@ export default function LimitedEditionPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>Limited Edition Fragrances | Alsa Fragrance - Exclusive Perfumes</h1>
+          <p>Explore exclusive limited edition fragrances at Alsa Fragrance. Rare scents and premium bottles with elegant gifting presentation. Limited availability - shop exclusive perfumes now.</p>
+          <p>Alsa Fragrance offers limited edition perfumes, exclusive fragrances, and rare scents. Shop limited edition perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping available.</p>
+        </div>
         <Navigation />
 
         <motion.section

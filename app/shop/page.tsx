@@ -141,6 +141,12 @@ export default function ShopPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>Shop All Perfumes | Alsa Fragrance - Luxury Fragrances Online</h1>
+          <p>Browse our complete collection of luxury perfumes, attars, and fragrances at Alsa Fragrance. Shop premium men's and women's fragrances, traditional attars, and exclusive scents online.</p>
+          <p>Alsa Fragrance offers luxury perfumes, premium fragrances, and exclusive scents. Shop perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping available.</p>
+        </div>
         <Navigation />
 
         <motion.section

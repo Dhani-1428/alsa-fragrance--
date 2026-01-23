@@ -75,6 +75,12 @@ export default function WomenPage() {
   return (
     <PageAnimations>
       <main className="min-h-screen">
+        {/* Static SEO content for Google crawlers */}
+        <div className="sr-only" aria-hidden="true">
+          <h1>Women's Fragrances | Alsa Fragrance - Premium Women's Perfumes</h1>
+          <p>Explore our elegant collection of luxury women's fragrances at Alsa Fragrance. Shop premium women's perfumes, eau de parfum, and feminine scents. Elegant and sophisticated fragrances for every occasion.</p>
+          <p>Alsa Fragrance offers premium women's perfumes, luxury fragrances, and feminine scents. Shop women's perfumes online at www.alsafragrance.com. Located in Queluz, Portugal. Free shipping available.</p>
+        </div>
         <Navigation />
 
         <motion.section
