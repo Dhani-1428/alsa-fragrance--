@@ -2,6 +2,7 @@ import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { PageAnimations } from "@/components/page-animations"
 import { MenPageClient } from "./MenPageClient"
+import { ProductCount } from "./ProductCount"
 import { getProductsByCategoryServer, type Product } from "@/lib/products-api-server"
 
 export default async function MenPage() {
@@ -41,9 +42,7 @@ export default async function MenPage() {
               <p className="text-lg md:text-xl mb-4 text-gray-200 max-w-2xl mx-auto text-balance">
                 Discover our collection of luxury men's fragrances. Bold, sophisticated scents for the modern man.
               </p>
-              <p className="text-sm text-primary font-medium">
-                {initialProducts.length} Products Available
-              </p>
+              <ProductCount />
             </div>
           </div>
         </section>
