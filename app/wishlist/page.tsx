@@ -1,29 +1,43 @@
 "use client"
 
+import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { X, Heart, ShoppingCart } from "lucide-react"
 import { useWishlist } from "@/lib/wishlist-context"
 import { useCart } from "@/lib/cart-context"
+import { useAuth } from "@/contexts/auth-provider"
 import { useLanguage } from "@/contexts/language-provider"
 import { Footer } from "@/components/footer"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import Link from "next/link"
+import { AddToCartAlert } from "@/components/add-to-cart-alert"
 
 export default function WishlistPage() {
+  const [showAlert, setShowAlert] = useState(false)
   const { state, removeItem, clearWishlist, getTotalItems } = useWishlist()
   const { addItem } = useCart()
+  const { user } = useAuth()
   const { t } = useLanguage()
   const router = useRouter()
 
   const formatPrice = (price: number) => `€${price.toFixed(2)}`
 
   const handleAddToCart = (product: any) => {
+    // Check if user is authenticated
+    if (!user) {
+      toast.error(t.common.loginRequired || "Please login to add items to cart")
+      router.push(`/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`)
+      return
+    }
+
     // Use first available size or empty string
     const size = product.size && product.size.length > 0 ? product.size[0] : ""
     addItem(product, size, 1)
-    router.push("/cart")
+    setShowAlert(true)
+    // Don't redirect to cart automatically, just show the alert
   }
 
   if (state.items.length === 0) {
@@ -47,6 +61,7 @@ export default function WishlistPage() {
 
   return (
     <main className="min-h-screen">
+      <AddToCartAlert open={showAlert} onClose={() => setShowAlert(false)} />
       <Navigation />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">

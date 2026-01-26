@@ -7,9 +7,11 @@ import { ShoppingCart, Heart, Share2, CreditCard } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { useWishlist } from "@/lib/wishlist-context"
 import { useLanguage } from "@/contexts/language-provider"
+import { useAuth } from "@/contexts/auth-provider"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { Product } from "@/lib/products-api"
+import { AddToCartAlert } from "@/components/add-to-cart-alert"
 
 interface AddToCartFormProps {
   product: Product
@@ -19,22 +21,39 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   const [selectedSize, setSelectedSize] = useState(
     product.size && product.size.length > 0 ? product.size[0] : ""
   )
+  const [showAlert, setShowAlert] = useState(false)
   const { addItem, openCart } = useCart()
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isFavorite } = useWishlist()
   const { t } = useLanguage()
+  const { user } = useAuth()
   const router = useRouter()
 
   const handleAddToCart = () => {
+    // Check if user is authenticated
+    if (!user) {
+      toast.error(t.common.loginRequired || "Please login to add items to cart")
+      router.push(`/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`)
+      return
+    }
+
     // Only add to cart if a size is selected (if sizes are available)
     if (product.size && product.size.length > 0 && !selectedSize) {
       toast.error(t.product.selectSize || "Please select a size")
       return
     }
     addItem(product, selectedSize, 1)
-    openCart()
+    setShowAlert(true)
+    // Don't open cart automatically, just show the alert
   }
 
   const handleBuyNow = () => {
+    // Check if user is authenticated
+    if (!user) {
+      toast.error(t.common.loginRequired || "Please login to proceed with checkout")
+      router.push(`/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`)
+      return
+    }
+
     // Only proceed if a size is selected (if sizes are available)
     if (product.size && product.size.length > 0 && !selectedSize) {
       toast.error(t.product.selectSize || "Please select a size")
@@ -95,28 +114,30 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
   }
 
   return (
-    <div className="space-y-4">
-      {/* Size Selection - only show if sizes are available */}
-      {product.size && product.size.length > 0 && (
-        <div>
-          <label className="block text-sm font-medium mb-2">{t.product.size}</label>
-          <Select value={selectedSize} onValueChange={setSelectedSize}>
-            <SelectTrigger className="w-full">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {product.size.map((size) => (
-                <SelectItem key={size} value={size}>
-                  {size}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      )}
+    <>
+      <AddToCartAlert open={showAlert} onClose={() => setShowAlert(false)} />
+      <div className="space-y-4">
+        {/* Size Selection - only show if sizes are available */}
+        {product.size && product.size.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium mb-2">{t.product.size}</label>
+            <Select value={selectedSize} onValueChange={setSelectedSize}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {product.size.map((size) => (
+                  <SelectItem key={size} value={size}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
-      {/* Add to Cart and Buy Now */}
-      <div className="space-y-3">
+        {/* Add to Cart and Buy Now */}
+        <div className="space-y-3">
         <div className="flex gap-3">
           <Button size="lg" className="flex-1" disabled={!product.inStock || (product.size && product.size.length > 0 && !selectedSize)} onClick={handleAddToCart}>
             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -152,5 +173,6 @@ export function AddToCartForm({ product }: AddToCartFormProps) {
         </Button>
       </div>
     </div>
+    </>
   )
 }

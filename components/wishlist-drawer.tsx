@@ -1,27 +1,44 @@
 "use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Badge } from "@/components/ui/badge"
 import { X, Heart } from "lucide-react"
 import { useWishlist } from "@/lib/wishlist-context"
 import { useLanguage } from "@/contexts/language-provider"
+import { useAuth } from "@/contexts/auth-provider"
 import { useCart } from "@/lib/cart-context"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import Link from "next/link"
 import Image from "next/image"
+import { AddToCartAlert } from "@/components/add-to-cart-alert"
 
 export function WishlistDrawer() {
+  const [showAlert, setShowAlert] = useState(false)
   const { state, removeItem, closeWishlist, getTotalItems } = useWishlist()
   const { addItem, openCart } = useCart()
+  const { user } = useAuth()
   const { t } = useLanguage()
+  const router = useRouter()
 
   const formatPrice = (price: number) => `€${price.toFixed(2)}`
 
   const handleAddToCart = (product: any) => {
+    // Check if user is authenticated
+    if (!user) {
+      toast.error(t.common.loginRequired || "Please login to add items to cart")
+      closeWishlist()
+      router.push(`/auth/login?redirect=${encodeURIComponent(window.location.pathname)}`)
+      return
+    }
+
     // Use first available size or empty string
     const size = product.size && product.size.length > 0 ? product.size[0] : ""
     addItem(product, size, 1)
-    openCart()
+    setShowAlert(true)
+    // Don't open cart automatically, just show the alert
   }
 
   if (state.items.length === 0) {
@@ -49,8 +66,10 @@ export function WishlistDrawer() {
   }
 
   return (
-    <Sheet open={state.isOpen} onOpenChange={closeWishlist}>
-      <SheetContent className="w-full sm:max-w-lg flex flex-col">
+    <>
+      <AddToCartAlert open={showAlert} onClose={() => setShowAlert(false)} />
+      <Sheet open={state.isOpen} onOpenChange={closeWishlist}>
+        <SheetContent className="w-full sm:max-w-lg flex flex-col">
         <SheetHeader>
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -117,5 +136,6 @@ export function WishlistDrawer() {
         </div>
       </SheetContent>
     </Sheet>
+    </>
   )
 }

@@ -23,6 +23,9 @@ export interface Translations {
     loading: string
     error: string
     success: string
+    loginRequired: string
+    addedToCart: string
+    itemAddedToCart: string
   }
   // Product
   product: {
@@ -477,6 +480,9 @@ export const translations: Record<Language, Translations> = {
       loading: "Loading...",
       error: "Error",
       success: "Success",
+      loginRequired: "Please login to add items to cart",
+      addedToCart: "Added to Cart!",
+      itemAddedToCart: "Your item has been added to the cart successfully.",
     },
     product: {
       price: "Price",
@@ -918,6 +924,9 @@ export const translations: Record<Language, Translations> = {
       loading: "A carregar...",
       error: "Erro",
       success: "Sucesso",
+      loginRequired: "Por favor, faça login para adicionar itens ao carrinho",
+      addedToCart: "Adicionado ao Carrinho!",
+      itemAddedToCart: "O seu item foi adicionado ao carrinho com sucesso.",
     },
     product: {
       price: "Preço",
@@ -1358,6 +1367,9 @@ export const translations: Record<Language, Translations> = {
       loading: "लोड हो रहा है...",
       error: "त्रुटि",
       success: "सफलता",
+      loginRequired: "कृपया कार्ट में आइटम जोड़ने के लिए लॉगिन करें",
+      addedToCart: "कार्ट में जोड़ा गया!",
+      itemAddedToCart: "आपका आइटम सफलतापूर्वक कार्ट में जोड़ा गया है।",
     },
     product: {
       price: "मूल्य",
@@ -1798,6 +1810,9 @@ export const translations: Record<Language, Translations> = {
       loading: "جاري التحميل...",
       error: "خطأ",
       success: "نجاح",
+      loginRequired: "يرجى تسجيل الدخول لإضافة العناصر إلى السلة",
+      addedToCart: "تمت الإضافة إلى السلة!",
+      itemAddedToCart: "تمت إضافة العنصر إلى السلة بنجاح.",
     },
     product: {
       price: "السعر",
@@ -2238,6 +2253,9 @@ export const translations: Record<Language, Translations> = {
       loading: "لوڈ ہو رہا ہے...",
       error: "خرابی",
       success: "کامیابی",
+      loginRequired: "براہ کرم کارٹ میں آئٹمز شامل کرنے کے لیے لاگ ان کریں",
+      addedToCart: "کارٹ میں شامل کر دیا گیا!",
+      itemAddedToCart: "آپ کا آئٹم کامیابی سے کارٹ میں شامل کر دیا گیا ہے۔",
     },
     product: {
       price: "قیمت",
@@ -2683,6 +2701,9 @@ export const translations: Record<Language, Translations> = {
       copyLinkSuccess: "Lien copié dans le presse-papiers",
       shareFailed: "Échec du partage",
       selectSize: "Sélectionner la taille",
+      loginRequired: "Veuillez vous connecter pour ajouter des articles au panier",
+      addedToCart: "Ajouté au panier!",
+      itemAddedToCart: "Votre article a été ajouté au panier avec succès.",
     },
     product: {
       price: "Prix",
@@ -3133,6 +3154,9 @@ export const translations: Record<Language, Translations> = {
       copyLinkSuccess: "Enlace copiado al portapapeles",
       shareFailed: "Error al compartir",
       selectSize: "Seleccionar talla",
+      loginRequired: "Por favor, inicia sesión para agregar artículos al carrito",
+      addedToCart: "¡Agregado al carrito!",
+      itemAddedToCart: "Tu artículo ha sido agregado al carrito exitosamente.",
     },
     product: {
       price: "Precio",
