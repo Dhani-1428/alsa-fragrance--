@@ -12,6 +12,25 @@ export async function GET(request: NextRequest) {
       return handleDatabaseError(dbError)
     }
     
+    // Ensure we're using the correct database
+    const { query } = await import('@/lib/mysql')
+    try {
+      const dbResult: any = await query('SELECT DATABASE() as currentDb')
+      const currentDb = dbResult[0]?.currentDb
+      const expectedDb = process.env.MYSQL_DATABASE
+      
+      console.log(`📊 Current database: ${currentDb}, Expected: ${expectedDb}`)
+      
+      if (currentDb !== expectedDb && expectedDb) {
+        console.log(`🔄 Switching to database: ${expectedDb}`)
+        await query(`USE \`${expectedDb}\``)
+        console.log(`✅ Switched to database: ${expectedDb}`)
+      }
+    } catch (dbSwitchError: any) {
+      console.error('⚠️  Database switch error:', dbSwitchError.message)
+      // Continue anyway - might still work
+    }
+    
     const { searchParams } = new URL(request.url)
     const category = searchParams.get('category')
     const onSale = searchParams.get('onSale')
@@ -35,6 +54,18 @@ export async function GET(request: NextRequest) {
         errno: dbError?.errno,
         sqlState: dbError?.sqlState,
       })
+      
+      // If table doesn't exist, provide helpful error
+      if (dbError.code === 'ER_NO_SUCH_TABLE' || dbError.message?.includes("doesn't exist")) {
+        const dbCheck: any = await query('SELECT DATABASE() as currentDb')
+        const currentDb = dbCheck[0]?.currentDb
+        throw new Error(
+          `Database table 'products' not found in database '${currentDb}'. ` +
+          `Expected database: '${process.env.MYSQL_DATABASE}'. ` +
+          `Please run: npm run db:setup`
+        )
+      }
+      
       throw dbError // Re-throw to be caught by outer catch block
     }
     
