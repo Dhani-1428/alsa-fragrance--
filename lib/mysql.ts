@@ -1,5 +1,7 @@
 import 'dotenv/config'
 import mysql from 'mysql2/promise'
+import * as fs from 'fs'
+import * as path from 'path'
 
 // Validate environment variables
 function validateConfig() {
@@ -14,9 +16,45 @@ function validateConfig() {
       `MYSQL_PORT=3306\n` +
       `MYSQL_USER=your_user\n` +
       `MYSQL_PASSWORD=your_password\n` +
-      `MYSQL_DATABASE=your_database`
+      `MYSQL_DATABASE=your_database\n` +
+      `MYSQL_SSL=true (if SSL is required)\n` +
+      `MYSQL_SSL_CA=path/to/certificate.pem (optional, for SSL certificate)`
     )
   }
+}
+
+// Get SSL configuration
+function getSSLConfig() {
+  const sslEnabled = process.env.MYSQL_SSL === 'true' || process.env.MYSQL_SSL === 'REQUIRED'
+  
+  if (!sslEnabled) {
+    return false
+  }
+
+  const sslConfig: any = {
+    rejectUnauthorized: false
+  }
+
+  // If SSL certificate path is provided, read it
+  if (process.env.MYSQL_SSL_CA) {
+    const certPath = process.env.MYSQL_SSL_CA
+    try {
+      // Try absolute path first
+      let certContent: string
+      if (path.isAbsolute(certPath)) {
+        certContent = fs.readFileSync(certPath, 'utf8')
+      } else {
+        // Try relative to project root
+        const projectRoot = process.cwd()
+        certContent = fs.readFileSync(path.join(projectRoot, certPath), 'utf8')
+      }
+      sslConfig.ca = certContent
+    } catch (error) {
+      console.warn(`Warning: Could not read SSL certificate from ${certPath}. Using SSL without certificate verification.`)
+    }
+  }
+
+  return sslConfig
 }
 
 const MYSQL_CONFIG = {
@@ -28,10 +66,8 @@ const MYSQL_CONFIG = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  connectTimeout: 10000, // 10 seconds
-  ssl: process.env.MYSQL_SSL === 'true' || process.env.MYSQL_SSL === 'REQUIRED' ? {
-    rejectUnauthorized: false
-  } : false,
+  connectTimeout: 30000, // 30 seconds for cloud connections
+  ssl: getSSLConfig(),
 }
 
 let pool: mysql.Pool | null = null

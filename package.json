@@ -11,6 +11,8 @@
     "db:create-admin": "tsx scripts/create-admin.ts",
     "db:check-admin": "tsx scripts/check-admin.ts",
     "db:create-mysql-schema": "tsx scripts/create-mysql-schema.ts",
+    "db:diagnose": "tsx scripts/diagnose-database.ts",
+    "db:fix-admin": "tsx scripts/fix-admin-panel.ts",
     "db:migrate-to-mysql": "tsx scripts/migrate-mongodb-to-mysql.ts",
     "db:migrate-to-aiven": "tsx scripts/migrate-to-aiven-mysql.ts",
     "db:test-mysql": "tsx scripts/test-mysql-connection.ts",

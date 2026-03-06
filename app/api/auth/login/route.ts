@@ -37,10 +37,29 @@ export async function POST(request: NextRequest) {
       }
     } catch (findError: any) {
       console.error('Error finding user:', findError)
+      
+      // Provide more specific error messages
+      let errorMessage = 'Failed to query user'
+      let errorDetails = process.env.NODE_ENV === 'development' ? findError?.message : undefined
+      
+      if (findError?.message?.includes("doesn't exist") || findError?.code === 'ER_NO_SUCH_TABLE') {
+        errorMessage = 'Database table not found'
+        errorDetails = 'The users table does not exist. Please run: npx ts-node scripts/create-mysql-schema.ts'
+      } else if (findError?.message?.includes('Unknown column')) {
+        errorMessage = 'Database table structure incorrect'
+        errorDetails = 'The users table structure is incorrect. Please run: npx ts-node scripts/create-mysql-schema.ts'
+      } else if (findError?.code === 'ER_ACCESS_DENIED_ERROR') {
+        errorMessage = 'Database access denied'
+        errorDetails = 'Please check your database credentials in .env file'
+      } else if (findError?.code === 'ECONNREFUSED' || findError?.code === 'ETIMEDOUT') {
+        errorMessage = 'Database connection failed'
+        errorDetails = 'Cannot connect to database. Please check your database configuration and ensure the server is accessible.'
+      }
+      
       return NextResponse.json(
         { 
-          error: 'Failed to query user', 
-          details: process.env.NODE_ENV === 'development' ? findError?.message : undefined 
+          error: errorMessage, 
+          details: errorDetails
         },
         { status: 500 }
       )
