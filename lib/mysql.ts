@@ -187,8 +187,38 @@ export async function connectDB(): Promise<mysql.Pool> {
 
 export async function query(sql: string, params?: any[]) {
   const pool = getPool()
-  const [rows] = await pool.execute(sql, params)
-  return rows
+  const conn = await pool.getConnection()
+  
+  try {
+    // Ensure we're using the correct database
+    const expectedDb = process.env.MYSQL_DATABASE
+    if (expectedDb) {
+      try {
+        // Check current database
+        const [dbResult]: any = await conn.execute('SELECT DATABASE() as currentDb')
+        const currentDb = dbResult?.[0]?.currentDb
+        
+        // Switch to correct database if needed
+        if (currentDb !== expectedDb) {
+          await conn.query(`USE \`${expectedDb}\``)
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`🔄 Switched to database: ${expectedDb}`)
+          }
+        }
+      } catch (dbError: any) {
+        // If USE command fails, try to continue anyway
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Warning: Could not verify/switch database:', dbError.message)
+        }
+      }
+    }
+    
+    // Execute the query
+    const [rows] = await conn.execute(sql, params)
+    return rows
+  } finally {
+    conn.release()
+  }
 }
 
 export default connectDB

@@ -12,11 +12,19 @@ export interface IUser {
 }
 
 export async function findUserByEmail(email: string): Promise<IUser | null> {
-  const results = await query('SELECT * FROM users WHERE email = ?', [email.toLowerCase().trim()])
-  if (Array.isArray(results) && results.length > 0) {
-    return results[0] as IUser
+  try {
+    const results = await query('SELECT * FROM users WHERE email = ?', [email.toLowerCase().trim()])
+    if (Array.isArray(results) && results.length > 0) {
+      return results[0] as IUser
+    }
+    return null
+  } catch (error: any) {
+    // If table doesn't exist, provide helpful error
+    if (error.code === 'ER_NO_SUCH_TABLE') {
+      throw new Error(`Database table 'users' not found. Please run: npm run db:setup`)
+    }
+    throw error
   }
-  return null
 }
 
 export async function findUserById(id: number): Promise<IUser | null> {

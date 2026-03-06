@@ -72,26 +72,34 @@ export async function findAllOrders(filter?: {
   status?: string
   paymentMethod?: string
 }): Promise<IOrder[]> {
-  let sql = 'SELECT * FROM orders WHERE 1=1'
-  const params: any[] = []
-  
-  if (filter?.status) {
-    sql += ' AND status = ?'
-    params.push(filter.status)
+  try {
+    let sql = 'SELECT * FROM orders WHERE 1=1'
+    const params: any[] = []
+    
+    if (filter?.status) {
+      sql += ' AND status = ?'
+      params.push(filter.status)
+    }
+    
+    if (filter?.paymentMethod) {
+      sql += ' AND paymentMethod = ?'
+      params.push(filter.paymentMethod)
+    }
+    
+    sql += ' ORDER BY createdAt DESC'
+    
+    const results = await query(sql, params)
+    if (Array.isArray(results)) {
+      return results.map(transformOrder)
+    }
+    return []
+  } catch (error: any) {
+    // Provide helpful error message for table not found
+    if (error.code === 'ER_NO_SUCH_TABLE' || error.message?.includes("doesn't exist")) {
+      throw new Error(`Database table 'orders' not found. Please run: npm run db:setup`)
+    }
+    throw error
   }
-  
-  if (filter?.paymentMethod) {
-    sql += ' AND paymentMethod = ?'
-    params.push(filter.paymentMethod)
-  }
-  
-  sql += ' ORDER BY createdAt DESC'
-  
-  const results = await query(sql, params)
-  if (Array.isArray(results)) {
-    return results.map(transformOrder)
-  }
-  return []
 }
 
 export async function findOrdersByEmailAndStatus(

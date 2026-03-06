@@ -142,6 +142,15 @@ export async function findAllProducts(filter?: {
     console.error('Error message:', error?.message)
     console.error('Error code:', error?.code)
     console.error('Error stack:', error?.stack)
+    
+    // Provide helpful error message for table not found
+    if (error.code === 'ER_NO_SUCH_TABLE' || error.message?.includes("doesn't exist")) {
+      const helpfulError = new Error(`Database table 'products' not found. Please run: npm run db:setup`)
+      helpfulError.name = error.name
+      helpfulError.stack = error.stack
+      throw helpfulError
+    }
+    
     throw error
   }
 }
