@@ -40,7 +40,7 @@ export default function ShopPage() {
   const [loading, setLoading] = useState(true)
   const [filters, setFilters] = useState<FilterState>({
     categories: [],
-    priceRange: [0, 200],
+    priceRange: [0, 500], // Increased to include all products (max price is 499.99)
     inStock: false,
     onSale: false,
     isNew: false,
@@ -157,7 +157,7 @@ export default function ShopPage() {
   const clearFilters = () => {
     setFilters({
       categories: [],
-      priceRange: [0, 200],
+      priceRange: [0, 500], // Increased to include all products
       inStock: false,
       onSale: false,
       isNew: false,
