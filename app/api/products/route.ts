@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
       return handleDatabaseError(dbError)
     }
     
-    // Ensure we're using the correct database
+    // Ensure we're using the correct database and table exists
     const { query } = await import('@/lib/mysql')
     try {
       const dbResult: any = await query('SELECT DATABASE() as currentDb')
@@ -26,8 +26,50 @@ export async function GET(request: NextRequest) {
         await query(`USE \`${expectedDb}\``)
         console.log(`✅ Switched to database: ${expectedDb}`)
       }
+      
+      // Check if products table exists, create if it doesn't
+      const tables: any = await query(`
+        SELECT TABLE_NAME 
+        FROM information_schema.TABLES 
+        WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'products'
+      `, [expectedDb || currentDb])
+      
+      if (!Array.isArray(tables) || tables.length === 0) {
+        console.log('⚠️  Products table not found, creating it...')
+        await query(`
+          CREATE TABLE IF NOT EXISTS products (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            category VARCHAR(50) NOT NULL,
+            price DECIMAL(10, 2) NOT NULL,
+            originalPrice DECIMAL(10, 2) DEFAULT NULL,
+            salePrice DECIMAL(10, 2) DEFAULT NULL,
+            salePercent DECIMAL(5, 2) DEFAULT NULL,
+            rating DECIMAL(3, 2) DEFAULT 0,
+            reviews INT DEFAULT 0,
+            image TEXT NOT NULL,
+            images JSON DEFAULT NULL,
+            description TEXT NOT NULL,
+            notesTop JSON DEFAULT NULL,
+            notesMiddle JSON DEFAULT NULL,
+            notesBase JSON DEFAULT NULL,
+            size JSON DEFAULT NULL,
+            inStock BOOLEAN DEFAULT TRUE,
+            isNew BOOLEAN DEFAULT FALSE,
+            isSale BOOLEAN DEFAULT FALSE,
+            badge VARCHAR(100) DEFAULT NULL,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_category (category),
+            INDEX idx_inStock (inStock),
+            INDEX idx_isNew (isNew),
+            INDEX idx_isSale (isSale)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        `)
+        console.log('✅ Products table created!')
+      }
     } catch (dbSwitchError: any) {
-      console.error('⚠️  Database switch error:', dbSwitchError.message)
+      console.error('⚠️  Database setup error:', dbSwitchError.message)
       // Continue anyway - might still work
     }
     
