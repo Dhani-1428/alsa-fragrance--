@@ -22,6 +22,55 @@ export async function POST(request: NextRequest) {
       return handleDatabaseError(dbError)
     }
 
+    // Ensure we're using the correct database and users table exists
+    const { query } = await import('@/lib/mysql')
+    try {
+      const dbResult: any = await query('SELECT DATABASE() as currentDb')
+      const currentDb = dbResult[0]?.currentDb
+      const expectedDb = process.env.MYSQL_DATABASE
+      
+      if (currentDb !== expectedDb && expectedDb) {
+        await query(`USE \`${expectedDb}\``)
+      }
+      
+      // Check if users table exists, create if it doesn't
+      const tables: any = await query(`
+        SELECT TABLE_NAME 
+        FROM information_schema.TABLES 
+        WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'users'
+      `, [expectedDb || currentDb])
+      
+      if (!Array.isArray(tables) || tables.length === 0) {
+        console.log('⚠️  Users table not found, creating it...')
+        await query(`
+          CREATE TABLE IF NOT EXISTS users (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+            name VARCHAR(255) DEFAULT NULL,
+            role ENUM('client', 'admin') DEFAULT 'client',
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            INDEX idx_email (email),
+            INDEX idx_role (role)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        `)
+        console.log('✅ Users table created!')
+        
+        // Create default admin user if table was just created
+        const bcrypt = await import('bcryptjs')
+        const hashedPassword = await bcrypt.hash('admin123', 10)
+        await query(`
+          INSERT INTO users (email, password, name, role) 
+          VALUES (?, ?, ?, ?)
+        `, ['admin@alsafragrance.com', hashedPassword, 'Admin User', 'admin'])
+        console.log('✅ Default admin user created!')
+      }
+    } catch (dbSetupError: any) {
+      console.error('⚠️  Database setup error:', dbSetupError.message)
+      // Continue anyway - might still work
+    }
+
     // Find user
     let user
     const searchEmail = email.toLowerCase().trim()

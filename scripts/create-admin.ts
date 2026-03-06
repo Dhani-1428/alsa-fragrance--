@@ -1,4 +1,5 @@
 import connectDB from '../lib/mysql'
+import { findUserByEmail, createUser, updateUserPassword } from '../lib/models-mysql/User'
 import User from '../lib/models-mysql/User'
 
 async function main() {
@@ -12,7 +13,7 @@ async function main() {
     console.log('✅ Connected to MySQL')
 
     // Check if admin already exists
-    const existingUser = await User.findOne({ email: email.toLowerCase() })
+    const existingUser = await findUserByEmail(email.toLowerCase())
 
     if (existingUser) {
       console.log('⚠️  Admin user already exists!')
@@ -23,12 +24,12 @@ async function main() {
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━')
       console.log('Resetting password to default: admin123')
       
-      // Update password (password is hashed inside updateUserPassword)
-      await User.updateUserPassword(existingUser.id!, password)
+      // Update password
+      await updateUserPassword(existingUser.id!, password)
       
       // Update role if needed
       if (existingUser.role !== 'admin') {
-        await User.findByIdAndUpdate(existingUser.id!, { role: 'admin' })
+        await User.default.findByIdAndUpdate(existingUser.id!, { role: 'admin' })
       }
       
       console.log('✅ Admin password reset successfully!')
@@ -39,8 +40,8 @@ async function main() {
       return
     }
 
-    // Create admin user with explicit admin role (password is hashed inside createUser)
-    const user = await User.create({
+    // Create admin user with explicit admin role
+    const user = await createUser({
       email: email.toLowerCase(),
       password: password,
       name,
