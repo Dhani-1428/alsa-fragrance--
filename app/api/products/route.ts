@@ -53,7 +53,13 @@ export async function GET(request: NextRequest) {
 
     // Transform products to match frontend format - filter out products without valid IDs
     const transformedProducts = filteredProducts
-      .filter((product) => product.id != null && product.id !== undefined && product.id > 0)
+      .filter((product) => {
+        // Ensure product has valid ID and required fields
+        const hasValidId = product.id != null && product.id !== undefined && product.id > 0
+        const hasName = product.name && product.name.trim().length > 0
+        const hasImage = product.image && product.image.trim().length > 0
+        return hasValidId && hasName && hasImage
+      })
       .map((product) => {
         try {
           // Get translated name and description
