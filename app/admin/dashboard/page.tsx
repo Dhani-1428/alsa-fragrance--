@@ -10,8 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Plus, Edit, Trash2, LogOut, Package, CheckCircle, Clock, Filter } from "lucide-react"
+import { Plus, Edit, Trash2, LogOut, Package, CheckCircle, Clock, Filter, Trash } from "lucide-react"
 import { getAuthToken, removeAuthToken } from "@/lib/auth"
 import { toast } from "sonner"
 
@@ -431,6 +432,27 @@ export default function AdminDashboard() {
     } catch (error: any) {
       console.error("Delete error:", error)
       toast.error(error.message || "Failed to delete product. Please try again.")
+    }
+  }
+
+  const handleDeleteAll = async () => {
+    try {
+      const response = await fetch("/api/products/bulk-delete", {
+        method: "DELETE",
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to delete all products")
+      }
+
+      toast.success(`Successfully deleted ${data.deletedCount || products.length} products!`)
+      // Refresh the product list
+      await fetchProducts()
+    } catch (error: any) {
+      console.error("Delete all error:", error)
+      toast.error(error.message || "Failed to delete all products. Please try again.")
     }
   }
 
@@ -869,8 +891,46 @@ export default function AdminDashboard() {
         {activeTab === "products" ? (
           <Card className="bg-gray-900 border-gray-700">
           <CardHeader>
-            <CardTitle className="text-white">Products ({products.length})</CardTitle>
-            <CardDescription className="text-gray-400">Manage your product catalog</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-white">Products ({products.length})</CardTitle>
+                <CardDescription className="text-gray-400">Manage your product catalog</CardDescription>
+              </div>
+              {products.length > 0 && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      className="bg-red-600 hover:bg-red-700 text-white"
+                    >
+                      <Trash className="mr-2 h-4 w-4" />
+                      Delete All Products
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-gray-800 border-gray-700">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-white">Delete All Products?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-gray-300">
+                        This will permanently delete all {products.length} products from the database. 
+                        This action cannot be undone. Are you absolutely sure you want to continue?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={handleDeleteAll}
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        Yes, Delete All Products
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
           </CardHeader>
           <CardContent>
             {products.length === 0 ? (
