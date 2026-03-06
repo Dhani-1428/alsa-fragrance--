@@ -152,7 +152,7 @@ export async function GET(request: NextRequest) {
       
       if (error.code === 'ER_NO_SUCH_TABLE') {
         errorMessage = 'Database table not found'
-        errorDetails = `The table does not exist. Please run: npm run db:setup`
+        errorDetails = `The products table does not exist in the current database. Please run: npm run db:setup to create all required tables (users, products, orders).`
       }
       
       return NextResponse.json(

@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       
       if (findError?.message?.includes("doesn't exist") || findError?.code === 'ER_NO_SUCH_TABLE') {
         errorMessage = 'Database table not found'
-        errorDetails = 'The users table does not exist. Please run: npx ts-node scripts/create-mysql-schema.ts'
+        errorDetails = 'The users table does not exist in the current database. Please run: npm run db:setup to create all required tables.'
       } else if (findError?.message?.includes('Unknown column')) {
         errorMessage = 'Database table structure incorrect'
         errorDetails = 'The users table structure is incorrect. Please run: npx ts-node scripts/create-mysql-schema.ts'

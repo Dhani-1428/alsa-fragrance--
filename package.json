@@ -13,6 +13,7 @@
     "db:create-mysql-schema": "tsx scripts/create-mysql-schema.ts",
     "db:setup": "tsx scripts/setup-database-complete.ts",
     "db:update-env": "tsx scripts/update-env-database.ts",
+    "db:verify": "tsx scripts/verify-tables.ts",
     "db:diagnose": "tsx scripts/diagnose-database.ts",
     "db:fix-admin": "tsx scripts/fix-admin-panel.ts",
     "db:migrate-to-mysql": "tsx scripts/migrate-mongodb-to-mysql.ts",

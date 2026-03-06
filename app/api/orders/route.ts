@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllOrders, type Order } from '@/lib/orders-mysql'
+import connectDB from '@/lib/mysql'
+import { handleDatabaseError } from '@/lib/db-error-handler'
 
 // GET all orders (admin only)
 // Note: In production, add proper server-side authentication (JWT, session, etc.)
 // Currently protected by client-side authentication in the admin panel
 export async function GET(request: NextRequest) {
   try {
+    // Connect to database first
+    try {
+      await connectDB()
+    } catch (dbError: any) {
+      return handleDatabaseError(dbError)
+    }
 
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
@@ -29,8 +37,23 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(orders)
   } catch (error: any) {
     console.error('Error fetching orders:', error)
+    
+    // Handle table not found errors
+    if (error.code === 'ER_NO_SUCH_TABLE' || error.message?.includes("doesn't exist")) {
+      return NextResponse.json(
+        { 
+          error: 'Database table not found',
+          details: 'The orders table does not exist. Please run: npm run db:setup'
+        },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch orders' },
+      { 
+        error: error.message || 'Failed to fetch orders',
+        details: error.code === 'ER_NO_SUCH_TABLE' ? 'Please run: npm run db:setup' : undefined
+      },
       { status: 500 }
     )
   }

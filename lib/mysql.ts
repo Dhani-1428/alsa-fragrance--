@@ -99,13 +99,19 @@ export function getPool(): mysql.Pool {
   // If config changed or pool doesn't exist, recreate it
   if (!pool || poolConfig !== currentConfig) {
     if (pool) {
-      // Close old pool
-      pool.end().catch(console.error)
+      // Close old pool gracefully
+      pool.end().catch((err) => {
+        console.warn('Warning: Error closing old pool:', err.message)
+      })
     }
     const config = getMySQLConfig()
     pool = mysql.createPool(config)
     poolConfig = currentConfig
-    console.log(`🔄 MySQL pool recreated with database: ${config.database}`)
+    
+    // Only log in development to avoid spam in production
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🔄 MySQL pool recreated with database: ${config.database}`)
+    }
   }
   
   return pool
@@ -116,6 +122,21 @@ export async function connectDB(): Promise<mysql.Pool> {
     validateConfig()
     const pool = getPool()
     const conn = await pool.getConnection()
+    
+    // Verify we're using the correct database
+    try {
+      const [dbResult]: any = await conn.execute('SELECT DATABASE() as currentDb')
+      const currentDb = dbResult?.[0]?.currentDb
+      const expectedDb = process.env.MYSQL_DATABASE
+      
+      if (currentDb !== expectedDb) {
+        console.warn(`⚠️  Database mismatch! Connected to: ${currentDb}, Expected: ${expectedDb}`)
+        console.warn(`   This may cause "table not found" errors. Please restart your server.`)
+      }
+    } catch (dbCheckError) {
+      // Ignore database check errors
+    }
+    
     await conn.ping()
     conn.release()
     return pool
