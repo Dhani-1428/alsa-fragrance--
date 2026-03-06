@@ -26,8 +26,19 @@ export function FeaturedProducts() {
         const products = await getProducts(language)
         console.log("FeaturedProducts: Received products:", products.length)
         
-        // Filter out products without valid IDs and get first 5
+        if (!products || products.length === 0) {
+          console.warn("FeaturedProducts: No products received from API")
+          setFeaturedProducts([])
+          setLoading(false)
+          return
+        }
+        
+        // Filter out products without valid IDs and get first 8 (to ensure we have enough for carousel)
         const validProducts = products.filter(p => {
+          if (!p || !p.id) {
+            console.warn("FeaturedProducts: Product missing ID:", p)
+            return false
+          }
           const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
           const isValid = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
           if (!isValid) {
@@ -37,7 +48,16 @@ export function FeaturedProducts() {
         })
         
         console.log("FeaturedProducts - Total:", products.length, "Valid:", validProducts.length)
-        const featured = validProducts.slice(0, 5)
+        
+        if (validProducts.length === 0) {
+          console.error("FeaturedProducts: No valid products found after filtering")
+          setFeaturedProducts([])
+          setLoading(false)
+          return
+        }
+        
+        // Get first 8 products for the carousel (showing 4 at a time)
+        const featured = validProducts.slice(0, 8)
         console.log("FeaturedProducts: Setting featured products:", featured.length, featured.map(p => ({ id: p.id, name: p.name })))
         setFeaturedProducts(featured)
       } catch (error) {
