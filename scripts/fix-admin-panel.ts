@@ -65,6 +65,10 @@ async function checkAndFix() {
       console.log('⚠️  Users table does not exist. Creating schema...')
       
       // Create users table
+      // First, ensure we're using the correct database
+      const dbName = process.env.MYSQL_DATABASE || 'alsafragrance'
+      await query(`USE \`${dbName}\``)
+      
       await query(`
         CREATE TABLE IF NOT EXISTS users (
           id INT AUTO_INCREMENT PRIMARY KEY,
