@@ -194,8 +194,8 @@ export async function query(sql: string, params?: any[]) {
     const expectedDb = process.env.MYSQL_DATABASE
     if (expectedDb) {
       try {
-        // Check current database
-        const [dbResult]: any = await conn.execute('SELECT DATABASE() as currentDb')
+        // Check current database - use query instead of execute for SELECT DATABASE()
+        const [dbResult]: any = await conn.query('SELECT DATABASE() as currentDb')
         const currentDb = dbResult?.[0]?.currentDb
         
         // Switch to correct database if needed
@@ -206,16 +206,27 @@ export async function query(sql: string, params?: any[]) {
           }
         }
       } catch (dbError: any) {
-        // If USE command fails, try to continue anyway
+        // If USE command fails, log error but try to continue
+        console.error('Database switch error:', dbError.message)
         if (process.env.NODE_ENV === 'development') {
           console.warn('Warning: Could not verify/switch database:', dbError.message)
         }
+        // Don't throw - the connection might still work with the correct database from pool config
       }
     }
     
     // Execute the query
     const [rows] = await conn.execute(sql, params)
     return rows
+  } catch (error: any) {
+    // Log the actual error for debugging
+    console.error('Query error:', {
+      sql: sql.substring(0, 100),
+      error: error.message,
+      code: error.code,
+      errno: error.errno
+    })
+    throw error
   } finally {
     conn.release()
   }

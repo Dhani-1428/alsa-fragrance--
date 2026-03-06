@@ -19,10 +19,20 @@ export async function findUserByEmail(email: string): Promise<IUser | null> {
     }
     return null
   } catch (error: any) {
+    // Log the error for debugging
+    console.error('findUserByEmail error:', {
+      email: email.toLowerCase().trim(),
+      error: error.message,
+      code: error.code,
+      errno: error.errno
+    })
+    
     // If table doesn't exist, provide helpful error
-    if (error.code === 'ER_NO_SUCH_TABLE') {
+    if (error.code === 'ER_NO_SUCH_TABLE' || error.message?.includes("doesn't exist")) {
       throw new Error(`Database table 'users' not found. Please run: npm run db:setup`)
     }
+    
+    // Re-throw with more context
     throw error
   }
 }
