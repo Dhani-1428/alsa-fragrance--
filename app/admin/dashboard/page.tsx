@@ -486,22 +486,19 @@ export default function AdminDashboard() {
     try {
       const productIds = Array.from(selectedProducts)
       
-      // Delete products one by one (or we can create a bulk delete endpoint that accepts IDs)
-      const deletePromises = productIds.map(id => 
-        fetch(`/api/products/${id}`, { method: "DELETE" })
-      )
-      
-      const results = await Promise.allSettled(deletePromises)
-      const successful = results.filter(r => r.status === 'fulfilled').length
-      const failed = results.length - successful
+      // Use bulk delete endpoint with IDs
+      const idsParam = productIds.join(',')
+      const response = await fetch(`/api/products/bulk-delete?ids=${idsParam}`, {
+        method: "DELETE",
+      })
 
-      if (successful > 0) {
-        toast.success(`Successfully deleted ${successful} product(s)!`)
-      }
-      if (failed > 0) {
-        toast.error(`Failed to delete ${failed} product(s)`)
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to delete selected products")
       }
 
+      toast.success(`Successfully deleted ${data.deletedCount || selectedProducts.size} product(s)!`)
       setSelectedProducts(new Set())
       // Refresh the product list
       await fetchProducts()

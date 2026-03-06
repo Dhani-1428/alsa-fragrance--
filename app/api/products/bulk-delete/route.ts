@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import connectDB, { query } from '@/lib/mysql'
 import { handleDatabaseError } from '@/lib/db-error-handler'
 
-// DELETE all products
+// DELETE products - can delete all or selected products
 export async function DELETE(request: NextRequest) {
   try {
     // Connect to database
@@ -25,19 +25,50 @@ export async function DELETE(request: NextRequest) {
       console.error('⚠️  Database switch error:', dbSwitchError.message)
     }
 
-    // Get count before deletion
-    const countResult: any = await query('SELECT COUNT(*) as count FROM products')
-    const countBefore = countResult[0]?.count || 0
+    // Check if specific product IDs are provided
+    const { searchParams } = new URL(request.url)
+    const idsParam = searchParams.get('ids')
+    
+    let deletedCount = 0
+    let countBefore = 0
 
-    // Delete all products
-    const result: any = await query('DELETE FROM products')
-    const deletedCount = result.affectedRows || 0
+    if (idsParam) {
+      // Delete selected products by IDs
+      const productIds = idsParam.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id) && id > 0)
+      
+      if (productIds.length === 0) {
+        return NextResponse.json(
+          { error: 'No valid product IDs provided' },
+          { status: 400 }
+        )
+      }
 
-    console.log(`✅ Deleted ${deletedCount} products from database`)
+      // Get count before deletion
+      countBefore = productIds.length
+
+      // Delete products by IDs
+      const placeholders = productIds.map(() => '?').join(',')
+      const result: any = await query(
+        `DELETE FROM products WHERE id IN (${placeholders})`,
+        productIds
+      )
+      deletedCount = result.affectedRows || 0
+
+      console.log(`✅ Deleted ${deletedCount} selected products from database`)
+    } else {
+      // Delete all products
+      const countResult: any = await query('SELECT COUNT(*) as count FROM products')
+      countBefore = countResult[0]?.count || 0
+
+      const result: any = await query('DELETE FROM products')
+      deletedCount = result.affectedRows || 0
+
+      console.log(`✅ Deleted ${deletedCount} products from database`)
+    }
 
     return NextResponse.json({
       success: true,
-      message: `Successfully deleted ${deletedCount} products`,
+      message: `Successfully deleted ${deletedCount} product(s)`,
       deletedCount: deletedCount,
       countBefore: countBefore
     })
