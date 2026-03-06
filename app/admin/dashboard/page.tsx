@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Edit, Trash2, LogOut, Package, CheckCircle, Clock, Filter, Trash } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
 import { getAuthToken, removeAuthToken } from "@/lib/auth"
 import { toast } from "sonner"
 
@@ -111,6 +112,7 @@ export default function AdminDashboard() {
   const [additionalImageFiles, setAdditionalImageFiles] = useState<File[]>([])
   const [additionalImagePreviews, setAdditionalImagePreviews] = useState<string[]>([])
   const [uploading, setUploading] = useState(false)
+  const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     if (!getAuthToken()) {
@@ -448,11 +450,64 @@ export default function AdminDashboard() {
       }
 
       toast.success(`Successfully deleted ${data.deletedCount || products.length} products!`)
+      setSelectedProducts(new Set())
       // Refresh the product list
       await fetchProducts()
     } catch (error: any) {
       console.error("Delete all error:", error)
       toast.error(error.message || "Failed to delete all products. Please try again.")
+    }
+  }
+
+  const handleToggleSelect = (productId: string) => {
+    const newSelected = new Set(selectedProducts)
+    if (newSelected.has(productId)) {
+      newSelected.delete(productId)
+    } else {
+      newSelected.add(productId)
+    }
+    setSelectedProducts(newSelected)
+  }
+
+  const handleSelectAll = () => {
+    if (selectedProducts.size === products.length) {
+      setSelectedProducts(new Set())
+    } else {
+      setSelectedProducts(new Set(products.map(p => p.id)))
+    }
+  }
+
+  const handleDeleteSelected = async () => {
+    if (selectedProducts.size === 0) {
+      toast.error("No products selected")
+      return
+    }
+
+    try {
+      const productIds = Array.from(selectedProducts)
+      
+      // Delete products one by one (or we can create a bulk delete endpoint that accepts IDs)
+      const deletePromises = productIds.map(id => 
+        fetch(`/api/products/${id}`, { method: "DELETE" })
+      )
+      
+      const results = await Promise.allSettled(deletePromises)
+      const successful = results.filter(r => r.status === 'fulfilled').length
+      const failed = results.length - successful
+
+      if (successful > 0) {
+        toast.success(`Successfully deleted ${successful} product(s)!`)
+      }
+      if (failed > 0) {
+        toast.error(`Failed to delete ${failed} product(s)`)
+      }
+
+      setSelectedProducts(new Set())
+      // Refresh the product list
+      await fetchProducts()
+    } catch (error: any) {
+      console.error("Delete selected error:", error)
+      toast.error(error.message || "Failed to delete selected products. Please try again.")
     }
   }
 
@@ -893,43 +948,86 @@ export default function AdminDashboard() {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-white">Products ({products.length})</CardTitle>
+                <CardTitle className="text-white">
+                  Products ({products.length})
+                  {selectedProducts.size > 0 && (
+                    <span className="ml-2 text-sm font-normal text-gray-400">
+                      ({selectedProducts.size} selected)
+                    </span>
+                  )}
+                </CardTitle>
                 <CardDescription className="text-gray-400">Manage your product catalog</CardDescription>
               </div>
-              {products.length > 0 && (
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      variant="destructive" 
-                      size="sm"
-                      className="bg-red-600 hover:bg-red-700 text-white"
-                    >
-                      <Trash className="mr-2 h-4 w-4" />
-                      Delete All Products
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-gray-800 border-gray-700">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle className="text-white">Delete All Products?</AlertDialogTitle>
-                      <AlertDialogDescription className="text-gray-300">
-                        This will permanently delete all {products.length} products from the database. 
-                        This action cannot be undone. Are you absolutely sure you want to continue?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
-                        Cancel
-                      </AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={handleDeleteAll}
+              <div className="flex gap-2">
+                {selectedProducts.size > 0 && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
                         className="bg-red-600 hover:bg-red-700 text-white"
                       >
-                        Yes, Delete All Products
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              )}
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete Selected ({selectedProducts.size})
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-gray-800 border-gray-700">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="text-white">Delete Selected Products?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-gray-300">
+                          This will permanently delete {selectedProducts.size} selected product(s) from the database. 
+                          This action cannot be undone. Are you sure you want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeleteSelected}
+                          className="bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Yes, Delete Selected
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+                {products.length > 0 && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button 
+                        variant="destructive" 
+                        size="sm"
+                        className="bg-red-600 hover:bg-red-700 text-white"
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete All Products
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-gray-800 border-gray-700">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="text-white">Delete All Products?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-gray-300">
+                          This will permanently delete all {products.length} products from the database. 
+                          This action cannot be undone. Are you absolutely sure you want to continue?
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeleteAll}
+                          className="bg-red-600 hover:bg-red-700 text-white"
+                        >
+                          Yes, Delete All Products
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+              </div>
             </div>
           </CardHeader>
           <CardContent>
@@ -942,6 +1040,13 @@ export default function AdminDashboard() {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-gray-700 hover:bg-gray-800">
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={selectedProducts.size === products.length && products.length > 0}
+                          onCheckedChange={handleSelectAll}
+                          className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:border-white"
+                        />
+                      </TableHead>
                       <TableHead className="text-white">ID</TableHead>
                       <TableHead className="text-white">Name</TableHead>
                       <TableHead className="text-white">Category</TableHead>
@@ -954,6 +1059,13 @@ export default function AdminDashboard() {
                   <TableBody>
                     {products.map((product) => (
                       <TableRow key={product.id} className="border-gray-700 hover:bg-gray-800">
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedProducts.has(product.id)}
+                            onCheckedChange={() => handleToggleSelect(product.id)}
+                            className="border-gray-600 data-[state=checked]:bg-white data-[state=checked]:border-white"
+                          />
+                        </TableCell>
                         <TableCell className="text-white">{product.id}</TableCell>
                         <TableCell className="font-medium text-white">{product.name}</TableCell>
                         <TableCell className="text-gray-300 capitalize">{product.category}</TableCell>
