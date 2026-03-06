@@ -51,10 +51,37 @@ export default function ShopPage() {
   useEffect(() => {
     async function loadProducts() {
       try {
+        setLoading(true)
+        console.log("ShopPage: Fetching products...")
         const allProducts = await getProducts(language)
-        setProducts(allProducts)
+        console.log("ShopPage: Received products:", allProducts.length)
+        
+        if (!allProducts || allProducts.length === 0) {
+          console.warn("ShopPage: No products received from API")
+          setProducts([])
+          setLoading(false)
+          return
+        }
+        
+        // Filter out products without valid IDs
+        const validProducts = allProducts.filter(p => {
+          if (!p || !p.id) {
+            console.warn("ShopPage: Product missing ID:", p)
+            return false
+          }
+          const id = typeof p.id === 'string' ? p.id.trim() : String(p.id || '').trim()
+          const isValid = id && !isNaN(parseInt(id, 10)) && parseInt(id, 10) > 0
+          if (!isValid) {
+            console.warn("ShopPage: Invalid product ID:", p.id, "Product:", p.name)
+          }
+          return isValid
+        })
+        
+        console.log("ShopPage - Total:", allProducts.length, "Valid:", validProducts.length)
+        setProducts(validProducts)
       } catch (error) {
-        console.error("Error loading products:", error)
+        console.error("ShopPage: Error loading products:", error)
+        setProducts([])
       } finally {
         setLoading(false)
       }
@@ -287,19 +314,37 @@ export default function ShopPage() {
                 </p>
               </FadeInUp>
 
-              {filteredAndSortedProducts.length === 0 ? (
+              {loading ? (
+                <FadeInUp delay={0.5} className="text-center py-12">
+                  <p className="text-muted-foreground text-lg">Loading products...</p>
+                </FadeInUp>
+              ) : filteredAndSortedProducts.length === 0 && products.length === 0 ? (
                 <FadeInUp delay={0.5} className="text-center py-12">
                   <div className="max-w-2xl mx-auto">
-                    <h3 className="text-xl font-semibold mb-4">Perfumes Available</h3>
+                    <h3 className="text-xl font-semibold mb-4">No Products Available</h3>
                     <p className="text-muted-foreground mb-4">
-                      We're currently updating our collection. Check back soon for perfumes and fragrances. Use the filters above to refine your search, or browse our category pages for men's perfumes, women's fragrances, attars, testers, and limited edition scents.
+                      We're currently updating our collection. Check back soon for perfumes and fragrances.
+                    </p>
+                    <div className="flex gap-4 justify-center">
+                      <Button asChild variant="default">
+                        <a href="/">Go to Homepage</a>
+                      </Button>
+                    </div>
+                  </div>
+                </FadeInUp>
+              ) : filteredAndSortedProducts.length === 0 ? (
+                <FadeInUp delay={0.5} className="text-center py-12">
+                  <div className="max-w-2xl mx-auto">
+                    <h3 className="text-xl font-semibold mb-4">No Products Match Your Filters</h3>
+                    <p className="text-muted-foreground mb-4">
+                      Try adjusting your filters or search query to see more products. We have {products.length} products available.
                     </p>
                     <div className="flex gap-4 justify-center">
                       <Button onClick={clearFilters} variant="outline">
-                        {t.shop.filters}
+                        Clear Filters
                       </Button>
                       <Button asChild variant="default">
-                        <a href="/">Go to Homepage</a>
+                        <a href="/shop">View All Products</a>
                       </Button>
                     </div>
                   </div>
