@@ -57,26 +57,57 @@ function getSSLConfig() {
   return sslConfig
 }
 
-const MYSQL_CONFIG = {
-  host: process.env.MYSQL_HOST!,
-  port: Number(process.env.MYSQL_PORT || 3306),
-  user: process.env.MYSQL_USER!,
-  password: process.env.MYSQL_PASSWORD!,
-  database: process.env.MYSQL_DATABASE!,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-  connectTimeout: 30000, // 30 seconds for cloud connections
-  ssl: getSSLConfig(),
+// Get MySQL config dynamically (reads from env each time)
+function getMySQLConfig() {
+  return {
+    host: process.env.MYSQL_HOST!,
+    port: Number(process.env.MYSQL_PORT || 3306),
+    user: process.env.MYSQL_USER!,
+    password: process.env.MYSQL_PASSWORD!,
+    database: process.env.MYSQL_DATABASE!,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    connectTimeout: 30000, // 30 seconds for cloud connections
+    ssl: getSSLConfig(),
+  }
 }
 
 let pool: mysql.Pool | null = null
+let poolConfig: string | null = null
+
+// Reset pool - useful when database config changes
+export function resetPool() {
+  if (pool) {
+    pool.end().catch(console.error)
+    pool = null
+    poolConfig = null
+  }
+}
 
 export function getPool(): mysql.Pool {
-  if (!pool) {
-    validateConfig()
-    pool = mysql.createPool(MYSQL_CONFIG)
+  validateConfig()
+  
+  // Create a config signature to detect changes
+  const currentConfig = JSON.stringify({
+    host: process.env.MYSQL_HOST,
+    port: process.env.MYSQL_PORT,
+    user: process.env.MYSQL_USER,
+    database: process.env.MYSQL_DATABASE,
+  })
+  
+  // If config changed or pool doesn't exist, recreate it
+  if (!pool || poolConfig !== currentConfig) {
+    if (pool) {
+      // Close old pool
+      pool.end().catch(console.error)
+    }
+    const config = getMySQLConfig()
+    pool = mysql.createPool(config)
+    poolConfig = currentConfig
+    console.log(`🔄 MySQL pool recreated with database: ${config.database}`)
   }
+  
   return pool
 }
 
@@ -91,10 +122,12 @@ export async function connectDB(): Promise<mysql.Pool> {
   } catch (error: any) {
     console.error('MySQL connection error:', error.message)
     
+    const config = getMySQLConfig()
+    
     // Provide helpful error messages
     if (error.code === 'ECONNREFUSED') {
       throw new Error(
-        `Cannot connect to MySQL server at ${MYSQL_CONFIG.host}:${MYSQL_CONFIG.port}. ` +
+        `Cannot connect to MySQL server at ${config.host}:${config.port}. ` +
         `Please check:\n` +
         `1. MySQL server is running\n` +
         `2. Host and port are correct\n` +
@@ -104,25 +137,26 @@ export async function connectDB(): Promise<mysql.Pool> {
     
     if (error.code === 'ER_ACCESS_DENIED_ERROR') {
       throw new Error(
-        `Access denied for user '${MYSQL_CONFIG.user}'. ` +
+        `Access denied for user '${config.user}'. ` +
         `Please check your username and password in .env file.`
       )
     }
     
     if (error.code === 'ER_BAD_DB_ERROR') {
       throw new Error(
-        `Database '${MYSQL_CONFIG.database}' does not exist. ` +
-        `Please create the database first or check the database name in .env file.`
+        `Database '${config.database}' does not exist. ` +
+        `Please create the database first or check the database name in .env file. ` +
+        `Run: npm run db:setup`
       )
     }
     
     if (error.code === 'ETIMEDOUT' || error.code === 'ENOTFOUND') {
       throw new Error(
-        `Cannot reach MySQL server at ${MYSQL_CONFIG.host}. ` +
+        `Cannot reach MySQL server at ${config.host}. ` +
         `Please check:\n` +
         `1. Host address is correct\n` +
         `2. Server is accessible from your network\n` +
-        `3. Port ${MYSQL_CONFIG.port} is open`
+        `3. Port ${config.port} is open`
       )
     }
     

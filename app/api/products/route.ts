@@ -147,10 +147,18 @@ export async function GET(request: NextRequest) {
     
     // Handle database query errors
     if (error.code && error.code.startsWith('ER_')) {
+      let errorMessage = 'Database query error.'
+      let errorDetails = error.message
+      
+      if (error.code === 'ER_NO_SUCH_TABLE') {
+        errorMessage = 'Database table not found'
+        errorDetails = `The table does not exist. Please run: npm run db:setup`
+      }
+      
       return NextResponse.json(
         { 
-          error: 'Database query error.',
-          details: error.message,
+          error: errorMessage,
+          details: errorDetails,
           code: error.code
         },
         { status: 500 }
