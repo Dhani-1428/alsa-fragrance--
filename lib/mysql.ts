@@ -25,7 +25,21 @@ function validateConfig() {
 
 // Get SSL configuration
 function getSSLConfig() {
-  const sslEnabled = process.env.MYSQL_SSL === 'true' || process.env.MYSQL_SSL === 'REQUIRED'
+  // Explicit flags first
+  const explicitTrue = process.env.MYSQL_SSL === 'true' || process.env.MYSQL_SSL === 'REQUIRED'
+  const explicitFalse = process.env.MYSQL_SSL === 'false' || process.env.MYSQL_SSL === 'DISABLED'
+
+  // Heuristic: auto-enable SSL for common managed providers if not explicitly disabled
+  const host = (process.env.MYSQL_HOST || '').toLowerCase()
+  const looksManaged =
+    host.includes('aiven') ||
+    host.includes('aivencloud') ||
+    host.includes('psdb.cloud') || // PlanetScale
+    host.includes('planetscale') ||
+    host.includes('aws') || // Many RDS setups require/expect TLS
+    host.includes('amazonaws.com')
+
+  const sslEnabled = explicitTrue || (!explicitFalse && looksManaged)
   
   if (!sslEnabled) {
     return false
